@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<div class="album py-5 bg-light">
+
+    <div class="container">
+        <div class="row">
+
+
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+
+
+                    <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+
+                         xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false"
+                         role="img" aria-label="Placeholder: Thumbnail">
+
+                        <title>{{ item.name }}</title>
+
+
+                        <rect width="100%" height="100%" fill="#55595c"/>
+
+                        <image xlink:href="{{ url_for('static', filename=item.artist.photoartist[0]) }}" x="0" y="0"
+                               width="100%" height="100%"/>
+
+
+                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ item.name }}</text>
+                    </svg>
+                    <div class="card-body">
+                        <p class="card-text">{{ item.name }}
+                            {% if item.artist %}
+                        <p class="card-text">Артист - {{ item.artist }}.</p>
+                        {% endif %}
+                        </p>
+                        <!--                        <p class="card-text">Описание - {{ item.description }}-->
+                        <!--                        </p>-->
+
+                        {% if item.date_event %}
+                        <p class="card-text">{{ item.date_event.strftime('%Y.%m.%d') }} в {% if item.time_event %}{{
+                            item.time_event.strftime('%H:%M') }} {% endif %}</p>
+                        {% endif %}
+                        {% if item.description %}
+                        <p class="card-text">Описание - {{ item.description }}</p>
+                        {% endif %}
+                        {% if item.city %}
+                        <p class="card-text">Город - {{ item.city }}</p>
+                        {% endif %}
+                        {% if item.arena %}
+                        <p class="card-text">Площадка - {{ item.arena }}</p>
+                        {% endif %}
+                        {% if item.manager %}
+                        <p class="card-text">Менеджер - {{ item.manager }}</p>
+                        {% endif %}
+                        <!--                        <p class="card-text">Время редактирования - {{ item.edit_city }}.</p>-->
+
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a href="{{ url_for('events.get_item_event', id=item.id) }}" class="card-link">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Посмотреть</button>
+                                </a>
+                                <a href="{{ url_for('events.edit_event', id=item.id) }}" class="card-link">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Редактировать
+                                    </button>
+                                </a>
+                                <a href="{{ url_for('events.delete_event', id=item.id) }}" class="card-link">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Удалить
+                                    </button>
+                                </a>
+                            </div>
+                            <!--                            <small class="text-muted">9 mins</small>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

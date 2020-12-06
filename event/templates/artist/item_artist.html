@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="row">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+
+                    <a href="{{ url_for('arenas.edit_arena', id=item.id) }}">
+                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+
+                             xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false"
+                             role="img" aria-label="Placeholder: Thumbnail">
+
+                            <title>{{ item.name }}</title>
+
+
+                            <rect width="100%" height="100%" fill="#55595c"/>
+
+                            {% if item.photoartist %}
+                            <image xlink:href="{{ url_for('static', filename=item.photoartist[0]) }}" x="0" y="0"
+                                   width="100%" height="100%"/>
+                            {% endif %}
+                            <text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ item.name }}</text>
+                        </svg>
+                    </a>
+                    <div class="card-body">
+                        <p class="card-text">Артист - {{ item.name }}
+                            {% if item.administrator %}
+                        <p class="card-text">Администратор - {{ item.administrator }}.</p>
+                        {% endif %}
+                        </p>
+                        {% if item.phone_administrator %}
+                        <p class="card-text">Тел. - {{ item.phone_administrator }}</p>
+                        {% endif %}
+                        {% if item.sound_engineer %}
+                        <p class="card-text">Звукорежиссер - {{ item.sound_engineer }}</p>
+                        {% endif %}
+
+                        {% if item.phone_sound %}
+                        <p class="card-text">Тел. Звукорежиссера - {{ item.phone_sound }}</p>
+                        {% endif %}
+
+                        {% if item.monitor_engineer %}
+                        <p class="card-text">Мон. Звукорежиссер - {{ item.monitor_engineer }}</p>
+                        {% endif %}
+
+                        {% if item.phone_monitor %}
+                        <p class="card-text">Тел. Мон. Звукорежиссера - {{ item.phone_monitor }}</p>
+                        {% endif %}
+
+                        {% if item.light %}
+                        <p class="card-text">Световик - {{ item.light }}</p>
+                        {% endif %}
+                        {% if item.phone_light %}
+                        <p class="card-text">Тел. Световика - {{ item.phone_light }}</p>
+                        {% endif %}
+
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a href="{{ url_for('artists.add_artist', id=item.id) }}" class="card-link">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Посмотреть</button>
+                                </a>
+                                <a href="{{ url_for('artists.edit_artist', id=item.id) }}" class="card-link">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Редактировать
+                                    </button>
+                                </a>
+                                <a href="{{ url_for('artists.delete_artist', id=item.id) }}" class="card-link">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Удалить
+                                    </button>
+                                </a>
+                            </div>
+                            <!--                            <small class="text-muted">9 mins</small>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+{% endblock %}
+

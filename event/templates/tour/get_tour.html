@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<div class="album py-5 bg-light">
+    <div class="container">
+        <a href="{{ url_for('tours.add_tour') }}" class="card-link">
+            <button type="button" class="btn btn-sm btn-outline-secondary">Добавить тур</button>
+        </a>
+        <div class="row">
+
+            {% for item in tours %}
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                         xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false"
+                         role="img" aria-label="Placeholder: Thumbnail">
+                        {% if item.event[0] %}
+                        <title>{{ item.event[0].artist }}</title>
+                        {% endif %}
+                        <rect width="100%" height="100%" fill="#55595c"/>
+                        {% if item.event[0] %}
+                        <image xlink:href="{{ url_for('static', filename=item.event[0].artist.photoartist[0]) }}" x="0"
+                               y="0"
+                               width="100%" height="100%"/>
+                        {% endif %}
+                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ item.artist }}</text>
+                    </svg>
+                    <div class="card-body">
+
+
+                        {% if item.event[0] %}
+                        <p class="card-text">
+                            {{ item.event[0] }}
+                        </p>
+                        {% endif %}
+
+                        {% for event in item.event %}
+                        {% if event.city %}
+
+                        {% if event.date_event %}
+                        <p class="card-text">
+                            {{ event.date_event.strftime('%d.%m.%Y в %H:%M') }}
+                            {% endif %}
+                            {{ event.city }}.</p>
+                        {% endif %}
+                        {% if item.city %}
+                        <p class="card-text">Город - {{ item.city }}.</p>
+                        {% endif %}
+                        {% if item.arena %}
+                        <p class="card-text">Площадка - {{ item.arena }}.</p>
+                        {% endif %}
+                        {% if item.manager %}
+                        <p class="card-text">Менеджер - {{ item.manager }}.</p>
+                        {% endif %}
+                        {% endfor %}
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a href="{{ url_for('tours.get_item_tour', id=item.id) }}" class="card-link">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Посмотреть</button>
+                                </a>
+                                <a href="{{ url_for('tours.edit_tour', id=item.id) }}" class="card-link">
+                                    <button type="button" class="btn btn-sm btn-outline-secondary">Редактировать
+                                    </button>
+                                </a>
+                            </div>
+                            <!--                            <small class="text-muted">9 mins</small>-->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

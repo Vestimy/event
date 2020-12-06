@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row">
+
+            <div class="form-group">
+                <form action="" method="post" novalidate>
+                    <p> {{ form.name.label(class='control-label') }}
+                        {{ form.name(class ="form-control") }}</p>
+                    <p> {{ form.artist_id.label }}
+                        {{ form.artist_id(class ="form-control") }}</p>
+                    <p> {{ form.date_event.label }}
+                        {{ form.date_event(type='date', class = 'form-control') }}</p>
+                    <p> {{ form.time_event.label }}
+                        {{ form.time_event(type='time', class = 'form-control') }}</p>
+                    <p> {{ form.description.label }}
+                        {{ form.description(class ="form-control") }}</p>
+                    <p> {{ form.city_id.label }}
+                        {{ form.city_id(class ="form-control") }}</p>
+                    <p> {{ form.arena_id.label }}
+                        {{ form.arena_id(class ="form-control") }}</p>
+                    <p> {{ form.manager_id.label }}
+                        {{ form.manager_id(class ="form-control") }}</p>
+                    <p>{{ form.submit(class="btn btn-primary mb-2") }}</p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+        function choice_category(){
+            var tmp_id = parseInt ($("#city_id").val());
+            if(tmp_id == 0)
+            {
+                $("#arena_id").attr('disabled', 'disabled');
+            }
+            else
+            {
+                $("#arena_id").removeAttr('disabled');
+                load_subcategory();
+            }
+        }
+
+        function load_subcategory(){
+            $.ajax({
+                type: "POST",
+                url: "/events/get_city",
+                data: $('form').serialize(),
+                success: function(response) {
+                    var json = jQuery.parseJSON(response)
+                    obj = Object.keys(json)
+
+                    $("#arena_id")
+                        .find('option')
+                        .remove()
+                        .end()
+                        .append('<option value="0">Не выбрано</option>')
+                        .val('0');
+
+                    var value, key;
+                    for(item in obj){
+                        value = json[obj[item]];
+                        key = obj[item];
+                    $("#arena_id").append($("<option></option>")
+                            .attr("value",key)
+                            .text(value));
+                    }
+
+                },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+        }
+
+        $(document).ready(function() {
+            choice_category();
+            $("#city_id").change(function() {
+                choice_category();
+            });
+
+            $("#arena_id").change(function() {
+            });
+        });
+
+</script>
+
+
+
+{% endblock %}

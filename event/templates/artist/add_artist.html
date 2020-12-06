@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row">
+
+            <div class="form-group">
+                <form action="" method="post" novalidate>
+                    <p> {{ form.name.label(class='control-label') }}
+                        {{ form.name(class ="form-control") }}
+                    </p>
+                    <p>
+                        {{ form.administrator.label }}
+                        {{ form.administrator(class ="form-control") }}
+                    </p>
+                    <p>
+                        {{ form.phone_administrator.label }}
+                        {{ form.phone_administrator(class ="form-control") }}
+                    </p>
+                    <p>
+                        {{ form.sound_engineer.label }}
+                        {{ form.sound_engineer(class ="form-control") }}
+                    </p>
+                    <p>
+                        {{ form.phone_sound.label }}
+                        {{ form.phone_sound(class ="form-control") }}
+                    </p>
+                    <p>
+                        {{ form.monitor_engineer.label }}
+                        {{ form.monitor_engineer(class ="form-control") }}
+                    </p>
+                    <p>
+                        {{ form.phone_monitor.label }}
+                        {{ form.phone_monitor(class ="form-control") }}
+                    </p>
+                    <p>
+                        {{ form.light.label }}
+                        {{ form.light(class ="form-control") }}
+                    </p>
+                    <p>
+                        {{ form.phone_light.label }}
+                        {{ form.phone_light(class ="form-control") }}
+                    </p>
+                    <p>
+                        {{ form.submit(class="btn btn-primary mb-2") }}
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

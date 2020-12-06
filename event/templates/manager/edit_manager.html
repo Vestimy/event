@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="album py-5 bg-light">
+
+    <div class="container">
+        <!--        <div class="row">-->
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <form action="" method="post" novalidate>
+                        <p> {{ form.name.label(class='control-label') }}
+                            {{ form.name(class ="form-control") }}</p>
+
+                        <p> {{ form.phone.label }}
+                            {{ form.phone(class ="form-control") }}
+                        </p>
+
+                        <p>{{ form.submit(class="btn btn-primary mb-2") }}</p>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+
+                    <a href="{{ url_for('managers.edit_manager', id=item.id) }}">
+                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+
+                             xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false"
+                             role="img" aria-label="Placeholder: Thumbnail">
+
+                            <title>{{ item.name }}</title>
+
+
+                            <rect width="100%" height="100%" fill="#55595c"/>
+
+
+                            <text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ item.name }}</text>
+                        </svg>
+                    </a>
+                    <div class="card-body">
+                        <p class="card-text">{{ item.name }}
+                            {% if item.phone %}
+                        <p class="card-text">Телефон - {{ item.phone }}.</p>
+                        {% endif %}
+                        <!--                            <small class="text-muted">9 mins</small>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+    <title>Hello from Flask</title>
+   <form method=post enctype=multipart/form-data>
+      <input type=file name=file>
+      <input type=submit value=Upload>
+    </form>
+{% endblock %}
