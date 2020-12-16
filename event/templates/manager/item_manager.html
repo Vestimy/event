@@ -2,60 +2,84 @@
 
 
 {% block content %}
-<div class="row">
-    <div class="container">
-
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
+<section id="team" class="team">
+    <div class="container aos-init aos-animate" data-aos="fade-up">
 
 
-                    <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-
-                         xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false"
-                         role="img" aria-label="Placeholder: Thumbnail">
-
-                        <title>{{ item.name }}</title>
-
-
-                        <rect width="100%" height="100%" fill="#55595c"/>
-
-                        {% if item.photoartist %}
-                        <image xlink:href="{{ url_for('static', filename=item.photoartist[0]) }}" x="0" y="0"
-                               width="100%" height="100%"/>
-                        {% endif %}
-                        <text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ item.name }}</text>
-                    </svg>
-
+        <div class="section-title" data-aos="zoom-out">
+            <h2>Менеджер</h2>
+            <p>{{ item.name }}</p>
+        </div>
+        <div class="row justify-content-evenly aos-init aos-animate">
+            <div class="col-md-8">
+                <div class="card mb-4 shadow-sm" data-aos="fade-up">
                     <div class="card-body">
-                        <p class="card-text">{{ item.name }}</p>
-
-
-                        {% if item.phone %}
-                        <p class="card-text">Тел. {{ item.phone }}</p>
+                        <p class="card-text">Мероприятия</p>
+                        {% if item.event %}
+                        {% for i in event %}
+                        <a href="{{ url_for('events.get_item_event', id=i.id) }}">
+                            <p class="card-text"> {{ i.date_event }} в {{
+                                i.time_event.strftime('%H:%M')
+                                }} - {{ i.artist }}</p>
+                        </a>
+                        {% endfor %}
                         {% endif %}
-
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <a href="{{ url_for('managers.edit_manager', id=item.id) }}" class="card-link">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Редактировать
-                                    </button>
-                                </a>
-                                <a href="{{ url_for('managers.delete_manager', id=item.id) }}" class="card-link">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Удалить
-                                    </button>
-                                </a>
-                            </div>
-                            <!--                            <small class="text-muted">9 mins</small>-->
-                        </div>
                     </div>
                 </div>
             </div>
 
+            <div class="col-md-4 aos-init aos-animate">
+                <div class="member" data-aos="fade-left">
+                    <div class="member-img">
+                        {% if item.photo %}
+                        <img src="{{url_for('static', filename=item.photo) }}" class="img-fluid" alt="">
+                        <!--                        <img src="{{url_for('static', filename='managers/vesti_1.jpg') }}" class="img-fluid"-->
+
+                        {% else %}
+
+                        <img src="{{url_for('static', filename='assets/img/team/portfolio.jpeg') }}" class="img-fluid"
+                             alt="">
+                        {% endif %}
+                        <div class="social">
+                            <!--                            <a href=""><i class="icofont-twitter"></i></a>-->
+                            {% if current_user.has_role('admin') %}
+                            <a href="{{ url_for('managers.edit_manager', id=item.id) }}"><i
+                                    class="icofont-edit"></i></a>
+                            {% endif %}
+<!--                            {% if item.event %}-->
+<!--                            <a href="{{ url_for('managers.get_item_manager', id=item.id) }}"><i-->
+<!--                                    class="icofont-eye-open"></i></a>-->
+<!--                            {% endif %}-->
+                            {% if item.facebook %}
+                            <a href="{{ item.facebook }}"><i class="icofont-facebook"></i></a>
+                            {% endif %}
+                            {% if item.instagram %}
+                            <a href="{{ item.instagram }}"><i class="icofont-instagram"></i></a>
+                            {% endif %}
+
+                            <!--                            <a href=""><i class="icofont-linkedin"></i></a>-->
+                        </div>
+                    </div>
+                    <div class="member-info">
+                        <h4>{{ item.name }}</h4>
+<!--                        <span>Chief Executive Officer</span>-->
+                        {% if item.phone %}
+                        <span class="icofont-mobile-phone">{{ item.phone }}</span>
+                        {% endif %}
+                        {% if item.birthday %}
+                        <span class="icofont-birthday-cake">{{ item.birthday }}</span>
+                        {% endif %}
+                        {% if item.address %}
+                        <span class="icofont-address-book">{{ item.address }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
         </div>
+
     </div>
 
-</div>
+</section>
 
 
 {% endblock %}

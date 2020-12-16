@@ -176,13 +176,33 @@ class PhotoArtist(db.Model):
         return self.url
 
 
+class ManagerPhoto(db.Model):
+    __tablename__ = 'managerphoto'
+    id = db.Column(db.Integer, primary_key=True)
+    url = db.Column(db.String(255), nullable=False)
+    manager_id = db.Column(Integer, ForeignKey('manager.id'))
+    manager = relationship("Manager", back_populates="managerphoto")
+
+    edit_managerphoto = db.Column(db.DateTime, onupdate=time_now)
+    created_managerphoto = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return self.url
+
+
 class Manager(db.Model):
     __tablename__ = 'manager'
-
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False, unique=True)
     phone = db.Column(db.String(255))
+    birthday = db.Column(Date)
+    address = db.Column(db.String(255))
     event = relationship('Event', back_populates='manager')
+    photo = db.Column(db.String(255))
+    facebook = db.Column(db.String(255))
+    instagram = db.Column(db.String(255))
+
+    managerphoto = relationship("ManagerPhoto", back_populates="manager")
 
     edit_manager = db.Column(db.DateTime, onupdate=datetime.now)
     created_manager = db.Column(db.DateTime, default=datetime.now())

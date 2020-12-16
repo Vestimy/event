@@ -4,11 +4,11 @@
 
 <div class="album py-5 bg-light">
 
-    <div class="container">
+    <div class="container aos-init aos-animate" data-aos="fade-up">
         <!--        <div class="row">-->
 
-        <div class="row">
-            <div class="col-md-8">
+        <div class="row  aos-init aos-animate">
+            <div class="col-md-8" data-aos="fade-up">
                 <div class="form-group">
                     <form action="" method="post" novalidate>
                         <p> {{ form.name.label(class='control-label') }}
@@ -17,45 +17,59 @@
                         <p> {{ form.phone.label }}
                             {{ form.phone(class ="form-control") }}
                         </p>
+                        <p> {{ form.address.label }}
+                            {{ form.address(class ="form-control") }}
+                        </p>
+                        <p> {{ form.birthday.label }}
+                            {{ form.birthday(type = 'date',class ="form-control") }}
+                        </p>
+                        <p> {{ form.facebook.label }}
+                            {{ form.facebook(class ="form-control") }}
+                        </p>
+                        <p> {{ form.instagram.label }}
+                            {{ form.instagram(class ="form-control") }}
+                        </p>
 
                         <p>{{ form.submit(class="btn btn-primary mb-2") }}</p>
                     </form>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
+            <div class="col-md-4 aos-init aos-animate">
+                <div class="member" data-aos="fade-left">
+                    <div class="member-img">
+                        {% if item.photo %}
+                        <img src="{{url_for('static', filename=item.photo) }}" class="img-fluid" alt="">
+                        <!--                        <img src="{{url_for('static', filename='managers/vesti_1.jpg') }}" class="img-fluid"-->
 
-                    <a href="{{ url_for('managers.edit_manager', id=item.id) }}">
-                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                        {% else %}
 
-                             xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false"
-                             role="img" aria-label="Placeholder: Thumbnail">
-
-                            <title>{{ item.name }}</title>
-
-
-                            <rect width="100%" height="100%" fill="#55595c"/>
-
-
-                            <text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ item.name }}</text>
-                        </svg>
-                    </a>
-                    <div class="card-body">
-                        <p class="card-text">{{ item.name }}
-                            {% if item.phone %}
-                        <p class="card-text">Телефон - {{ item.phone }}.</p>
+                        <img src="{{url_for('static', filename='assets/img/team/portfolio.jpeg') }}" class="img-fluid"
+                             alt="">
                         {% endif %}
-                        <!--                            <small class="text-muted">9 mins</small>-->
+                        <div class="social">
+
+                        </div>
+                    </div>
+                    <div class="member-info">
+                        <h4>{{ item.name }}</h4>
+                        <!--                        <span>Chief Executive Officer</span>-->
+                        {% if item.phone %}
+                        <span class="icofont-mobile-phone">{{ item.phone }}</span>
+                        {% endif %}
+                        {% if item.birthday %}
+                        <span class="icofont-birthday-cake">{{ item.birthday }}</span>
+                        {% endif %}
+
                     </div>
                 </div>
             </div>
         </div>
+        <title>Heevents/llo from Flask</title>
+        <form data-aos="fade-up" method=post enctype=multipart/form-data>
+            {{ upl.file.label }}
+            {{ upl.file(class ="form-control") }}
+            {{ upl.save(class="btn btn-primary mb-2") }}
+        </form>
     </div>
 </div>
-</div>
-    <title>Hello from Flask</title>
-   <form method=post enctype=multipart/form-data>
-      <input type=file name=file>
-      <input type=submit value=Upload>
-    </form>
 {% endblock %}

@@ -32,12 +32,14 @@ def get_artist():
 
 
 @artists.route('/artist/<int:id>', methods=['GET'])
+@login_required
 def get_item_artist(id):
     artist = Artist.query.get(id)
     return render_template('artist/item_artist.html', menu='artists', item=artist)
 
 
 @artists.route('/artists/add', methods=['get', 'post'])
+@login_required
 def add_artist():
     form = ArtistForm()
     # form.arena.choices = [(g.id, g.name) for g in Arena.query.order_by('name')]
@@ -64,6 +66,7 @@ def add_artist():
 
 
 @artists.route('/artists/edit/<int:id>', methods=['get', 'post'])
+@login_required
 def edit_artist(id):
     artist = Artist.query.get(id)
     form = ArtistForm(request.form, obj=artist)
@@ -79,6 +82,7 @@ def edit_artist(id):
 
 
 @artists.route('/artists/delete/<int:id>', methods=['GET', 'POST'])
+@login_required
 def delete_artist(id):
     artist = Artist.query.get(id)
     db.session.delete(artist)
@@ -87,6 +91,7 @@ def delete_artist(id):
 
 
 @artists.route('/artist/add_photo', methods=['GET', 'POST'])
+@login_required
 def artist_img_upload():
     if request.method == 'POST':
         # check if the post request has the file part

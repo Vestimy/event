@@ -3,84 +3,117 @@
 
 {% block content %}
 
-<div class="album py-5 bg-light">
+<section id="team" class="team">
+    <div class="container aos-init aos-animate" data-aos="fade-up">
+        <div class="section-title" data-aos="zoom-out">
+            <h2>Площадки</h2>
+            <!--            <p>Площадки</p>-->
+            <p><a href="{{ url_for('arenas.add_arena') }}" class="card-link" data-aos="zoom-out">
+                <button type="button" class="btn btn-sm btn-outline-secondary">Добавить арену</button>
+            </a></p>
+        </div>
 
-    <div class="container">
-        <a href="{{ url_for('arenas.add_arena') }}" class="card-link">
-            <button type="button" class="btn btn-sm btn-outline-secondary">Добавить арену</button>
-        </a>
-        <div class="row">
+        <div class="row justify-content-evenly aos-init aos-animate">
 
             {% for item in arena %}
+
             <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
+                <div class="member" data-aos="fade-up" >
+                    <div class="member-img" style="height: 100%;">
+                        {% if item.imgarena %}
+                        <img src="{{url_for('static', filename=item.imgarena[0]) }}" class="img-fluid" alt="{{ item.name }}" >
+                        <!--                        <img src="{{url_for('static', filename='managers/vesti_1.jpg') }}" class="img-fluid"-->
 
-                    <a href="{{ url_for('arenas.get_item_arena', id=item.id) }}">
-                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                        {% else %}
 
-                             xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false"
-                             role="img" aria-label="Placeholder: Thumbnail">
-
-                            <title>{{ item.name }}</title>
-
-                            <rect width="100%" height="100%" fill="#28a745" fill-opacity="1"/>
-                            <rect width="100%" height="100%" fill="#10421b" fill-opacity="0.5"/>
-
-<!--                            <rect width="100%" height="100%" fill="#55595c" fill-opacity="0.5"/>-->
-                            {% if item.imgarena %}
-                            <image xlink:href="{{ url_for('static', filename=item.imgarena[0]) }}" x="0" y="0"
-                                   width="100%" height="100%"/>
+                        <img src="{{url_for('static', filename='img/hall.jpg') }}" class="img-fluid"
+                             alt="">
+                        {% endif %}
+                        <div class="social">
+                            <!--                            <a href=""><i class="icofont-twitter"></i></a>-->
+                            {% if current_user.has_role('admin') %}
+                            <a href="{{ url_for('arenas.edit_arena', id=item.id) }}"><i
+                                    class="icofont-edit"></i></a>
+                            {% endif %}
+                            {% if item %}
+                            <a href="{{ url_for('arenas.get_item_arena', id=item.id) }}"><i
+                                    class="icofont-eye-open"></i></a>
                             {% endif %}
 
-                            <rect width="100%" height="100%" fill="#1c1c1c" fill-opacity="0.5"/>
-                            <text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ item.name }}</text>
-                        </svg>
-                    </a>
-                    <div class="card-body">
-                        <p class="card-text">{{ item.name }}
-                            {% if item.city %}
-                        <p class="card-text">Город - {{ item.city }}</p>
-                        {% endif %}
-                            {% if item.adres %}
-                        <p class="card-text">Адрес - {{ item.adres }}.</p>
-                        {% endif %}
-                        </p>
-                        <!--                        <p class="card-text">Описание - {{ item.description }}-->
-                        <!--                        </p>-->
-
-                        {% if item.phone_admin %}
-                        <p class="card-text">Тел. Администратора - {{ item.phone_admin }}
-                        </p>
-                        {% endif %}
-                        <!--                        <p class="card-text">Время редактирования - {{ item.edit_city }}.</p>-->
-
-
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <a href="{{ url_for('arenas.get_item_arena', id=item.id) }}" class="card-link">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Посмотреть</button>
-                                </a>
-                                <a href="{{ url_for('arenas.edit_arena', id=item.id) }}" class="card-link">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Редактировать
-                                    </button>
-                                </a>
-                                <a href="{{ url_for('arenas.delete_arena', id=item.id) }}" class="card-link">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Удалить
-                                    </button>
-                                </a>
-                            </div>
-                            <!--                            <small class="text-muted">9 mins</small>-->
+                            <!--                            <a href=""><i class="icofont-linkedin"></i></a>-->
                         </div>
                     </div>
+                    <div class="member-info">
+                        <h4>{{ item.name }}</h4>
+                        <h5>{{ item.city }}</h5>
+
+                    </div>
+
+
+                    <!--                    <a href="{{ url_for('arenas.get_item_arena', id=item.id) }}">-->
+                    <!--                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225"-->
+
+                    <!--                             xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false"-->
+                    <!--                             role="img" aria-label="Placeholder: Thumbnail">-->
+
+                    <!--                            <title>{{ item.name }}</title>-->
+
+                    <!--                            <rect width="100%" height="100%" fill="#28a745" fill-opacity="1"/>-->
+                    <!--                            <rect width="100%" height="100%" fill="#10421b" fill-opacity="0.5"/>-->
+
+                    <!--                            &lt;!&ndash;                            <rect width="100%" height="100%" fill="#55595c" fill-opacity="0.5"/>&ndash;&gt;-->
+                    <!--                            {% if item.imgarena %}-->
+                    <!--                            <image xlink:href="{{ url_for('static', filename=item.imgarena[0]) }}" x="0" y="0"-->
+                    <!--                                   width="100%" height="100%"/>-->
+                    <!--                            {% endif %}-->
+
+                    <!--                            <rect width="100%" height="100%" fill="#1c1c1c" fill-opacity="0.5"/>-->
+                    <!--                            <text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ item.name }}</text>-->
+                    <!--                        </svg>-->
+                    <!--                    </a>-->
+                    <!--                    <div class="card-body">-->
+                    <!--                        <p class="card-text">{{ item.name }}-->
+                    <!--                            {% if item.city %}-->
+                    <!--                        <p class="card-text">Город - {{ item.city }}</p>-->
+                    <!--                        {% endif %}-->
+                    <!--                        {% if item.adres %}-->
+                    <!--                        <p class="card-text">Адрес - {{ item.adres }}.</p>-->
+                    <!--                        {% endif %}-->
+                    <!--                        </p>-->
+                    <!--                        &lt;!&ndash;                        <p class="card-text">Описание - {{ item.description }}&ndash;&gt;-->
+                    <!--                        &lt;!&ndash;                        </p>&ndash;&gt;-->
+
+                    <!--                        {% if item.phone_admin %}-->
+                    <!--                        <p class="card-text">Тел. Администратора - {{ item.phone_admin }}-->
+                    <!--                        </p>-->
+                    <!--                        {% endif %}-->
+                    <!--                        &lt;!&ndash;                        <p class="card-text">Время редактирования - {{ item.edit_city }}.</p>&ndash;&gt;-->
+
+
+                    <!--                        <div class="d-flex justify-content-between align-items-center">-->
+                    <!--                            <div class="btn-group">-->
+                    <!--                                <a href="{{ url_for('arenas.get_item_arena', id=item.id) }}" class="card-link">-->
+                    <!--                                    <button type="button" class="btn btn-sm btn-outline-secondary">Посмотреть</button>-->
+                    <!--                                </a>-->
+                    <!--                                <a href="{{ url_for('arenas.edit_arena', id=item.id) }}" class="card-link">-->
+                    <!--                                    <button type="button" class="btn btn-sm btn-outline-secondary">Редактировать-->
+                    <!--                                    </button>-->
+                    <!--                                </a>-->
+                    <!--                                <a href="{{ url_for('arenas.delete_arena', id=item.id) }}" class="card-link">-->
+                    <!--                                    <button type="button" class="btn btn-sm btn-outline-secondary">Удалить-->
+                    <!--                                    </button>-->
+                    <!--                                </a>-->
+                    <!--                            </div>-->
+                    <!--                            &lt;!&ndash;                            <small class="text-muted">9 mins</small>&ndash;&gt;-->
                 </div>
             </div>
-
             {% endfor %}
-
-
         </div>
-    </div>
-</div>
 
+
+    </div>
+
+
+</section>
 
 {% endblock %}

@@ -2,53 +2,58 @@
 
 
 {% block content %}
+<section id="team" class="team">
 
-<div class="album py-5 bg-light">
+    <div class="container aos-init aos-animate" data-aos="fade-up">
+        <div class="section-title" data-aos="zoom-out">
+            <h2>Города</h2>
+            <!--            <p>Менеджеры</p>-->
+           <p><a href="{{ url_for('citys.add_city') }}" class="card-link">
+                <button type="button" class="btn btn-sm btn-outline-secondary">Добавить</button>
+            </a>
+           </p>
+        </div>
 
-    <div class="container">
-        <a href="{{ url_for('citys.add_city') }}" class="card-link">
-            <button type="button" class="btn btn-sm btn-outline-secondary">Добавить город</button>
-        </a>
-        <div class="row">
+<!--        <a href="{{ url_for('citys.add_city') }}" class="card-link">-->
+<!--            <button type="button" class="btn btn-sm btn-outline-secondary">Добавить город</button>-->
+<!--        </a>-->
+        <div class="row justify-content-evenly aos-init aos-animate">
 
             {% for item in citys %}
-            <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
-                    <a href="{{ url_for('citys.get_city_arena', id=item.id) }}">
-                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                             xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false"
-                             role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title>
-                            <rect width="100%" height="100%" fill="#55595c"/>
-                            <text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ item.name }}</text>
-                        </svg>
-                    </a>
-                    <div class="card-body">
-                        <p class="card-text">Арена -
-                            {% for d in item.arena %}
-                            {{ d }}.
+            <div class="col-md-3">
+                <div class="member" data-aos="fade-up">
+                     <div class="member-img">
+                        {% if item.managerphoto %}
+                        <img src="{{url_for('static', filename=item.managerphoto[0]) }}" class="img-fluid" alt="">
+                        <!--                        <img src="{{url_for('static', filename='managers/vesti_1.jpg') }}" class="img-fluid"-->
 
-                            {% endfor %}
-                        </p>
-                        <!--                        <p class="card-text">Время редактирования - {{ item.edit_city }}.</p>-->
+                        {% else %}
 
+                        <img src="{{url_for('static', filename='img/city.png') }}" class="img-fluid"
+                             alt="">
+                        {% endif %}
+                        <div class="social">
+                            <!--                            <a href=""><i class="icofont-twitter"></i></a>-->
+                            {% if current_user.has_role('admin') %}
+                            <a href="{{ url_for('citys.edit_city', id=item.id) }}"><i
+                                    class="icofont-edit"></i></a>
+                            {% endif %}
+                            {% if item.arena %}
+                            <a href="{{ url_for('citys.get_city_arena', id=item.id) }}"><i
+                                    class="icofont-eye-open"></i></a>
+                            {% endif %}
 
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <a href="{{ url_for('citys.get_city_arena', id=item.id) }}" class="card-link">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Посмотреть</button>
-                                </a>
-                                <a href="{{ url_for('citys.edit_city', id=item.id) }}" class="card-link">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Редактировать
-                                    </button>
-                                </a>
-                                <a href="{{ url_for('citys.delete_city', id=item.id) }}" class="card-link">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Удалить
-                                    </button>
-                                </a>
-                            </div>
-                            <!--                            <small class="text-muted">9 mins</small>-->
+                            <!--                            <a href=""><i class="icofont-linkedin"></i></a>-->
                         </div>
                     </div>
+                    <div class="member-info">
+                        <h4>{{ item.name }}</h4>
+
+                    </div>
+
+
+
+
                 </div>
             </div>
 
@@ -57,7 +62,7 @@
 
         </div>
     </div>
-</div>
 
+</section>
 
 {% endblock %}

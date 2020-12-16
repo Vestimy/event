@@ -110,6 +110,11 @@ class ArtistForm(Form):
 class ManagerForm(Form):
     name = StringField('ФИО')
     phone = StringField('Телефон')
+    address = StringField('Адрес')
+    birthday = DateField('День рождения')
+    facebook = StringField('Facebook')
+    instagram = StringField('Instagram')
+
 
     submit = SubmitField('Сохранить')
 
@@ -121,3 +126,4 @@ class RegisterForm(Form):
 
 class UploadForm(Form):
     file = FileField('Выбирите изображение')
+    save = SubmitField('Сохранить')

@@ -3,81 +3,70 @@
 
 {% block content %}
 
-<div class="album py-5 bg-light">
+<section id="team" class="team">
+    <div class="container aos-init aos-animate" data-aos="fade-up">
 
-    <div class="container">
-        <a href="{{ url_for('managers.add_manager') }}" class="card-link">
-            <button type="button" class="btn btn-sm btn-outline-secondary">Добавить менеджер</button>
-        </a>
-        <div class="row">
+        <div class="section-title" data-aos="zoom-out">
+            <h2>Менеджеры</h2>
+            <!--            <p>Менеджеры</p>-->
+        </div>
 
+
+        <div class="row aos-init aos-animate">
             {% for item in managers %}
-            <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
+            <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+                <div class="member" data-aos="fade-up">
+                    <div class="member-img">
+                        {% if item.photo %}
+                        <img src="{{url_for('static', filename=item.photo) }}" class="img-fluid" alt="">
+                        <!--                        <img src="{{url_for('static', filename='managers/vesti_1.jpg') }}" class="img-fluid"-->
 
-                    <a href="{{ url_for('managers.get_item_manager', id=item.id) }}">
-                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                        {% else %}
 
-                             xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false"
-                             role="img" aria-label="Placeholder: Thumbnail">
+                        <img src="{{url_for('static', filename='assets/img/team/portfolio.jpeg') }}" class="img-fluid"
+                             alt="">
+                        {% endif %}
+                        <div class="social">
+                            <!--                            <a href=""><i class="icofont-twitter"></i></a>-->
+                            {% if current_user.has_role('admin') %}
 
-                            <title>{{ item.name }}</title>
-
-
-                            <rect width="100%" height="100%" fill="#55595c"/>
-                            {% if item.imgarena %}
-                            <image xlink:href="{{ url_for('static', filename=item.imgarena[0]) }}" x="0" y="0"
-                                   width="100%" height="100%"/>
+                            <a href="{{ url_for('managers.edit_manager', id=item.id) }}"><i
+                                    class="icofont-edit"></i></a>
+                            {% endif %}
+                            {% if item.event %}
+                            <a href="{{ url_for('managers.get_item_manager', id=item.id) }}"><i
+                                    class="icofont-eye-open"></i></a>
+                            {% endif %}
+                            {% if item.facebook %}
+                            <a href="{{ item.facebook }}"><i class="icofont-facebook"></i></a>
+                            {% endif %}
+                            {% if item.instagram %}
+                            <a href="{{ item.instagram }}"><i class="icofont-instagram"></i></a>
+                            {% endif %}
+                             {% if current_user.has_role('admin') %}
+                            <a href="{{ url_for('managers.delete_manager', id=item.id) }}"><i
+                                    class="icofont-ui-delete"></i></a>
                             {% endif %}
 
-                            <text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ item.name }}</text>
-                        </svg>
-                    </a>
-                    <div class="card-body">
-                        <p class="card-text">{{ item.name }}
-                            {% if item.phone %}
-                        <p class="card-text">Тел. {{ item.phone }}</p>
-                        {% endif %}
-                        {% if item.adres %}
-                        <p class="card-text">Адрес - {{ item.adres }}.</p>
-                        {% endif %}
-                        </p>
-                        <!--                        <p class="card-text">Описание - {{ item.description }}-->
-                        <!--                        </p>-->
-
-                        {% if item.phone_admin %}
-                        <p class="card-text">Тел. Администратора - {{ item.phone_admin }}
-                        </p>
-                        {% endif %}
-                        <!--                        <p class="card-text">Время редактирования - {{ item.edit_city }}.</p>-->
-
-
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <a href="{{ url_for('managers.get_item_manager', id=item.id) }}" class="card-link">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Посмотреть</button>
-                                </a>
-                                <a href="{{ url_for('managers.edit_manager', id=item.id) }}" class="card-link">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Редактировать
-                                    </button>
-                                </a>
-                                <a href="{{ url_for('managers.delete_manager', id=item.id) }}" class="card-link">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Удалить
-                                    </button>
-                                </a>
-                            </div>
-                            <!--                            <small class="text-muted">9 mins</small>-->
+                            <!--                            <a href=""><i class="icofont-linkedin"></i></a>-->
                         </div>
+                    </div>
+                    <div class="member-info">
+                        <h4>{{ item.name }}</h4>
+<!--                        <span>Chief Executive Officer</span>-->
+                        {% if item.phone %}
+                        <span class="icofont-mobile-phone">{{ item.phone }}</span>
+                        {% endif %}
                     </div>
                 </div>
             </div>
-
             {% endfor %}
 
-
         </div>
+
+
     </div>
-</div>
+</section><!-- End Team Section -->
 
 
 {% endblock %}

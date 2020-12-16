@@ -98,6 +98,7 @@ admin.add_view(AdminView(ImgArena, db.session))
 admin.add_view(AdminView(PhotoArtist, db.session))
 admin.add_view(AdminView(EquipmentCategory, db.session))
 admin.add_view(AdminView(Equipment, db.session))
+admin.add_view(AdminView(ManagerPhoto, db.session))
 
 admin.add_view(AdminView(User, db.session))
 admin.add_view(AdminView(Role, db.session))

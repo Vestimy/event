@@ -8,3 +8,13 @@ test.txt
 test_db.py
 test_py.py
 __pycache__/*
+event/__pycache__/*
+event/views/arena/__pycache__/
+event/views/artist/__pycache__/
+event/views/city/__pycache__/
+event/views/event/__pycache__/
+event/views/login/__pycache__/
+event/views/main/__pycache__/
+event/views/manager/__pycache__/
+event/views/tour/__pycache__/
+migrations/versions/__pycache__/
