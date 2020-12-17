@@ -104,6 +104,6 @@ yandex==0.0.2
 
 # vim: syntax=apache ts=4 sw=4 sts=4 sr noet
 
-
+ href="{{ url_for('security.login')}}"
 
 {{ url_for('managers.delete_manager', id=item.id) }}
