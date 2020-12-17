@@ -28,6 +28,7 @@ def allowed_file(filename):
 
 
 @managers.route('/manager/', methods=['GET'])
+@login_required
 def get_list_manager():
     try:
         manager = Manager.query.order_by('name').all()
