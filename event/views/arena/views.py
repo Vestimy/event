@@ -6,6 +6,7 @@ from event.models import *
 # from flask_jwt_extended import jwt_required, get_jwt_identity
 # from blog.base_view import BaseView
 # from blog.utils import upload_file
+from flask_security import login_required, roles_required, current_user, login_user
 import os
 from flask import flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
@@ -25,27 +26,52 @@ def allowed_file(filename):
 
 
 
-@arenas.route('/arena/', methods=['GET'])
+@arenas.route('/arena', methods=['GET'])
+@login_required
 def get_list_arena():
     arena = Arena.query.order_by('name').all()
-    return render_template('arena/get_list_arena.html', menu='arenas', arena=arena)
+    typehall = TypeHall.query.order_by('name').all()
+    if request.args.get('id'):
+        id = None
+        try:
+            id = int(request.args.get('id'))
+        except Exception as e:
+            logger.warning(
+            f'arenas -  action failed with errors: {e}'
+        )
+        if isinstance(id, int):
+            arena = Arena.query.filter(Arena.typehall_id == id).order_by('name').all()
+    return render_template('arena/get_list_arena.html', menu='arenas',typehall=typehall, arena=arena)
+
 @arenas.route('/arena/<int:id>', methods=['GET'])
+@login_required
 def get_item_arena(id):
     arena = Arena.query.get(id)
     return render_template('arena/item_arena.html', menu='arenas', item=arena)
 
 
 @arenas.route('/arena/add', methods=['GET', 'POST'])
+@login_required
 def add_arena():
     form = ArenaForm()
     # form.city_id.choices = ArenaForm.city_choices()
-    form.city_id.choices = [(g.id, g.name) for g in City.query.order_by('name')]
+    # form.city_id.choices = [(g.id, g.name) for g in City.query.order_by('name')]
     if request.method == 'POST':
 
-        # print(request.form)
+
         arena = Arena(name=request.form['name'],
                       description=request.form['description'],
-                      city_id=request.form['city_id']
+                      city_id=request.form['city_id'],
+                      typehall_id=request.form['typehall_id'],
+                      address=request.form['address'],
+                      phone_admin=request.form['phone_admin'],
+                      number_of_seats=request.form['number_of_seats'],
+                      hall_size=request.form['hall_size'],
+                      razgruzka=request.form['razgruzka'],
+                      sound=request.form['sound'],
+                      phone_sound=request.form['phone_sound'],
+                      light=request.form['light'],
+                      phone_light=request.form['phone_light']
                       )
 
         try:
@@ -54,6 +80,9 @@ def add_arena():
 
         except Exception as e:
             db.session.rollback()
+            logger.warning(
+            f'arenas - whrite action failed with errors: {e}'
+        )
 
         return redirect(url_for('arenas.get_list_arena'))
 
@@ -61,6 +90,7 @@ def add_arena():
 
 
 @arenas.route('/arena/delete/<int:id>', methods=['GET'])
+@roles_required('admin')
 def delete_arena(id):
     arena = Arena.query.get(id)
     db.session.delete(arena)
@@ -71,6 +101,8 @@ def delete_arena(id):
 
 
 @arenas.route('/arena/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+@roles_required('admin')
 def edit_arena(id):
     arena = Arena.query.get(id)
     form = ArenaForm(request.form, obj=arena)
@@ -88,6 +120,7 @@ def edit_arena(id):
 
 
 @arenas.route('/arena/img_add', methods=['GET','POST'])
+@login_required
 def arena_img_upload():
     if request.method == 'POST':
         # check if the post request has the file part

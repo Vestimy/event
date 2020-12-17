@@ -1,3 +1,12 @@
 2020-11-08 12:48:25,610:blog:WARNING:Invalid input params: {'json': {'description': ['Missing data for required field.'], 'name': ['Missing data for required field.']}}
 2020-11-08 12:48:30,212:blog:WARNING:Invalid input params: {'json': {'description': ['Missing data for required field.'], 'name': ['Missing data for required field.']}}
 2020-12-16 21:09:43,534:event:WARNING:managers - read action failed with errors: name 'desc' is not defined
+2020-12-17 20:10:57,249:event:WARNING:arenas - whrite action failed with errors: (pymysql.err.IntegrityError) (1452, 'Cannot add or update a child row: a foreign key constraint fails (`mydb`.`arena`, CONSTRAINT `arena_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `city` (`id`))')
+[SQL: INSERT INTO arena (name, description, typehall_id, adres, phone_admin, number_of_seats, hall_size, razgruzka, sound, phone_sound, light, phone_light, city_id, edit_arena, created_arena) VALUES (%(name)s, %(description)s, %(typehall_id)s, %(adres)s, %(phone_admin)s, %(number_of_seats)s, %(hall_size)s, %(razgruzka)s, %(sound)s, %(phone_sound)s, %(light)s, %(phone_light)s, %(city_id)s, %(edit_arena)s, %(created_arena)s)]
+[parameters: {'name': 'vfdve', 'description': 'erefew', 'typehall_id': None, 'adres': None, 'phone_admin': None, 'number_of_seats': None, 'hall_size': None, 'razgruzka': None, 'sound': None, 'phone_sound': None, 'light': None, 'phone_light': None, 'city_id': '0', 'edit_arena': datetime.datetime(2020, 12, 17, 17, 10, 57, 243237), 'created_arena': datetime.datetime(2020, 12, 17, 17, 10, 57, 243251)}]
+(Background on this error at: http://sqlalche.me/e/13/gkpj)
+2020-12-17 22:20:08,229:event:WARNING:arenas -  action failed with errors: invalid literal for int() with base 10: 'sadsa'
+2020-12-17 22:20:18,269:event:WARNING:arenas -  action failed with errors: invalid literal for int() with base 10: 'sad'
+2020-12-17 22:20:54,212:event:WARNING:arenas -  action failed with errors: invalid literal for int() with base 10: 'sad'
+2020-12-17 22:20:58,781:event:WARNING:arenas -  action failed with errors: invalid literal for int() with base 10: 'asda'
+2020-12-17 22:21:02,775:event:WARNING:arenas -  action failed with errors: invalid literal for int() with base 10: 'ewfewfewwfef'

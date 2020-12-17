@@ -113,8 +113,12 @@ class Arena(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(500))
+    city_id = db.Column(Integer, ForeignKey('city.id'))
+    city = relationship("City", back_populates="arena")
+    typehall_id = db.Column(Integer, ForeignKey('typehall.id'))
+    typehall = relationship("TypeHall", back_populates="arena")
     # city = relationship('City', secondary=arena_city, back_populates='arena', lazy=True)
-    adres = db.Column(db.String(255))
+    address = db.Column(db.String(255))
     phone_admin = db.Column(db.String(255))
     number_of_seats = db.Column(db.Integer)
     hall_size = db.Column(db.String(255), nullable=True)
@@ -123,11 +127,9 @@ class Arena(db.Model):
     phone_sound = db.Column(db.String(255))
     light = db.Column(db.String(255))
     phone_light = db.Column(db.String(255))
-    imgarena = relationship("ImgArena", back_populates="arena")
 
+    imgarena = relationship("ImgArena", back_populates="arena")
     event = relationship('Event', back_populates='arena')
-    city_id = db.Column(Integer, ForeignKey('city.id'))
-    city = relationship("City", back_populates="arena")
     edit_arena = db.Column(db.DateTime, onupdate=time_now)
     created_arena = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -135,6 +137,16 @@ class Arena(db.Model):
         self.name = kwargs.get('name')
         self.description = kwargs.get('description')
         self.city_id = kwargs.get('city_id')
+        self.typehall_id = kwargs.get('typehall_id')
+        self.address = kwargs.get('address')
+        self.phone_admin = kwargs.get('phone_admin')
+        self.number_of_seats = kwargs.get('number_of_seats')
+        self.hall_size = kwargs.get('hall_size')
+        self.razgruzka = kwargs.get('razgruzka')
+        self.sound = kwargs.get('sound')
+        self.phone_sound = kwargs.get('phone_sound')
+        self.light = kwargs.get('light')
+        self.phone_light = kwargs.get('phone_light')
         self.edit_arena = datetime.utcnow()
         self.created_arena = self.created_arena_time()
 
@@ -142,6 +154,17 @@ class Arena(db.Model):
         if self.created_arena is None:
             return datetime.utcnow()
 
+    def __repr__(self):
+        return self.name
+
+
+class TypeHall(db.Model):
+    __tablename__ = "typehall"
+    id = db.Column(Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.String(500))
+    # arena_id = db.Column(Integer, ForeignKey('typehall.id'))
+    arena = relationship("Arena", back_populates="typehall")
     def __repr__(self):
         return self.name
 

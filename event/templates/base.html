@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/eventCalendar_theme_responsive.css') }}">
     <!--        <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/aos/aos.css') }}">-->
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
-<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css"/>
     <link href="{{ url_for('static', filename='assets/vendor/icofont/icofont.min.css') }}" rel="stylesheet">
     <script
             src="https://code.jquery.com/jquery-3.4.1.min.js"
@@ -48,6 +48,7 @@
           font-size: 3.5rem;
         }
       }
+
 
 
 
@@ -89,14 +90,17 @@
                 <a class="nav-link {% if menu == 'artists' %} active {% endif %}"
                    href="{{ url_for('artists.get_artist')}}">Артист</a>
             </li>
+            {% if current_user.has_role('users') or current_user.has_role('admin') %}
             <li class="nav-item">
                 <a class="nav-link {% if menu == 'arenas' %} active {% endif %}"
                    href="{{ url_for('arenas.get_list_arena')}}">Арены</a>
             </li>
+            {% endif %}
+            {% if current_user.has_role('users') or current_user.has_role('admin') %}
             <li class="nav-item">
                 <a class="nav-link {% if menu == 'citys' %} active {% endif %}" href="{{ url_for('citys.get_city')}}">Города</a>
             </li>
-
+            {% endif %}
             {% if current_user.has_role('users') or current_user.has_role('admin') %}
             <li class="nav-item">
                 <a class="nav-link {% if menu == 'managers' %} active {% endif %}"
@@ -118,7 +122,7 @@
 
             <li class="nav-item my-2 mr-sm-2">
                 <a class="btn btn-outline-primary {% if menu == 'None' %} active {% endif %}"
-                   href="{{ url_for('security.login')}}" >Войти</a>
+                   href="{{ url_for('security.login')}}">Войти</a>
             </li>
         </div>
         <form class="form-inline my-2 my-lg-0">
@@ -128,23 +132,23 @@
     </div>
 
 
-        <div class="hero-head">
-            <nav class="navbar">
-                <div class="container">
+    <div class="hero-head">
+        <nav class="navbar">
+            <div class="container">
 
-                    <div id="navbarMenuHeroA" class="navbar-menu">
-                        <div class="navbar-end">
-                            <a href="{{ url_for('security.login') }}" class="navbar-item">
-                                Login
-                            </a>
-                            <a href="{{ url_for('security.logout')}}" class="navbar-item">
-                                Logout
-                            </a>
-                        </div>
+                <div id="navbarMenuHeroA" class="navbar-menu">
+                    <div class="navbar-end">
+                        <a href="{{ url_for('security.login') }}" class="navbar-item">
+                            Login
+                        </a>
+                        <a href="{{ url_for('security.logout')}}" class="navbar-item">
+                            Logout
+                        </a>
                     </div>
                 </div>
-            </nav>
-        </div>
+            </div>
+        </nav>
+    </div>
 
 </nav>
 {% endblock %}
@@ -157,9 +161,9 @@
 </main>
 <footer class="text-muted">
     <div class="container">
-<!--        <p class="float-right">-->
-<!--            <a href="#">Back to top</a>-->
-<!--        </p>-->
+        <!--        <p class="float-right">-->
+        <!--            <a href="#">Back to top</a>-->
+        <!--        </p>-->
         <p>touremanager.ru &copy; Для прокатных компаний!</p>
         <p>New to Bootstrap? <a href="https://getbootstrap.com/">Visit the homepage</a> or read our <a
                 href="../getting-started/introduction/">getting started guide</a>.</p>
@@ -194,8 +198,9 @@
 <script src="{{ url_for('static', filename = 'assets/vendor/owl.carousel/owl.carousel.min.js') }}"></script>
 
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-  <script>
+<script>
     AOS.init();
-  </script>
+
+</script>
 </body>
 </html>

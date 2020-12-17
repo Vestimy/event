@@ -16,11 +16,14 @@
                         <p> {{ form.description.label }}
                             {{ form.description(class ="form-control") }}
                         </p>
-                        <p> {{ form.adres.label }}
-                            {{ form.adres(class ="form-control") }}
-                        </p>
                         <p> {{ form.city_id.label }}
                             {{ form.city_id(class ="form-control") }}
+                        </p>
+                        <p> {{ form.typehall_id.label }}
+                            {{ form.typehall_id(class ="form-control") }}
+                        </p>
+                        <p> {{ form.address.label }}
+                            {{ form.address(class ="form-control") }}
                         </p>
                         <p> {{ form.phone_admin.label }}
                             {{ form.phone_admin(class ="form-control") }}
@@ -45,9 +48,6 @@
                         </p>
                         <p> {{ form.phone_light.label }}
                             {{ form.phone_light(class ="form-control") }}
-                        </p>
-                        <p> {{ form.city_id.label }}
-                            {{ form.city_id(class ="form-control") }}
                         </p>
                         <p>{{ form.submit(class="btn btn-primary mb-2") }}</p>
                     </form>

@@ -72,25 +72,45 @@ class CityForm(Form):
 
 
 class ArenaForm(Form):
-    name = StringField('Арена')
+    name = StringField('Название')
     description = StringField('Описание')
-    adres = StringField('Адрес')
+    city_id = SelectField('Город', validate_choice=False)
+    typehall_id = SelectField('Тип площадки', validate_choice=False)
+    address = StringField('Адрес')
     phone_admin = StringField('Тел. Администратора')
     number_of_seats = IntegerField('Количество мест')
-    hall_size = StringField('Размер зала')
+    hall_size = StringField('Размеры зала')
     razgruzka = StringField('Разгрузка')
     sound = StringField('Местный звук')
-    phone_sound = StringField('Тел. Звукорежиссер')
+    phone_sound = StringField('Тел. Звукорежиссера')
     light = StringField('Местный свет')
-
     phone_light = StringField('Тел. Свет')
 
-    city_id = SelectField('Город', validate_choice=False)
     submit = SubmitField('Сохранить')
 
-    @classmethod
-    def city_choices(cls):
-        return [(g.id, g.name) for g in City.query.order_by('name')]
+    # @classmethod
+    # def city_choices(cls):
+    #     return [(g.id, g.name) for g in City.query.order_by('name')]
+    # @classmethod
+    # def typehall_choices(cls):
+    #     return [(g.id, g.name) for g in TypeHall.query.order_by('name')]
+
+    def __init__(self, *args, **kwargs):
+        super(ArenaForm, self).__init__(*args, **kwargs)
+        self.city_id.choices = [(g.id, g.name) for g in City.query.order_by('name')]
+        self.city_id.choices.insert(0, (0, u"Не выбран"))
+
+        self.typehall_id.choices = [(g.id, g.name) for g in TypeHall.query.order_by('name')]
+        self.typehall_id.choices.insert(0, (0, u"Не выбран"))
+        # self.city_id.choices = \
+        #     [(g.id, u"%s" % g.name) for g in City.query.order_by('name')]
+        # #  выбранное поле по умолчанию
+        # self.city_id.choices.insert(0, (0, u"Не выбрана"))
+        #
+        # # self.arena_id.choices = list()
+        # self.arena_id.choices = [(g.id, u"%s" % g.name) for g in Arena.query.order_by('name')]
+        # #  выбранное поле по умолчанию
+        # self.arena_id.choices.insert(0, (0, u"Не выбрана"))
 
 
 class ArtistForm(Form):
@@ -115,14 +135,15 @@ class ManagerForm(Form):
     facebook = StringField('Facebook')
     instagram = StringField('Instagram')
 
-
     submit = SubmitField('Сохранить')
+
 
 class RegisterForm(Form):
     name = StringField('Имя')
-    email = StringField('Email',validators=[DataRequired(), Email()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Парлоь')
     submit = SubmitField('Зарегестрироваться')
+
 
 class UploadForm(Form):
     file = FileField('Выбирите изображение')
