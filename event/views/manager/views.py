@@ -34,7 +34,7 @@ def get_list_manager():
         manager = Manager.query.order_by('name').all()
     except Exception as e:
         logger.warning(
-            f'managers - read action failed with errors: {e}'
+            f'managers - reads action failed with errors: {e}'
         )
     return render_template('manager/get_manager.html', menu='managers', managers=manager)
 
