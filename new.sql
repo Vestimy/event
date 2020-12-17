@@ -34,7 +34,7 @@ CREATE TABLE `alembic_version` (
 
 LOCK TABLES `alembic_version` WRITE;
 /*!40000 ALTER TABLE `alembic_version` DISABLE KEYS */;
-INSERT INTO `alembic_version` VALUES ('20c5d8979481');
+INSERT INTO `alembic_version` VALUES ('74c653238174');
 /*!40000 ALTER TABLE `alembic_version` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -52,7 +52,6 @@ CREATE TABLE `arena` (
   `edit_arena` datetime DEFAULT NULL,
   `created_arena` datetime DEFAULT NULL,
   `city_id` int DEFAULT NULL,
-  `adres` varchar(255) DEFAULT NULL,
   `hall_size` varchar(255) DEFAULT NULL,
   `light` varchar(255) DEFAULT NULL,
   `number_of_seats` int DEFAULT NULL,
@@ -61,10 +60,14 @@ CREATE TABLE `arena` (
   `phone_light` varchar(255) DEFAULT NULL,
   `phone_sound` varchar(255) DEFAULT NULL,
   `razgruzka` varchar(255) DEFAULT NULL,
+  `typehall_id` int DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `city_id` (`city_id`),
-  CONSTRAINT `arena_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `city` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
+  KEY `typehall_id` (`typehall_id`),
+  CONSTRAINT `arena_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `city` (`id`),
+  CONSTRAINT `arena_ibfk_2` FOREIGN KEY (`typehall_id`) REFERENCES `typehall` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,7 +76,7 @@ CREATE TABLE `arena` (
 
 LOCK TABLES `arena` WRITE;
 /*!40000 ALTER TABLE `arena` DISABLE KEYS */;
-INSERT INTO `arena` VALUES (1,'БКЗ. Большой Концертынй Зал','','2020-11-16 19:42:41',NULL,14,'Лиговский пр., 6, Санкт-Петербург, 191036','','',3727,'Meyer Sound Milo',' 8 (812) 275-13-00','','',''),(2,'ВКЗ. Воронежский концертный зал','','2020-11-15 18:42:54',NULL,12,'Воронеж, ул. Театральная, 17','','',782,'','+7 (473) 254-56-66','','',''),(3,'Крокус',NULL,'2020-11-13 23:57:11',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(4,'Театр золотое кольцо',NULL,'2020-11-13 23:57:22',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(5,'EventHall','Площадка в торговом центре','2020-11-23 19:45:21',NULL,12,'Сити-парк \"Град\", Парковая ул., 3, Солнечный, Воронежская обл., 396005','','ClayPaky',5000,'Meyer Sound Mica','8 (473) 228-02-01','','',''),(6,'Тинькофф Арена',NULL,'2020-11-13 23:57:48',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(8,'Барвиха','В барвихенском dрайоне','2020-11-15 21:24:12',NULL,13,'','','',NULL,'','','','',''),(14,'КЗ Губернский','','2020-11-14 20:24:29','2020-11-14 20:24:29',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(25,'ДК Яуза',NULL,NULL,'2020-11-20 19:57:37',27,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(26,'ДК Салют',NULL,NULL,'2020-11-20 20:06:20',13,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(27,'АЗЛК',NULL,NULL,'2020-11-20 20:07:44',13,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(28,'КДЦ Сатурн',NULL,NULL,'2020-11-20 20:07:58',30,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(29,'ДК Металлист',NULL,NULL,'2020-11-20 20:32:57',33,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(30,'КДЦ Губернский',NULL,NULL,'2020-11-20 20:33:19',34,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(31,'Театр Оперы и Балета РК',NULL,NULL,'2020-11-20 20:33:54',35,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(32,'Вятская Филармония',NULL,NULL,'2020-11-20 20:34:16',36,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(33,'Бекстейдж',NULL,NULL,'2020-11-20 20:34:38',13,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(34,'ДК Якова Ухсая',NULL,NULL,'2020-11-20 20:35:06',38,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(35,'ДК ХХХ-летия Победы',NULL,NULL,'2020-11-20 20:35:33',39,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(36,'КЗ Сары Садыковой',NULL,NULL,'2020-11-20 20:35:50',40,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(37,'ОДК Пролетарка',NULL,NULL,'2020-11-20 20:36:18',33,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(38,'ДК Гагарина',NULL,NULL,'2020-11-20 20:36:38',42,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(39,'КЦ Зеленоград',NULL,NULL,'2020-11-20 20:36:59',24,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(40,'ДК Мир',NULL,NULL,'2020-11-20 20:37:17',43,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(41,'ДК Калинина',NULL,NULL,'2020-11-20 20:37:35',44,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(42,'ДС Звездный',NULL,NULL,'2020-11-20 20:38:17',46,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(43,'ДИ Нефтяник',NULL,NULL,'2020-11-20 20:38:38',48,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(44,'Дворец Искуств',NULL,NULL,'2020-11-20 20:38:56',49,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `arena` VALUES (1,'БКЗ. Большой Концертынй Зал',NULL,'2020-12-17 17:00:23',NULL,14,NULL,NULL,3727,'Meyer Sound Milo',' 8 (812) 275-13-00',NULL,NULL,NULL,7,NULL),(2,'ВКЗ. Воронежский концертный зал',NULL,'2020-12-17 17:00:30',NULL,12,NULL,NULL,782,NULL,'+7 (473) 254-56-66',NULL,NULL,NULL,7,NULL),(3,'Крокус',NULL,'2020-11-13 23:57:11',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(4,'Театр золотое кольцо',NULL,'2020-12-17 17:00:48',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,6,NULL),(5,'EventHall','Площадка в торговом центре','2020-12-17 17:00:57',NULL,12,NULL,'ClayPaky',5000,'Meyer Sound Mica','8 (473) 228-02-01',NULL,NULL,NULL,7,NULL),(6,'Тинькофф Арена',NULL,'2020-11-13 23:57:48',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(8,'Барвиха','В барвихенском dрайоне','2020-12-17 17:01:12',NULL,13,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL),(14,'КЗ Губернский','','2020-11-14 20:24:29','2020-11-14 20:24:29',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(25,'ДК Яуза',NULL,NULL,'2020-11-20 19:57:37',27,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(26,'ДК Салют',NULL,NULL,'2020-11-20 20:06:20',13,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(27,'АЗЛК',NULL,NULL,'2020-11-20 20:07:44',13,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(28,'КДЦ Сатурн',NULL,NULL,'2020-11-20 20:07:58',30,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(29,'ДК Металлист',NULL,NULL,'2020-11-20 20:32:57',33,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(30,'КДЦ Губернский',NULL,NULL,'2020-11-20 20:33:19',34,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(31,'Театр Оперы и Балета РК',NULL,NULL,'2020-11-20 20:33:54',35,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(32,'Вятская Филармония',NULL,NULL,'2020-11-20 20:34:16',36,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(33,'Бекстейдж','','2020-12-17 19:23:48','2020-11-20 20:34:38',13,'','',NULL,'','','','','',8,''),(34,'ДК Якова Ухсая',NULL,NULL,'2020-11-20 20:35:06',38,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(35,'ДК ХХХ-летия Победы',NULL,NULL,'2020-11-20 20:35:33',39,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(36,'КЗ Сары Садыковой',NULL,NULL,'2020-11-20 20:35:50',40,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(37,'ОДК Пролетарка',NULL,NULL,'2020-11-20 20:36:18',33,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(38,'ДК Гагарина',NULL,NULL,'2020-11-20 20:36:38',42,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(39,'КЦ Зеленоград',NULL,NULL,'2020-11-20 20:36:59',24,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(40,'ДК Мир',NULL,NULL,'2020-11-20 20:37:17',43,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(41,'ДК Калинина','','2020-12-17 19:11:30','2020-11-20 20:37:35',44,'','',NULL,'','','','','',2,''),(42,'ДС Звездный',NULL,NULL,'2020-11-20 20:38:17',46,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(43,'ДИ Нефтяник','','2020-12-17 19:11:19','2020-11-20 20:38:38',48,'','',NULL,'','','','','',2,''),(44,'Дворец Искуств',NULL,NULL,'2020-11-20 20:38:56',49,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `arena` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -338,7 +341,7 @@ CREATE TABLE `manager` (
   `instagram` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -421,7 +424,7 @@ CREATE TABLE `roles` (
   `name` varchar(250) NOT NULL,
   `description` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -430,7 +433,7 @@ CREATE TABLE `roles` (
 
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` VALUES (1,'admin','Администратор'),(2,'users','users');
+INSERT INTO `roles` VALUES (1,'admin','Администратор'),(2,'users','users'),(3,'edit','Edit');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -459,6 +462,31 @@ LOCK TABLES `tour` WRITE;
 /*!40000 ALTER TABLE `tour` DISABLE KEYS */;
 INSERT INTO `tour` VALUES (1,'Ноябрский тур',NULL,NULL),(2,'Королев',NULL,NULL),(3,'Сумишевский',NULL,NULL),(14,'qeqweqeqw',NULL,NULL),(15,'123214',NULL,NULL);
 /*!40000 ALTER TABLE `tour` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `typehall`
+--
+
+DROP TABLE IF EXISTS `typehall`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `typehall` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `description` varchar(500) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `typehall`
+--
+
+LOCK TABLES `typehall` WRITE;
+/*!40000 ALTER TABLE `typehall` DISABLE KEYS */;
+INSERT INTO `typehall` VALUES (1,'Клубы',NULL),(2,'Дом культуры',NULL),(3,'уличные площадки',NULL),(4,'Цирк',NULL),(5,'Филармония',NULL),(6,'Театр',NULL),(7,'Концертный зал',NULL),(8,'Ресторан',NULL);
+/*!40000 ALTER TABLE `typehall` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -499,4 +527,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-16 23:53:45
+-- Dump completed on 2020-12-17 22:45:48
