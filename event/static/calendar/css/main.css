@@ -1118,7 +1118,7 @@ A VERTICAL event
     flex-shrink: 0; /* allows text to expand how it normally would, regardless of constrained width */
   }
 .fc-direction-ltr .fc-timegrid-slot-label-frame {
-    text-align: right;
+    text-align: center;
   }
 .fc-direction-rtl .fc-timegrid-slot-label-frame {
     text-align: left;
