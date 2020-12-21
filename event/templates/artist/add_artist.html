@@ -4,11 +4,12 @@
 <div class="album py-5 bg-light">
     <div class="container">
         <div class="row">
-
+{% from "_macros_form.html" import render_field_with_errors, render_field %}
+            {% include "_messages_form.html" %}
             <div class="form-group">
                 <form action="" method="post" novalidate>
                     <p> {{ form.name.label(class='control-label') }}
-                        {{ form.name(class ="form-control") }}
+                        {{ form.name(class="form-control") }}
                     </p>
                     <p>
                         {{ form.administrator.label }}

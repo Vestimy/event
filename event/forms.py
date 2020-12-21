@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import Form, StringField, SelectMultipleField, MultipleFileField, SubmitField, TextAreaField, \
     PasswordField, SelectField, DateField, DateTimeField, IntegerField, validators, TimeField, FileField
-from wtforms.validators import DataRequired, Email
+from wtforms.validators import DataRequired, Email, InputRequired, ValidationError
 from event.models import *
 from flask_admin.form import widgets
 from flask_admin.form.widgets import DateTimePickerWidget
@@ -122,7 +122,7 @@ class ArenaForm(Form):
 
 
 class ArtistForm(Form):
-    name = StringField('Артист')
+    name = StringField('Артист', validators=[])
     administrator = StringField('Администратор')
     phone_administrator = StringField('Тел. Администратора')
     sound_engineer = StringField('Звукорежиссер')
@@ -133,6 +133,12 @@ class ArtistForm(Form):
     phone_light = IntegerField('Тел. Световика')
 
     submit = SubmitField('Сохранить')
+
+    def validate_name(self, field):
+        print("Попадает сюда")
+        if Artist.query.filter(name=field.data).first():
+            print("lsfkelwkfewlfkewlfk;welkf")
+            raise ValidationError(u'Login уже занят')
 
 
 class ManagerForm(Form):

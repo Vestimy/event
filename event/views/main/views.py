@@ -35,9 +35,14 @@ def get_calendar():
     list_json = []
     for item in event:
         # print(type(item.date_event.strftime("%Y-%m-%d ")))
+        if item.time_event:
+            start = item.date_event.strftime("%Y-%m-%d")+"T"+item.time_event.strftime("%H:%M:%S")
+        else:
+            start=item.date_event.strftime("%Y-%m-%d")
         list_json.append({
             "title": item.artist.name,
-            "start": item.date_event.strftime("%Y-%m-%d"),
+            # "start": item.date_event.strftime("%Y-%m-%d"),
+            "start": start,
             "description": item.description,
             "url": url_for("events.get_item_event", id=item.id)
         })
