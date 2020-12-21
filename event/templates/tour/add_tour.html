@@ -9,8 +9,9 @@
                 <form action="" method="post" novalidate>
                     <p> {{ form.name.label(class='control-label') }}
                         {{ form.name(class ="form-control") }}</p>
-                    <p> {{ form.event_id.label }}
-                        {{ form.event_id(class ="form-control") }}</p>
+                    <p> {{ form.event_id.label }}</p>
+                    <p>
+                        {{ form.event_id(class ="form-select" ) }}</p>
 
                     <p>{{ form.submit(class="btn btn-primary mb-2") }}</p>
                 </form>

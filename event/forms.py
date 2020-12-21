@@ -5,6 +5,7 @@ from wtforms.validators import DataRequired, Email
 from event.models import *
 from flask_admin.form import widgets
 from flask_admin.form.widgets import DateTimePickerWidget
+from flask_security.forms import RegisterForm, Required, RegisterFormMixin, ValidationError
 
 
 class LoginForm(Form):
@@ -21,14 +22,14 @@ class ContactForm(Form):
 
 
 class TourForm(Form):
-    name = StringField("Имя: ")
+    name = StringField("Название тура: ")
     # event = SelectMultipleField('Мероприятия')
     event_id = SelectMultipleField('Мероприятия')
     submit = SubmitField("Сохранить")
 
     def __init__(self, *args, **kwargs):
         super(TourForm, self).__init__(*args, **kwargs)
-        self.event_id.choices = [(g.id, g) for g in Event.query.order_by('name')]
+        self.event_id.choices = [(g.id, g) for g in Event.query.order_by('date_event') if g.tour is None]
 
 
 class EventForm(Form):
@@ -39,18 +40,25 @@ class EventForm(Form):
     date_event = DateField('Дата', format='%Y-%m-%d')
     #
     # datepicker = DateTimeField('Start at')
+    typeevent_id = SelectField("Тип")
     time_event = TimeField("Время мероприятия", format='%H:%M')
     description = StringField("Описание")
     city_id = SelectField("Город")
     arena_id = SelectField("Арена")
-    manager_id = SelectField("Менеджер")
+    user_id = SelectField("Менеджер")
 
     submit = SubmitField("Сохранить")
 
     def __init__(self, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)
-        self.manager_id.choices = [(g.id, g.name) for g in Manager.query.order_by('name')]
-        self.manager_id.choices.insert(0, (0, u"Не выбрана"))
+        self.typeevent_id.choices = [(g.id, g.name) for g in TypeEvent.query.order_by('name')]
+        self.typeevent_id.choices.insert(0, (0, u"Не выбрана"))
+
+        # self.manager_id.choices = [(g.id, g.name) for g in Manager.query.order_by('name')]
+        # self.manager_id.choices.insert(0, (0, u"Не выбрана"))
+
+        self.user_id.choices = [(g.id, g.name) for g in User.query.filter(User.roles.any(Role.name.in_(["manager"])))]
+        self.user_id.choices.insert(0, (0, u"Не выбрана"))
 
         self.artist_id.choices = [(g.id, g.name) for g in Artist.query.order_by('name')]
         self.artist_id.choices.insert(0, (0, u"Не выбран"))
@@ -138,13 +146,32 @@ class ManagerForm(Form):
     submit = SubmitField('Сохранить')
 
 
-class RegisterForm(Form):
-    name = StringField('Имя')
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Парлоь')
-    submit = SubmitField('Зарегестрироваться')
+# class RegisterForm(Form):
+#     name = StringField('Имя')
+#     email = StringField('Email', validators=[DataRequired(), Email()])
+#     password = PasswordField('Парлоь')
+#     submit = SubmitField('Зарегестрироваться')
 
 
 class UploadForm(Form):
     file = FileField('Выбирите изображение')
     save = SubmitField('Сохранить')
+
+
+class ExtendedRegisterForm(RegisterForm):
+    # email = StringField(u'Электронная почта',
+    #                     validators=[Required(REQ_TEXT),
+    #                                 Length(1, 64),
+    #                                 Email(REQ_TEXT)])
+    login = StringField('Логин', validators=[])
+    name = StringField('Имя', [Required()])
+    last_name = StringField('Фамилия', [Required()])
+    birthday = DateField('Дата рождения')
+    phone = StringField('Телефон')
+    address = StringField('адрес')
+
+    def validate_login(self, field):
+        if User.query.filter_by(login=field.data).first():
+            raise ValidationError(u'Login уже занят')
+
+    # birthday = StringField('birthday', [Required()])

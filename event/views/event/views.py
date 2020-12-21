@@ -1,7 +1,8 @@
 from flask import Blueprint, jsonify, request, json, render_template, redirect
 from event import logger, config
 from werkzeug.utils import secure_filename
-from event import logger, config, mail
+from event import logger, config
+# from event import logger, config, mail
 # from blog.schemas import VideoSchema, UserSchema, AuthSchema
 # from flask_apispec import use_kwargs, marshal_with
 from event.models import *
@@ -12,6 +13,7 @@ import os
 from flask import flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from flask_mail import Message
+from flask_security import login_required, current_user, roles_required, roles_accepted
 
 from event.forms import *
 
@@ -45,6 +47,7 @@ def get_event():
     try:
         # user_id = get_jwt_identity()
         # events = Event.get_list()
+
         event = Event.query.order_by(Event.date_event.desc())
     except Exception as e:
         logger.warning(
@@ -114,27 +117,32 @@ def add_event():
 
 
 @events.route('/events/edit/<int:id>', methods=['GET', 'POST'])
+# @roles_required('admin')
+@roles_accepted('admin', 'manager')
 def edit_event(id):
     event = Event.query.filter(Event.id == id).first()
     form = EventForm(obj=event)
-    # print(form.date_event)
-    if event is None:
-        raise Exception('Ошибка нет такого поста')
-    if request.method == 'POST':
-        form = EventForm(formdata=request.form, obj=event)
-        print(form.time_event)
-        form.populate_obj(event)
-        db.session.commit()
+    print(current_user.id)
+    print(event.user_id)
+    if current_user.id == event.user_id or "admin" in current_user.roles:
+        # print(form.date_event)
+        if event is None:
+            raise Exception('Ошибка нет такого поста')
+        if request.method == 'POST':
+            form = EventForm(formdata=request.form, obj=event)
+            print(form.time_event)
+            form.populate_obj(event)
+            db.session.commit()
 
-        return redirect(url_for('events.get_item_event', menu='events', id=event.id))
+            return redirect(url_for('events.get_item_event', menu='events', id=event.id))
 
     # form.artist_id.choices = [(g.id, g.name) for g in Artist.query.order_by('name')]
     # form.city_id.choices = [(g.id, g.name) for g in City.query.order_by('name')]
     # form.arena_id.choices = [(g.id, g.name) for g in Arena.query.order_by('name')]
     # form.manager_id.choices = [(g.id, g.name) for g in Manager.query.order_by('name')]
 
-    return render_template('event/edit_event.html', menu='events', form=form, item=event)
-
+        return render_template('event/edit_event.html', menu='events', form=form, item=event)
+    return redirect(url_for("events.get_event"))
 
 @events.route('/events/delete/<int:id>', methods=['GET'])
 def delete_event(id):
@@ -199,29 +207,28 @@ def send_mail():
 
 
 @events.route('/events/event_month', methods=['GET', 'POST'])
+# @login_required
 def get_json_event():
     event = Event.query.all()
-    list_json = dict()
-    for item in event:
-        list_json[item.id] = [{"date": item.date_event, "title": item.name, "description": item.description, "url": url_for("events.get_item_event", id=item.id)}]
-        # list_json["title"] = item.name
-        # list_json["description"] = item.description
-        # list_json["url"] = url_for("events.get_item_event", id=item.id)
+    list_json = []
 
-    print(list_json)
+    for item in event:
+        list_json.append({"date": item.date_event.strftime("%Y-%m-%d ")+item.time_event.strftime("%H:%M:%S"),
+                          "title": item.artist.name,
+                          "description": item.description,
+                          "url": url_for("events.get_item_event", id=item.id)})
+
     return json.dumps(list_json)
 
 
-@events.route('/events/get_all_city', methods=('GET', 'POST'))
+@events.route('/events/get_city_all', methods=('GET', 'POST'))
 def get_city_all():
-    # city_id = request.form['city_id']
-    city_id = 12
+    city_id = request.form['city_id']
     item_list = Arena.query.filter_by(city_id=city_id).all()
     result_list = dict()
     for item in item_list:
         result_list[item.id] = item.name
     return json.dumps(result_list)
-    # return jsonify(result_list)
 
 # docs.register(get_list, blueprint='videos')
 # docs.register(update_list, blueprint='videos')

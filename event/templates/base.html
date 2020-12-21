@@ -25,6 +25,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css"/>
     <link href="{{ url_for('static', filename='assets/vendor/icofont/icofont.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='calendar/css/main.css') }}" rel='stylesheet'/>
+    <!--    <link href="{{ url_for('static', filename='calendar/css/main.min.css') }}" rel='stylesheet' />-->
+
     <script
             src="https://code.jquery.com/jquery-3.4.1.min.js"
             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
@@ -57,8 +60,17 @@
 
 
 
-    </style>
 
+    </style>
+    <style>
+
+  #calendar {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+
+    </style>
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/album.css') }}">
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/blog.css') }}">
     {% import 'admin/static.html' as admin_static with context %}
@@ -84,12 +96,14 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link {% if menu == 'events' %} active {% endif %}"
-                   href="{{ url_for('events.get_event')}}">Мероприятие</a>
+                   href="{{ url_for('events.get_event')}}">Мероприятия</a>
             </li>
+            {% if current_user.has_role('users') or current_user.has_role('admin') %}
             <li class="nav-item">
                 <a class="nav-link {% if menu == 'artists' %} active {% endif %}"
                    href="{{ url_for('artists.get_artist')}}">Артист</a>
             </li>
+            {% endif %}
             {% if current_user.has_role('users') or current_user.has_role('admin') %}
             <li class="nav-item">
                 <a class="nav-link {% if menu == 'arenas' %} active {% endif %}"
@@ -105,6 +119,12 @@
             <li class="nav-item">
                 <a class="nav-link {% if menu == 'managers' %} active {% endif %}"
                    href="{{ url_for('managers.get_list_manager')}}">Менеджеры</a>
+            </li>
+            {% endif %}
+            {% if current_user.has_role('users') or current_user.has_role('admin') %}
+            <li class="nav-item">
+                <a class="nav-link {% if menu == 'cals' %} active {% endif %}"
+                   href="{{ url_for('main.cal')}}">Календарь</a>
             </li>
             {% endif %}
 
@@ -196,10 +216,11 @@
 <script src="{{ url_for('static', filename = 'assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
 <script src="{{ url_for('static', filename = 'assets/vendor/venobox/venobox.min.js') }}"></script>
 <script src="{{ url_for('static', filename = 'assets/vendor/owl.carousel/owl.carousel.min.js') }}"></script>
-
+<script src="{{ url_for('static', filename='calendar/js/main.js') }}"></script>
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 <script>
     AOS.init();
+
 
 </script>
 </body>

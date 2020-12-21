@@ -8,7 +8,7 @@ from event.models import *
 # from blog.base_view import BaseView
 # from blog.utils import upload_file
 
-from flask_security import login_required, roles_required, current_user, login_user
+from flask_security import login_required, roles_required, current_user, login_user, roles_accepted
 import os
 from flask import flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
@@ -31,7 +31,9 @@ def allowed_file(filename):
 @login_required
 def get_list_manager():
     try:
-        manager = Manager.query.order_by('name').all()
+        # manager = Manager.query.order_by('name').all()
+
+        manager = User.query.filter(User.roles.any(Role.name.in_(['manager']))).all()
     except Exception as e:
         logger.warning(
             f'managers - reads action failed with errors: {e}'
@@ -43,8 +45,11 @@ def get_list_manager():
 @login_required
 def get_item_manager(id):
     try:
-        manager = Manager.query.get(id)
-        event = Event.query.filter(Event.manager_id == manager.id).order_by(Event.date_event).all()
+        # manager = Manager.query.get(id)
+        # manager = User.query.filter.any(Role.name.in_('manager'))
+        manager = User.query.get(id)
+        event = Event.query.filter(Event.user_id == manager.id).order_by(Event.date_event.desc()).all()
+        # event = Non
     except Exception as e:
         logger.warning(
             f'managers - read action failed with errors: {e}'
@@ -89,51 +94,54 @@ def delete_manager(id):
 
 
 @managers.route('/manager/edit/<int:id>', methods=['GET', 'POST'])
-@login_required
+@roles_accepted('admin', 'manager')
 def edit_manager(id):
-    manager = Manager.query.get(id)
+    # manager = Manager.query.get(id)
+    manager = User.query.get(id)
     form = ManagerForm(request.form, obj=manager)
     upl = UploadForm()
-    print(request.form)
-    if request.method == 'POST':
-        if 'save' in request.form:
-            print(request.form)
-            file = request.files['file']
-            # if user does not select file, browser also
-            # submit an empty part without filename
-            if file.filename == '':
-                flash('No selected file')
-                return redirect(request.url)
-            try:
-                if file and allowed_file(file.filename):
-                    filename = secure_filename(file.filename)
-                    # unique_filename = str(uuid.uuid4())
 
-                    print(filename)
-
-                    # item = ManagerPhoto(url="managers/" + filename)
-                    # db.session.add(item)
-                    # db.session.commit()
-                    manager.photo = "managers/" + filename
-                    db.session.commit()
-                    file.save(os.path.join('/home/vestimy/project/python/event/event/static/managers', filename))
-                    return render_template('manager/edit_manager.html', menu='managers', item=manager, form=form, upl=upl)
-            except Exception as e:
-                db.session.rollback()
-                return error_handler
-
-        # if 'file' not in request.files:
-        #     flash('No file part')
-        #     return redirect(request.url)
+    if current_user.has_role('admin') or current_user.id == manager.id:
         # print(request.form)
+        if request.method == 'POST':
+            if 'save' in request.form:
+                # print(request.form)
+                file = request.files['file']
+                # if user does not select file, browser also
+                # submit an empty part without filename
+                if file.filename == '':
+                    flash('No selected file')
+                    return redirect(request.url)
+                try:
+                    if file and allowed_file(file.filename):
+                        filename = secure_filename(file.filename)
+                        # unique_filename = str(uuid.uuid4())
 
-        form.populate_obj(manager)
-        db.session.commit()
-        return redirect(url_for('managers.get_list_manager'))
+                        # print(filename)
 
-    # form.city_id.choices = [(g.id, g.name) for g in City.query.order_by('name')]
-    return render_template('manager/edit_manager.html', menu='managers', item=manager, form=form, upl=upl)
+                        # item = ManagerPhoto(url="managers/" + filename)
+                        # db.session.add(item)
+                        # db.session.commit()
+                        manager.photo = "managers/" + filename
+                        db.session.commit()
+                        file.save(os.path.join('/home/vestimy/project/python/event/event/static/managers', filename))
+                        return render_template('manager/edit_manager.html', menu='managers', item=manager, form=form, upl=upl)
+                except Exception as e:
+                    db.session.rollback()
+                    return error_handler
 
+            # if 'file' not in request.files:
+            #     flash('No file part')
+            #     return redirect(request.url)
+            # print(request.form)
+
+            form.populate_obj(manager)
+            db.session.commit()
+            return redirect(url_for('managers.get_list_manager'))
+
+        # form.city_id.choices = [(g.id, g.name) for g in City.query.order_by('name')]
+        return render_template('manager/edit_manager.html', menu='managers', item=manager, form=form, upl=upl)
+    return redirect(url_for("main.index"))
 
 @managers.route('/arena/img_add', methods=['GET', 'POST'])
 @login_required

@@ -1,7 +1,8 @@
 from flask import Blueprint, jsonify, request, render_template, redirect
 from event import logger, config
 from werkzeug.utils import secure_filename
-from event import logger, config, mail
+from event import logger, config
+# from event import logger, config, mail
 # from blog.schemas import VideoSchema, UserSchema, AuthSchema
 # from flask_apispec import use_kwargs, marshal_with
 from event.models import *
@@ -12,7 +13,7 @@ import os
 from flask import flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from flask_mail import Message
-
+from flask_security import login_required, roles_required, current_user, login_user
 from event.forms import *
 
 tours = Blueprint('tours', __name__)
@@ -32,12 +33,13 @@ def allowed_file(filename):
 @tours.route('/tour/', methods=['GET'])
 def get_tour():
     try:
-        tour = Tour.query.all()
+        tour = Tour.query.order_by('name').all()
+        # event = Event.query.order_by(Event.date_event)
     except Exception as e:
         logger.warning(
-            f'user: {user_id} tutorials - read action failed with errors: {e}'
+            f'user: {current_user} tours - read action failed with errors: {e}'
         )
-        return {'message': str(e)}, 400
+        # return {'message': str(e)}, 400
     return render_template('tour/get_tour.html', menu='tours', tours=tour)
 
 
@@ -120,13 +122,13 @@ def edit_tour(id):
         db.session.commit()
 
         return redirect(url_for('tours.get_item_tour', menu='tours', id=tour.id))
-    form.event.choices = [(g.id, g.artist) for g in Event.query.order_by('artist_id')]
+    # form.event.choices = [(g.id, g.artist) for g in Event.query.order_by('artist_id')]
     # form.artist_id.choices = [(g.id, g.name) for g in Artist.query.order_by('name')]
     # form.city_id.choices = [(g.id, g.name) for g in City.query.order_by('name')]
     # form.arena_id.choices = [(g.id, g.name) for g in Arena.query.order_by('name')]
     # form.manager_id.choices = [(g.id, g.name) for g in Manager.query.order_by('name')]
 
-    return render_template('tour/edit_tour.html', menu='events', form=form)
+    return render_template('tour/edit_tour.html', menu='tours', form=form)
 
 
 @tours.route('/tour/delete/<int:id>', methods=['GET'])

@@ -8,7 +8,7 @@
 
         <div class="section-title" data-aos="zoom-out">
             <h2>Менеджеры</h2>
-            <!--            <p>Менеджеры</p>-->
+<!--                        <p>Менеджеры</p>-->
         </div>
 
 
@@ -28,7 +28,8 @@
                         {% endif %}
                         <div class="social">
                             <!--                            <a href=""><i class="icofont-twitter"></i></a>-->
-                            {% if current_user.has_role('admin') %}
+
+                            {% if (current_user.has_role('admin') or current_user.id == item.id) %}
 
                             <a href="{{ url_for('managers.edit_manager', id=item.id) }}"><i
                                     class="icofont-edit"></i></a>

@@ -25,10 +25,12 @@ class Event(db.Model):
     __tablename__ = 'event'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False)
+    name = db.Column(db.String(255))
     # artist = db.Column(db.String(255))
     artist_id = db.Column(Integer, ForeignKey('artist.id'))
     artist = relationship("Artist", back_populates="event")
+    typeevent_id = db.Column(Integer, ForeignKey('typeevent.id'))
+    typeevent = relationship('TypeEvent', back_populates='event')
     date_event = db.Column(Date)
     time_event = db.Column(Time)
     description = db.Column(db.String(500))
@@ -39,8 +41,8 @@ class Event(db.Model):
     arena_id = db.Column(Integer, ForeignKey('arena.id'))
     arena = relationship('Arena', back_populates='event')
     # manager = db.Column(db.String(255))
-    manager_id = db.Column(Integer, ForeignKey('manager.id'))
-    manager = relationship('Manager', back_populates='event')
+    user_id = db.Column(Integer, ForeignKey('users.id'))
+    user = relationship('User', back_populates='event')
     tour_id = db.Column(Integer, ForeignKey('tour.id'))
     tour = relationship('Tour', back_populates='event')
     edit_event = db.Column(db.DateTime, default=datetime.utcnow)
@@ -50,6 +52,35 @@ class Event(db.Model):
         # self.date_event = self.date_event.strftime("%Y %m %d")
         # n = self.date_event.strftime('%m/%d/%Y')
         return f'{self.artist} {self.date_event}'
+
+
+class TypeEvent(db.Model):
+    __tablename__ = 'typeevent'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.String(500))
+    # event_id = db.Column(Integer, ForeignKey('event.id'))
+    event = relationship('Event', back_populates='typeevent')
+    # city = db.Column(db.String(255))
+    # city_id = db.Column(Integer, ForeignKey('city.id'))
+    # city = relationship('City', back_populates='event')
+    edit_typeevent = db.Column(db.DateTime, onupdate=time_now)
+    created_edit_typeevent = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __init__(self, **kwargs):
+        self.name = kwargs.get('name')
+        self.description = kwargs.get('description')
+        self.city_id = kwargs.get('city_id')
+
+    def created_arena_time(self):
+        if self.created_arena is None:
+            return datetime.utcnow()
+
+    def __repr__(self):
+        # self.date_event = self.date_event.strftime("%Y %m %d")
+        # n = self.date_event.strftime('%m/%d/%Y')
+        return self.name
 
 
 class Artist(db.Model):
@@ -64,12 +95,12 @@ class Artist(db.Model):
     phone_sound = db.Column(db.String(255))
     monitor_engineer = db.Column(db.String(255))
     phone_monitor = db.Column(db.String(255))
-    light = db.Column(db.String(255))
-    phone_light = db.Column(db.String(255))
+    light = db.Column(db.String(255), nullable=True)
+    phone_light = db.Column(db.String(255), nullable=True)
 
     photoartist = relationship("PhotoArtist", back_populates="artist")
     edit_artist = db.Column(db.DateTime, onupdate=time_now)
-    created_artist = db.Column(db.DateTime, default=datetime.utcnow)
+    created_artist = db.Column(db.DateTime, onupdate=time_now)
 
     # def __init__(self, **kwargs):
     #     self.name = kwargs.get('name')
@@ -120,7 +151,7 @@ class Arena(db.Model):
     # city = relationship('City', secondary=arena_city, back_populates='arena', lazy=True)
     address = db.Column(db.String(255))
     phone_admin = db.Column(db.String(255))
-    number_of_seats = db.Column(db.Integer)
+    number_of_seats = db.Column(db.String(255))
     hall_size = db.Column(db.String(255), nullable=True)
     razgruzka = db.Column(db.String(255), nullable=True)
     sound = db.Column(db.String(255))
@@ -140,6 +171,7 @@ class Arena(db.Model):
         self.typehall_id = kwargs.get('typehall_id')
         self.address = kwargs.get('address')
         self.phone_admin = kwargs.get('phone_admin')
+        # if kwargs.get('number_of_seats'):
         self.number_of_seats = kwargs.get('number_of_seats')
         self.hall_size = kwargs.get('hall_size')
         self.razgruzka = kwargs.get('razgruzka')
@@ -165,6 +197,7 @@ class TypeHall(db.Model):
     description = db.Column(db.String(500))
     # arena_id = db.Column(Integer, ForeignKey('typehall.id'))
     arena = relationship("Arena", back_populates="typehall")
+
     def __repr__(self):
         return self.name
 
@@ -216,22 +249,17 @@ class ManagerPhoto(db.Model):
 class Manager(db.Model):
     __tablename__ = 'manager'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False, unique=True)
-    phone = db.Column(db.String(255))
-    birthday = db.Column(Date)
-    address = db.Column(db.String(255))
-    event = relationship('Event', back_populates='manager')
-    photo = db.Column(db.String(255))
-    facebook = db.Column(db.String(255))
-    instagram = db.Column(db.String(255))
-
+    # name = db.Column(db.String(255), nullable=False, unique=True)
+    # event = relationship('Event', back_populates='manager')
     managerphoto = relationship("ManagerPhoto", back_populates="manager")
+    # user_id = db.Column(Integer, ForeignKey('users.id'))
+    # user = relationship("User", back_populates='manager')
 
     edit_manager = db.Column(db.DateTime, onupdate=datetime.now)
     created_manager = db.Column(db.DateTime, default=datetime.now())
 
-    def __repr__(self):
-        return self.name
+    # def __repr__(self):
+    #     return self.user
 
 
 class Tour(db.Model):
@@ -257,17 +285,28 @@ association = db.Table('association',
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(250), nullable=False)
+    name = db.Column(db.String(250), nullable=True)
+    last_name = db.Column(db.String(250), nullable=True)
     email = db.Column(db.String(255), nullable=False, unique=True)
+    login = db.Column(db.String(255), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False)
     active = db.Column(db.Boolean)
     roles = relationship('Role', secondary=association, back_populates='users', lazy=True)
 
-    def __init__(self, **kwargs):
-        self.name = kwargs.get('name')
-        self.email = kwargs.get('email')
-        # self.password = bcrypt.hash(kwargs.get('password'))
-        self.password = kwargs.get('password')
+    birthday = db.Column(Date)
+    phone = db.Column(db.String(255))
+    address = db.Column(db.String(255))
+    photo = db.Column(db.String(255))
+
+    event = relationship('Event', back_populates='user')
+
+    facebook = db.Column(db.String(255))
+    instagram = db.Column(db.String(255))
+
+    # def __init__(self, **kwargs):
+    #     self.name = kwargs.get('name')
+    #     self.email = kwargs.get('email')
+    #     self.password = kwargs.get('password')
 
     def __repr__(self):
         return self.name

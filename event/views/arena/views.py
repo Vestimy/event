@@ -19,11 +19,10 @@ ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 UPLOAD_FOLDER = 'static'
 
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
-
-
 
 
 @arenas.route('/arena', methods=['GET'])
@@ -31,17 +30,18 @@ def allowed_file(filename):
 def get_list_arena():
     arena = Arena.query.order_by('name').all()
     typehall = TypeHall.query.order_by('name').all()
+    id = None
     if request.args.get('id'):
-        id = None
         try:
             id = int(request.args.get('id'))
         except Exception as e:
             logger.warning(
-            f'arenas -  action failed with errors: {e}'
-        )
+                f'arenas -  action failed with errors: {e}'
+            )
         if isinstance(id, int):
             arena = Arena.query.filter(Arena.typehall_id == id).order_by('name').all()
-    return render_template('arena/get_list_arena.html', menu='arenas',typehall=typehall, arena=arena)
+    return render_template('arena/get_list_arena.html', menu='arenas', id=id, typehall=typehall, arena=arena)
+
 
 @arenas.route('/arena/<int:id>', methods=['GET'])
 @login_required
@@ -57,7 +57,6 @@ def add_arena():
     # form.city_id.choices = ArenaForm.city_choices()
     # form.city_id.choices = [(g.id, g.name) for g in City.query.order_by('name')]
     if request.method == 'POST':
-
 
         arena = Arena(name=request.form['name'],
                       description=request.form['description'],
@@ -81,8 +80,8 @@ def add_arena():
         except Exception as e:
             db.session.rollback()
             logger.warning(
-            f'arenas - whrite action failed with errors: {e}'
-        )
+                f'arenas - wright action failed with errors: {e}'
+            )
 
         return redirect(url_for('arenas.get_list_arena'))
 
@@ -96,8 +95,6 @@ def delete_arena(id):
     db.session.delete(arena)
     db.session.commit()
     return redirect(url_for('arenas.get_list_arena'))
-
-
 
 
 @arenas.route('/arena/edit/<int:id>', methods=['GET', 'POST'])
@@ -119,7 +116,7 @@ def edit_arena(id):
     return render_template('arena/edit_arena.html', menu='arenas', item=arena, form=form)
 
 
-@arenas.route('/arena/img_add', methods=['GET','POST'])
+@arenas.route('/arena/img_add', methods=['GET', 'POST'])
 @login_required
 def arena_img_upload():
     if request.method == 'POST':
@@ -135,7 +132,7 @@ def arena_img_upload():
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            filename = 'img/arena/'+ filename
+            filename = 'img/arena/' + filename
             print(filename)
 
             item = ImgArena(url=filename)
@@ -146,7 +143,8 @@ def arena_img_upload():
                                     filename=filename))
 
     else:
-        return render_template('upload.html',  menu='arenas')
+        return render_template('upload.html', menu='arenas')
+
 
 @arenas.errorhandler(422)
 def error_handler(err):

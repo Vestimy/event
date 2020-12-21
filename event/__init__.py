@@ -6,8 +6,9 @@ from flask_jwt_extended import JWTManager
 from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from flask_login import LoginManager
+
 from flask_security import SQLAlchemySessionUserDatastore, Security
-from flask_security import current_user
+from flask_security import current_user, user_registered
 from flask_mail import Mail
 from flask_datepicker import datepicker
 from flask_bootstrap import Bootstrap
@@ -21,6 +22,7 @@ mail = Mail()
 bootstrap = Bootstrap()
 
 
+from .forms import ExtendedRegisterForm
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
@@ -28,11 +30,16 @@ def create_app():
     admin.init_app(app, url='/admin', index_view=HomeAdminView(name='Home'))
     login.init_app(app)
     app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
-    from .models import Role, User
-    user_datastore = SQLAlchemySessionUserDatastore(db.session, User, Role)
     mail.init_app(app)
-    security.init_app(app, user_datastore)
+    # security.init_app(app, user_datastore, register_form=ExtendedRegisterForm)
+    security.init_app(app, user_datastore, register_form=ExtendedRegisterForm)
     bootstrap.init_app(app)
+
+    @user_registered.connect_via(app)
+    def user_registered_sighandler(app, user, confirm_token):
+        default_role = user_datastore.find_role("users")
+        user_datastore.add_role_to_user(user, default_role)
+        db.session.commit()
 
     from .views.main.views import main
     from .views.event.views import events
@@ -100,9 +107,14 @@ admin.add_view(AdminView(EquipmentCategory, db.session))
 admin.add_view(AdminView(Equipment, db.session))
 admin.add_view(AdminView(ManagerPhoto, db.session))
 admin.add_view(AdminView(TypeHall, db.session))
+admin.add_view(AdminView(TypeEvent, db.session))
 
 admin.add_view(AdminView(User, db.session))
 admin.add_view(AdminView(Role, db.session))
+
+# from .models import Role, User
+
+user_datastore = SQLAlchemySessionUserDatastore(db.session, User, Role)
 
 
 # @login.user_loader
@@ -124,3 +136,7 @@ def setup_logger():
 
 # db.create_all()
 logger = setup_logger()
+
+
+
+

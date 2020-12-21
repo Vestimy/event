@@ -22,26 +22,30 @@ def index():
     return render_template('main/index.html', menu='main')
 
 
-@main.route('/register', methods=['GET', 'POST'])
-def register_user():
-    if request.method == 'POST':
-        name = request.form['name']
-        email = request.form['email']
-        password = request.form['password']
-        try:
+@main.route('/calendar', methods=['GET'])
+def cal():
+    return render_template('main/cal.html', menu='cals')
 
-            user = User(name=name, email=email, password=password)
-            db.session.add(user)
-            db.session.commit()
-        except Exception as e:
-            logger.warning(
-                f' BD - wright action failed with errors: {e}'
-            )
-            db.session.rollback()
-
-        return redirect(url_for('main.index'))
-    form = RegisterForm()
-    return render_template('main/register.html', form=form)
+# @main.route('/register', methods=['GET', 'POST'])
+# def register_user():
+#     if request.method == 'POST':
+#         name = request.form['name']
+#         email = request.form['email']
+#         password = request.form['password']
+#         try:
+#
+#             user = User(name=name, email=email, password=password)
+#             db.session.add(user)
+#             db.session.commit()
+#         except Exception as e:
+#             logger.warning(
+#                 f' BD - wright action failed with errors: {e}'
+#             )
+#             db.session.rollback()
+#
+#         return redirect(url_for('main.index'))
+#     form = RegisterForm()
+#     return render_template('main/register.html', form=form)
 
 # docs.register(get_list, blueprint='videos')
 # docs.register(update_list, blueprint='videos')

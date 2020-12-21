@@ -188,20 +188,34 @@
 <script src="{{ url_for('static', filename='js/moment.js') }}"></script>
 <script src="{{ url_for('static', filename='js/jquery.eventCalendar.js') }}"></script>
 
-<script>
-// данные о событиях
-var data = [
- { "date": "2020-12-21 10:15:20", "title": "Событие 1", "description": "Lorem Ipsum dolor set", "url": "//www.event3.com/" },
- { "date": "2020-12-22 10:15:20", "title": "Событие 2", "description": "Lorem Ipsum dolor set", "url": "" },
- { "date": "2020-12-23 10:15:20", "title": "Событие 3", "description": "Lorem Ipsum dolor set", "url": "//www.event3.com/" },
- { "date": "2020-12-24 10:15:20", "title": "Событие 4", "description": "Lorem Ipsum dolor set", "url": "//www.event3.com/" },
-];
-$('#eventCalendar').eventCalendar({
- jsonData: data,
- jsonDateFormat: 'human',
-});
-</script>
 
+<script>
+          function load_events(){
+            $.ajax({
+                type: "POST",
+                url: "/events/event_month",
+                success: function(response) {
+                    var json = jQuery.parseJSON(response)
+                    obj = Object.keys(json)
+
+                    $('#eventCalendar').eventCalendar({
+                           jsonData: json,
+                           jsonDateFormat: 'human',
+                    });
+                },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+        }
+
+
+            $(document).ready(function() {
+            load_events();
+
+        });
+
+</script>
 
 <script src="http://code.jquery.com/jquery.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"

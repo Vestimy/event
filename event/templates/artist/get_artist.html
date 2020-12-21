@@ -17,74 +17,46 @@
         <div class="row aos-init aos-animate">
 
             {% for item in artist %}
-            <div class="col-md-4 d-flex align-items-stretch">
+
+            <div class="col-md-4">
                 <div class="member" data-aos="fade-up">
+                    <div class="member-img" style="height: 100%;">
+                        {% if item.photoartist %}
+                        <img src="{{url_for('static', filename=item.photoartist[0]) }}" class="img-fluid"
+                             alt="{{ item.name }}">
+                        <!--                        <img src="{{url_for('static', filename='managers/vesti_1.jpg') }}" class="img-fluid"-->
 
-                    <a href="{{ url_for('artists.get_item_artist', id=item.id) }}">
-                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                        {% else %}
 
-                             xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false"
-                             role="img" aria-label="Placeholder: Thumbnail">
-
-                            <title>{{ item.name }}</title>
-
-
-                            <rect width="100%" height="100%" fill="#55595c"/>
-                            {% if item.photoartist %}
-                            <image xlink:href="{{ url_for('static', filename=item.photoartist[0]) }}" x="0" y="0"
-                                   width="100%" height="100%"/>
+                        <img src="{{url_for('static', filename='img/hall.jpg') }}" class="img-fluid"
+                             alt="">
+                        {% endif %}
+                        <div class="social">
+                            <!--                            <a href=""><i class="icofont-twitter"></i></a>-->
+                            {% if current_user.has_role('admin') %}
+                            <a href="{{ url_for('artists.edit_artist', id=item.id) }}"><i
+                                    class="icofont-edit"></i></a>
+                            {% endif %}
+                            {% if item %}
+                            <a href="{{ url_for('artists.get_item_artist', id=item.id) }}"><i
+                                    class="icofont-eye-open"></i></a>
                             {% endif %}
 
-                            <text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ item.name }}</text>
-                        </svg>
-                    </a>
-                    <div class="card-body">
-                        <p class="card-text">Администратор - {{ item.administrator }}
-                            {% if item.administrator %}
-                        <p class="card-text">Администратор - {{ item.administrator }}.</p>
-                        {% endif %}
-                        </p>
-
-                        {% if item.sound_engineer %}
-                        <p class="card-text">Звукорежиссер - {{ item.sound_engineer }}.</p>
-                        {% endif %}
-                        </p>
-                        {% if item.monitor_engineer %}
-                        <p class="card-text">Мониторный звукорежиссер - {{ item.monitor_engineer }}.</p>
-
-                        {% endif %}
-
-                        {% if item.light %}
-                        </p>
-                        <p class="card-text">Световик - {{ item.light }}.</p>
-                        {% endif %}
-                        <!--                        <p class="card-text">Описание - {{ item.description }}-->
-                        <!--                        </p>-->
-
-                        {% if item.phone_admin %}
-                        <p class="card-text">Тел. Администратора - {{ item.phone_admin }}
-                        </p>
-                        {% endif %}
-                        <!--                        <p class="card-text">Время редактирования - {{ item.edit_city }}.</p>-->
-
-
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <a href="{{ url_for('artists.get_item_artist', id=item.id) }}" class="card-link">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Посмотреть</button>
-                                </a>
-                                <a href="{{ url_for('artists.edit_artist', id=item.id) }}" class="card-link">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Редактировать
-                                    </button>
-                                </a>
-                                <a href="{{ url_for('artists.delete_artist', id=item.id) }}" class="card-link">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Удалить
-                                    </button>
-                                </a>
-                            </div>
-                            <!--                            <small class="text-muted">9 mins</small>-->
+                            <!--                            <a href=""><i class="icofont-linkedin"></i></a>-->
                         </div>
                     </div>
+                    <div class="member-info">
+                        <h4>{{ item.name }}</h4>
+                        <h5>{{ item.administrator }} - {{ item.phone_administrator }}</h5>
+                        <h5>{{ item.sound_engineer }} - {{ item.phone_sound }}</h5>
+                        {% if item.monitor_engineer  %}
+                        <h5>{{ item.monitor_engineer }} - {{ item.monitor_engineer }}</h5>
+                        {% endif %}
+                        {% if item.light  %}
+                        <h5>{{ item.light }} {% if item.phone_light %} - {{ item.phone_light }}{% endif %}</h5>
+                        {% endif %}
+                    </div>
+                    <!--                    <small class="text-muted">9 mins</small>-->
                 </div>
             </div>
 

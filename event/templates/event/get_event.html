@@ -3,12 +3,35 @@
 
 {% block content %}
 
-<div class="album py-5 bg-light">
-    <div class="container">
-        <a href="{{ url_for('events.add_event') }}" class="card-link">
-            <button type="button" class="btn btn-sm btn-outline-secondary">Добавить мероприятие</button>
-        </a>
-        <div class="row">
+<section id="team" class="team">
+    <div class="container aos-init aos-animate" data-aos="fade-up">
+         <div class="section-title" data-aos="zoom-out">
+            <h2>Площадки</h2>
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ url_for('arenas.get_list_arena') }}">Все</a>
+                </li>
+                {% for type in typehall %}
+                <li class="nav-item">
+                    <a class="nav-link {% if type.id == id %}active{% endif %}" aria-current="page" href="{{ url_for('arenas.get_list_arena', id=type.id) }}">{{ type.name }}</a>
+                </li>
+                {% endfor %}
+
+
+            </ul>
+            <!--            <p>Площадки</p>-->
+            <p><a href="{{ url_for('events.add_event') }}" class="card-link" data-aos="zoom-out">
+                <button type="button" class="btn btn-sm btn-outline-secondary">Добавить</button>
+            </a></p>
+
+        </div>
+
+
+
+
+
+
+        <div class="row justify-content-evenly aos-init aos-animate">
 
             {% for item in events %}
             <div class="col-md-4">
@@ -65,7 +88,7 @@
 
         </div>
     </div>
-</div>
+</section>
 
 
 {% endblock %}
