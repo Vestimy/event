@@ -1119,6 +1119,7 @@ A VERTICAL event
   }
 .fc-direction-ltr .fc-timegrid-slot-label-frame {
     text-align: center;
+    
   }
 .fc-direction-rtl .fc-timegrid-slot-label-frame {
     text-align: left;
