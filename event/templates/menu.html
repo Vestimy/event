@@ -50,8 +50,13 @@
             {% endif %}
 
         </ul>
-        <div class='my-2 my-lg-0'>
-            {% if current_user.has_role('admin') %}
+
+<!--        <form class="form-inline my-2 my-lg-0">-->
+<!--            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
+<!--            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>-->
+<!--        </form>-->
+                <div class='my-2 my-lg-0'>
+            {% if current_user.has_role('user') or current_user.has_role('admin') %}
             <li class="nav-item my-2 my-2 my-sm-0">
                 <a class="nav-link my-2 my-sm-0 {% if menu == 'None' %} active {% endif %}"
                    href="{{ url_for('security.logout')}}">Выйти </a>
@@ -66,29 +71,9 @@
                    href="{{ url_for('security.login')}}">Войти</a>
             </li>
         </div>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
     </div>
 
 
-    <div class="hero-head">
-        <nav class="navbar">
-            <div class="container">
 
-                <div id="navbarMenuHeroA" class="navbar-menu">
-                    <div class="navbar-end">
-                        <a href="{{ url_for('security.login') }}" class="navbar-item">
-                            Login
-                        </a>
-                        <a href="{{ url_for('security.logout')}}" class="navbar-item">
-                            Logout
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </div>
 
 </nav>

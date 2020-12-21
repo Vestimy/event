@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, render_template, redirect
+from flask import Blueprint, jsonify, request, json, render_template, redirect
 from event import logger, config
 from werkzeug.utils import secure_filename
 from event import logger, config
@@ -11,6 +11,7 @@ from event.models import *
 import os
 from flask import flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
+from flask_security import login_required
 
 from event.forms import *
 
@@ -27,6 +28,77 @@ def calendar():
     return render_template('main/cal.html', menu='calendars')
 
 
+@main.route('/get_calendar', methods=['GET', 'POST'])
+@login_required
+def get_calendar():
+    event = Event.query.all()
+    list_json = []
+    for item in event:
+        # print(type(item.date_event.strftime("%Y-%m-%d ")))
+        list_json.append({
+            "title": item.artist.name,
+            "start": item.date_event.strftime("%Y-%m-%d"),
+            "description": item.description,
+            "url": url_for("events.get_item_event", id=item.id)
+        })
+    list_jsons = [
+        {
+            'title': 'All Day Event',
+            "start": '2020-09-01',
+        },
+        {
+            'title': 'Long Event',
+            "start": '2020-09-07',
+            "end": '2020-09-10'
+        },
+        {
+            "groupId": 999,
+            'title': 'Repeating Event',
+            "start": '2020-09-09T16:00:00'
+        },
+        {
+            "groupId": 999,
+            'title': 'Repeating Event',
+            "start": '2020-09-16T16:00:00'
+        },
+        {
+            'title': 'Conference',
+            "start": '2020-09-11',
+            "end": '2020-09-13'
+        },
+        {
+            'title': 'Meeting',
+            "start": '2020-09-12T10:30:00',
+            "end": '2020-09-12T12:30:00'
+        },
+        {
+            'title': 'Lunch',
+            "start": '2020-09-12T12:00:00'
+        },
+        {
+            'title': 'Meeting',
+            "start": '2020-09-12T14:30:00'
+        },
+        {
+            'title': 'Happy Hour',
+            "start": '2020-09-12T17:30:00'
+        },
+        {
+            'title': 'Dinner',
+            "start": '2020-09-12T20:00:00'
+        },
+        {
+            'title': 'Birthday Party',
+            "start": '2020-09-13T07:00:00'
+        },
+        {
+            'title': 'Click for Google',
+            "url": 'http://google.com/',
+            "start": '2020-09-28'
+        }
+    ]
+    return json.dumps(list_json)
+
 
 @main.errorhandler(422)
 def error_handler(err):
@@ -36,27 +108,6 @@ def error_handler(err):
         return jsonify({'message': messages}), 400, headers
     else:
         return jsonify({'message': messages}), 400
-
-# @main.route('/register', methods=['GET', 'POST'])
-# def register_user():
-#     if request.method == 'POST':
-#         name = request.form['name']
-#         email = request.form['email']
-#         password = request.form['password']
-#         try:
-#
-#             user = User(name=name, email=email, password=password)
-#             db.session.add(user)
-#             db.session.commit()
-#         except Exception as e:
-#             logger.warning(
-#                 f' BD - wright action failed with errors: {e}'
-#             )
-#             db.session.rollback()
-#
-#         return redirect(url_for('main.index'))
-#     form = RegisterForm()
-#     return render_template('main/register.html', form=form)
 
 # docs.register(get_list, blueprint='videos')
 # docs.register(update_list, blueprint='videos')
