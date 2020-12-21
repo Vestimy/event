@@ -23,8 +23,8 @@ def index():
 
 
 @main.route('/calendar', methods=['GET'])
-def cal():
-    return render_template('main/cal.html', menu='cals')
+def calendar():
+    return render_template('main/cal.html', menu='calendars')
 
 # @main.route('/register', methods=['GET', 'POST'])
 # def register_user():
