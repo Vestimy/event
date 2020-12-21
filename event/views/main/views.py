@@ -26,6 +26,17 @@ def index():
 def calendar():
     return render_template('main/cal.html', menu='calendars')
 
+
+
+@main.errorhandler(422)
+def error_handler(err):
+    headers = err.data.get('headers', None)
+    messages = err.data.get('messages', ['Invalid request'])
+    if headers:
+        return jsonify({'message': messages}), 400, headers
+    else:
+        return jsonify({'message': messages}), 400
+
 # @main.route('/register', methods=['GET', 'POST'])
 # def register_user():
 #     if request.method == 'POST':

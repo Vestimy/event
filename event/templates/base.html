@@ -124,7 +124,7 @@
             {% if current_user.has_role('users') or current_user.has_role('admin') %}
             <li class="nav-item">
                 <a class="nav-link {% if menu == 'calendars' %} active {% endif %}"
-                   href="{{ url_for('main.calendar')}}">Календарь</a>
+                   href="">Календарь</a>
             </li>
             {% endif %}
 
