@@ -142,13 +142,15 @@ class ArtistForm(Form):
 
 
 class ManagerForm(Form):
-    name = StringField('ФИО')
+    last_name = StringField('Фамилия')
+    first_name = StringField('Имя')
+    patronymic = StringField('Отчество')
     phone = StringField('Телефон')
     address = StringField('Адрес')
     birthday = DateField('День рождения')
     facebook = StringField('Facebook')
     instagram = StringField('Instagram')
-
+    photo = FileField("Фото")
     submit = SubmitField('Сохранить')
 
 
@@ -170,8 +172,9 @@ class ExtendedRegisterForm(RegisterForm):
     #                                 Length(1, 64),
     #                                 Email(REQ_TEXT)])
     login = StringField('Логин', validators=[])
-    name = StringField('Имя', [Required()])
+    first_name = StringField('Имя', [Required()])
     last_name = StringField('Фамилия', [Required()])
+    patronymic = StringField('Отчество', [Required()])
     birthday = DateField('Дата рождения')
     phone = StringField('Телефон')
     address = StringField('адрес')

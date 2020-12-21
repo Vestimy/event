@@ -1,31 +1,53 @@
 {% extends "base.html" %}
 {% block content %}
+<!--<div class="container aos-init aos-animate" data-aos="fade-up">-->
+
+<section id="team" class="team">
 <div class="container aos-init aos-animate" data-aos="fade-up">
-    <div class="col-md-6 justify-content-evenly aos-init aos-animate">
-        {% from "security/_macros.html" import render_field_with_errors, render_field %}
-        {% include "security/_messages.html" %}
-        <h1>{{ _('Register') }}</h1>
-        <form action="{{ url_for_security('register') }}" method="POST" name="register_user_form">
-            {{ register_user_form.hidden_tag() }}
+    <div class="section-title" data-aos="zoom-out">
+        <h2>Регистрация</h2>
 
 
-            {{ render_field_with_errors(register_user_form.email,class='form-control') }}
-            {{ render_field_with_errors(register_user_form.login,class='form-control') }}
-
-            {{ render_field_with_errors(register_user_form.password,class='form-control') }}
-            {% if register_user_form.password_confirm %}
-            {{ render_field_with_errors(register_user_form.password_confirm, class="form-control") }}
-            {% endif %}
-
-            {{ render_field_with_errors(register_user_form.name,class='form-control') }}
-            {{ render_field_with_errors(register_user_form.last_name,class='form-control') }}
-            {{ render_field_with_errors(register_user_form.birthday,class='form-control', type='date',
-            value="1992-02-18") }}
-            {{ render_field_with_errors(register_user_form.phone,class='form-control') }}
-            {{ render_field_with_errors(register_user_form.address,class='form-control') }}
-            {{ render_field(register_user_form.submit, class="btn btn-lg btn-primary btn-block") }}
-        </form>
-        {% include "security/_menu.html" %}
     </div>
+    {% from "security/_macros.html" import render_field_with_errors, render_field %}
+    {% include "security/_messages.html" %}
+    <!--        <h1>{{ _('Register') }}</h1>-->
+    <!--        <h1 data-aos="fade-right">Регистрация</h1>-->
+    <form action="{{ url_for_security('register') }}" method="POST" name="register_user_form" data-aos="fade-up">
+        {{ register_user_form.hidden_tag() }}
+
+
+        {{ render_field_with_errors(register_user_form.email,class='form-control') }}
+        {{ render_field_with_errors(register_user_form.login,class='form-control') }}
+        <div class="row g-3">
+
+            <div class="col">
+                {{ render_field_with_errors(register_user_form.password,class='form-control') }}
+            </div>
+            {% if register_user_form.password_confirm %}
+
+            <div class="col">
+                {{ render_field_with_errors(register_user_form.password_confirm, class="form-control") }}
+            </div>
+            {% endif %}
+        </div>
+        <div class="row g-3">
+            <div class="col">
+                {{ render_field_with_errors(register_user_form.last_name,class='form-control') }}
+            </div>
+            <div class="col">
+                {{ render_field_with_errors(register_user_form.first_name,class='form-control') }}
+            </div>
+        </div>
+        {{ render_field_with_errors(register_user_form.patronymic,class='form-control') }}
+        {{ render_field_with_errors(register_user_form.birthday,class='form-control', type='date',
+        value="1992-02-18") }}
+        {{ render_field_with_errors(register_user_form.phone,class='form-control') }}
+        {{ render_field_with_errors(register_user_form.address,class='form-control') }}
+        {{ render_field(register_user_form.submit, class="btn btn-lg btn-primary btn-block") }}
+    </form>
+    {% include "security/_menu.html" %}
 </div>
+
+</section>
 {% endblock %}

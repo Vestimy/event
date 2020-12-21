@@ -8,7 +8,7 @@
 
         <div class="section-title" data-aos="zoom-out">
             <h2>Менеджеры</h2>
-<!--                        <p>Менеджеры</p>-->
+            <!--                        <p>Менеджеры</p>-->
         </div>
 
 
@@ -46,10 +46,10 @@
                             {% endif %}
                             {% if current_user.has_role('admin') %}
                             <a type="button" class="icofont-ui-delete" data-bs-toggle="modal"
-                               data-bs-target="#staticBackdrop">
+                               data-bs-target="#name{{ item.id }}">
                             </a>
-<!--                            <a href=""><i-->
-<!--                                    class="icofont-ui-delete" data-bs-toggle="modal" data-bs-target="#exampleModal"></i></a>-->
+                            <!--                            <a href=""><i-->
+                            <!--                                    class="icofont-ui-delete" data-bs-toggle="modal" data-bs-target="#exampleModal"></i></a>-->
 
                             {% endif %}
 
@@ -57,7 +57,7 @@
                         </div>
                     </div>
                     <div class="member-info">
-                        <h4>{{ item.name }}</h4>
+                        <h4>{{ item.last_name }} {{ item.first_name }}</h4>
                         <!--                        <span>Chief Executive Officer</span>-->
                         {% if item.phone %}
                         <span class="icofont-mobile-phone">{{ item.phone }}</span>
@@ -65,28 +65,30 @@
                     </div>
                 </div>
             </div>
-                                       <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
-                                 data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
-                                 aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="staticBackdropLabel">Удалить менджера</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            ...
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                Нет
-                                            </button>
-                                            <a href="{{ url_for('managers.delete_manager', id=item.id) }}"><button type="button" class="btn btn-primary">Да</button></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="modal fade" id="name{{ item.id }}" data-bs-backdrop="static"
+                 data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Удалить менджера</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            ...
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Нет
+                            </button>
+                            <a href="{{ url_for('managers.delete_manager', id=item.id) }}">
+                                <button type="button" class="btn btn-primary">Да</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {% endfor %}
 
         </div>
@@ -101,5 +103,6 @@ $(document).ready(function(){
         $("#myModal").modal();
     });
 });
+
 </script>
 {% endblock %}

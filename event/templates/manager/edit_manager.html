@@ -10,9 +10,13 @@
         <div class="row  aos-init aos-animate">
             <div class="col-md-8" data-aos="fade-up">
                 <div class="form-group">
-                    <form action="" method="post" novalidate>
-                        <p> {{ form.name.label(class='control-label') }}
-                            {{ form.name(class ="form-control") }}</p>
+                    <form action="" method="post" enctype=multipart/form-data>
+                        <p> {{ form.last_name.label(class='control-label') }}
+                            {{ form.last_name(class ="form-control") }}</p>
+                        <p> {{ form.first_name.label(class='control-label') }}
+                            {{ form.first_name(class ="form-control") }}</p>
+                        <p> {{ form.patronymic.label(class='control-label') }}
+                            {{ form.patronymic(class ="form-control") }}</p>
 
                         <p> {{ form.phone.label }}
                             {{ form.phone(class ="form-control") }}
@@ -28,6 +32,12 @@
                         </p>
                         <p> {{ form.instagram.label }}
                             {{ form.instagram(class ="form-control") }}
+                        </p>
+                        <p> {{ form.instagram.label }}
+                            {{ form.instagram(class ="form-control") }}
+                        </p>
+                        <p> {{ form.photo.label }}
+                            {{ form.photo(class ="form-control") }}
                         </p>
 
                         <p>{{ form.submit(class="btn btn-primary mb-2") }}</p>
@@ -65,11 +75,7 @@
             </div>
         </div>
         <title>Heevents/llo from Flask</title>
-        <form data-aos="fade-up" method=post enctype=multipart/form-data>
-            {{ upl.file.label }}
-            {{ upl.file(class ="form-control") }}
-            {{ upl.save(class="btn btn-primary mb-2") }}
-        </form>
+
     </div>
 </div>
 {% endblock %}

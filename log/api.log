@@ -68,3 +68,7 @@ FROM tour ORDER BY tour.id = event.tour_id]
 2020-12-20 20:49:45,384:event:WARNING:managers - read action failed with errors: 'BaseQuery' object has no attribute 'desc'
 2020-12-20 20:49:56,308:event:WARNING:managers - read action failed with errors: 'BaseQuery' object has no attribute 'desc'
 2020-12-20 20:49:57,112:event:WARNING:managers - read action failed with errors: 'BaseQuery' object has no attribute 'desc'
+2020-12-21 18:20:28,718:event:WARNING:Вестимый Андрей - Ошибка при обновлении профиля
+2020-12-21 18:21:11,461:event:WARNING:Вестимый Андрей - Ошибка при обновлении профиля: name 'upl' is not defined
+2020-12-21 19:24:35,411:event:WARNING:Вестимый Андрей - Ошибка при удалении менеджера: 'BaseQuery' object has no attribute '_sa_instance_state'
+2020-12-21 19:25:21,484:event:WARNING:Вестимый Андрей - Ошибка при удалении менеджера: 'BaseQuery' object has no attribute '_sa_instance_state'

@@ -285,8 +285,9 @@ association = db.Table('association',
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(250), nullable=True)
     last_name = db.Column(db.String(250), nullable=True)
+    first_name = db.Column(db.String(250), nullable=True)
+    patronymic = db.Column(db.String(250), nullable=True)
     email = db.Column(db.String(255), nullable=False, unique=True)
     login = db.Column(db.String(255), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False)
@@ -294,7 +295,7 @@ class User(db.Model, UserMixin):
     roles = relationship('Role', secondary=association, back_populates='users', lazy=True)
 
     birthday = db.Column(Date)
-    phone = db.Column(db.String(255))
+    phone = db.Column(db.String(20))
     address = db.Column(db.String(255))
     photo = db.Column(db.String(255))
 
@@ -309,7 +310,7 @@ class User(db.Model, UserMixin):
     #     self.password = kwargs.get('password')
 
     def __repr__(self):
-        return self.name
+        return f"{self.last_name} {self.first_name}"
 
     def get_token(self, expire_time=24):
         expire_delta = timedelta(expire_time)

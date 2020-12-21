@@ -17,7 +17,7 @@ from event.forms import *
 
 managers = Blueprint('managers', __name__)
 
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 UPLOAD_FOLDER = 'static'
 
@@ -87,9 +87,16 @@ def add_manager():
 @managers.route('/manager/delete/<int:id>', methods=['GET'])
 @login_required
 def delete_manager(id):
-    arena = Manager.query.get(id)
-    db.session.delete(arena)
-    db.session.commit()
+    try:
+        manager = User.query.get(id)
+        role = Role.query.filter(Role.name == "manager").one()
+        manager.roles.remove(role)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        logger.warning(
+            f"{current_user.name} - Ошибка при удалении менеджера: {e}"
+        )
     return redirect(url_for('managers.get_list_manager'))
 
 
@@ -99,48 +106,33 @@ def edit_manager(id):
     # manager = Manager.query.get(id)
     manager = User.query.get(id)
     form = ManagerForm(request.form, obj=manager)
-    upl = UploadForm()
-
     if current_user.has_role('admin') or current_user.id == manager.id:
-        # print(request.form)
         if request.method == 'POST':
-            if 'save' in request.form:
-                # print(request.form)
-                file = request.files['file']
-                # if user does not select file, browser also
-                # submit an empty part without filename
+            if request.files['photo']:
+                file = request.files['photo']
                 if file.filename == '':
                     flash('No selected file')
                     return redirect(request.url)
                 try:
                     if file and allowed_file(file.filename):
                         filename = secure_filename(file.filename)
-                        # unique_filename = str(uuid.uuid4())
-
-                        # print(filename)
-
-                        # item = ManagerPhoto(url="managers/" + filename)
-                        # db.session.add(item)
-                        # db.session.commit()
-                        manager.photo = "managers/" + filename
+                        file.save(os.path.join('/home/vestimy/project/python/event/event/static/profiles', filename))
+                        form.populate_obj(manager)
+                        manager.photo = "profiles/" + filename
                         db.session.commit()
-                        file.save(os.path.join('/home/vestimy/project/python/event/event/static/managers', filename))
-                        return render_template('manager/edit_manager.html', menu='managers', item=manager, form=form, upl=upl)
+                        return render_template('manager/edit_manager.html', menu='managers', item=manager, form=form)
                 except Exception as e:
                     db.session.rollback()
-                    return error_handler
-
-            # if 'file' not in request.files:
-            #     flash('No file part')
-            #     return redirect(request.url)
-            # print(request.form)
+                    logger.warning(
+                        f"{current_user.name} - Ошибка при обновлении профиля: {e}"
+                    )
 
             form.populate_obj(manager)
             db.session.commit()
             return redirect(url_for('managers.get_list_manager'))
 
         # form.city_id.choices = [(g.id, g.name) for g in City.query.order_by('name')]
-        return render_template('manager/edit_manager.html', menu='managers', item=manager, form=form, upl=upl)
+        return render_template('manager/edit_manager.html', menu='managers', item=manager, form=form)
     return redirect(url_for("main.index"))
 
 @managers.route('/arena/img_add', methods=['GET', 'POST'])
