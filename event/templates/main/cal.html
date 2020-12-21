@@ -11,7 +11,7 @@
         <div class="row justify-content-evenly aos-init aos-animate">
 
 
-                <div id='calendar'></div>
+                <div id='calendar' data-aos="fade-up"></div>
 
 
 
@@ -34,7 +34,7 @@
       },
       height: 'auto',
       navLinks: true, // can click day/week names to navigate views
-      editable: true,
+      editable: false,
       selectable: true,
       selectMirror: true,
       nowIndicator: true,
@@ -58,6 +58,7 @@
 
   ]
     });
+
     calendar.setOption('locale', 'ru');
     calendar.render();
   });

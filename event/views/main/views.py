@@ -29,7 +29,7 @@ def calendar():
 
 
 @main.route('/get_calendar', methods=['GET', 'POST'])
-@login_required
+# @login_required
 def get_calendar():
     event = Event.query.all()
     list_json = []
