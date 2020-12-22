@@ -1,5 +1,5 @@
 import logging
-from flask import Flask, jsonify, request, redirect, url_for
+from flask import Flask, jsonify, request, redirect, url_for, render_template
 from flask_sqlalchemy import SQLAlchemy
 from .config import Config
 from flask_jwt_extended import JWTManager
@@ -60,6 +60,12 @@ def create_app():
     # app.register_blueprint(logins)
 
     jwt.init_app(app)
+
+
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template('404.html'), 404
+
     return app
 
 
@@ -127,7 +133,7 @@ def setup_logger():
     logger.setLevel(logging.DEBUG)
 
     formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
-    file_heandler = logging.FileHandler('log/api.log')
+    file_heandler = logging.FileHandler('/var/www/event/log/api.log')
     file_heandler.setFormatter(formatter)
     logger.addHandler(file_heandler)
 

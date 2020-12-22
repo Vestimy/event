@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<section id="team" class="team">
+    <div class="container aos-init aos-animate" data-aos="fade-up">
+        <div class="section-title" data-aos="zoom-out">
+            <h2>Ошибка</h2>
+
+
+        </div>
+        <div class="row justify-content-evenly aos-init aos-animate">
+            <div >
+                <h1 data-aos="fade-right">Такой страницы не существует.</h1>
+                <p data-aos="fade-left">Упс, что-то пошло не так
+                <p data-aos="fade-up"><a href="{{ url_for('main.index') }}">Перейти на главную!!!</a>
+            </div>
+        </div>
+
+
+    </div>
+
+
+</section>
+{% endblock %}

@@ -36,9 +36,9 @@ def get_calendar():
     for item in event:
         # print(type(item.date_event.strftime("%Y-%m-%d ")))
         if item.time_event:
-            start = item.date_event.strftime("%Y-%m-%d")+"T"+item.time_event.strftime("%H:%M:%S")
+            start = item.date_event.strftime("%Y-%m-%d") + "T" + item.time_event.strftime("%H:%M:%S")
         else:
-            start=item.date_event.strftime("%Y-%m-%d")
+            start = item.date_event.strftime("%Y-%m-%d")
         list_json.append({
             "title": item.artist.name,
             # "start": item.date_event.strftime("%Y-%m-%d"),
@@ -103,6 +103,11 @@ def get_calendar():
         }
     ]
     return json.dumps(list_json)
+
+
+@main.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 
 @main.errorhandler(422)
