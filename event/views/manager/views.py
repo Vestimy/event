@@ -112,7 +112,7 @@ def edit_manager(id):
                 try:
                     if file and allowed_file(file.filename):
                         filename = secure_filename(file.filename)
-                        file.save(os.path.join('/home/vestimy/project/python/event/event/static/profiles', filename))
+                        file.save(os.path.join('/var/www/event/event/static/profiles', filename))
                         form.populate_obj(manager)
                         manager.photo = "profiles/" + filename
                         db.session.commit()
@@ -120,7 +120,7 @@ def edit_manager(id):
                 except Exception as e:
                     db.session.rollback()
                     logger.warning(
-                        f"{current_user.name} - Ошибка при обновлении профиля: {e}"
+                        f"{current_user.first_name} - Ошибка при обновлении профиля: {e}"
                     )
 
             form.populate_obj(manager)
