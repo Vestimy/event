@@ -113,6 +113,7 @@ class City(db.Model):
     name = db.Column(db.String(255), nullable=False, unique=True)
     event = relationship("Event", back_populates='city')
     arena = relationship("Arena", back_populates="city")
+
     edit_city = db.Column(db.DateTime, onupdate=time_now)
     created_city = db.Column(db.DateTime, default=time_now)
 

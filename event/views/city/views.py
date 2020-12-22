@@ -37,6 +37,7 @@ def add_city():
         form.populate_obj(city)
         db.session.add(city)
         db.session.commit()
+        form = CityForm()
 
     return render_template('city/add_city.html', menu='citys', form=form)
 
