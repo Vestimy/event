@@ -22,7 +22,7 @@ mail = Mail()
 bootstrap = Bootstrap()
 
 
-from .forms import ExtendedRegisterForm
+from .forms_security import ExtendedRegisterForm
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)

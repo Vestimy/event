@@ -6,9 +6,10 @@
         <div class="row">
 
             <div class="form-group">
-                <form action="" method="post" novalidate>
-                    <p> {{ form.name.label(class='control-label') }}
-                        {{ form.name(class ="form-control") }}</p>
+                {% from "security/_macros.html" import render_field_with_errors, render_field %}
+                {% include "_messages_form.html" %}
+                <form action="" method="post">
+                    <p>{{ render_field_with_errors(form.name, class ="form-control") }}</p>
                     <p> {{ form.arena.label }}
                         {{ form.arena(class ="form-control") }}</p>
                     <p>{{ form.submit(class="btn btn-primary mb-2") }}</p>

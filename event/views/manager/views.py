@@ -135,6 +135,7 @@ def edit_manager(id):
         return render_template('manager/edit_manager.html', menu='managers', item=manager, form=form)
     return redirect(url_for("main.index"))
 
+
 @managers.route('/arena/img_add', methods=['GET', 'POST'])
 @login_required
 def arena_img_upload():
@@ -188,10 +189,9 @@ def manager_img_upload():
                 filename = secure_filename(file.filename)
                 unique_filename = str(uuid.uuid4())
 
-
                 print(filename)
 
-                item = ManagerPhoto(url="managers/"+filename)
+                item = ManagerPhoto(url="managers/" + filename)
                 db.session.add(item)
                 db.session.commit()
                 file.save(os.path.join('/home/vestimy/project/python/event/event/static/managers', filename))

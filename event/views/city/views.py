@@ -9,6 +9,7 @@ from event.models import *
 import os
 from flask import flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
+from flask_security import current_user
 
 from event.forms import *
 
@@ -20,35 +21,48 @@ def get_city():
     citys = City.query.order_by(City.name)
     return render_template('city/get_city.html', menu='citys', citys=citys)
 
+
 @citys.route('/city/<int:id>', methods=['GET'])
 def get_city_arena(id):
     arena = Arena.query.filter(Arena.city_id == id).order_by(Arena.name).all()
     return render_template('arena/get_list_arena.html', arena=arena)
 
+
 @citys.route('/city/add', methods=['get', 'post'])
 def add_city():
-    form = CityForm()
-    form.arena.choices = [(g.id, g.name) for g in Arena.query.order_by('name')]
-    if request.method == 'POST':
-        city = City(name=request.form['name'], arena=1)
+    city = City()
+    form = CityForm(request.form, obj=city)
+    if request.method == 'POST' and form.validate():
+        # city = City(name=request.form['name'])
+        form.populate_obj(city)
         db.session.add(city)
         db.session.commit()
+
     return render_template('city/add_city.html', menu='citys', form=form)
 
 
 @citys.route('/city/edit/<int:id>', methods=['get', 'post'])
 def edit_city(id):
-    city = City.query.get(id)
-    form = CityForm(request.form, obj=city)
-    if city is None:
-        raise 'Ошибка в поиске'
-    if request.method == 'POST':
-        form.populate_obj(city)
-        db.session.commit()
-        return redirect(url_for('citys.get_city'))
+    try:
+        city = City.query.get(id)
+        form = CityForm(request.form, obj=city)
+        if request.method == 'POST':
+            if city.name == request.form['name']:
+                form.populate_obj(city)
+                db.session.commit()
+                return redirect(url_for('citys.get_city'))
+            if form.validate():
+                form.populate_obj(city)
+                db.session.commit()
+                return redirect(url_for('citys.get_city'))
 
-    form.arena.choices = [(g.id, g.name) for g in Arena.query.order_by('name')]
-    return render_template('city/edit_city.html', menu='citys', form=form)
+        return render_template('city/edit_city.html', menu='citys', form=form)
+    except Exception as e:
+        logger.warning(
+            f"{current_user.id}-{current_user.name} - Ошибка в обновлении города: {e} "
+
+        )
+        db.session.rollback()
 
 
 @citys.route('/city/delete/<int:id>', methods=['GET', 'POST'])

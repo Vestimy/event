@@ -82,21 +82,23 @@ def add_event():
             artist_id = request.form['artist_id']
             date_event = request.form['date_event']
             time_event = request.form['time_event']
+            typeevent_id = request.form['typeevent_id']
             description = request.form['description']
             city_id = request.form['city_id']
 
             arena_id = request.form['arena_id']
-            manager_id = request.form['manager_id']
+            user_id = request.form['user_id']
             print(date_event)
 
             event = Event(name=name,
                           artist_id=artist_id,
                           date_event=date_event,
                           time_event=time_event,
+                          typeevent_id=typeevent_id,
                           description=description,
                           city_id=city_id,
                           arena_id=arena_id,
-                          manager_id=manager_id
+                          user_id=user_id
                           )
             print(request.form)
 
