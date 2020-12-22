@@ -33,7 +33,7 @@ def get_list_manager():
     try:
         # manager = Manager.query.order_by('name').all()
 
-        manager = User.query.filter(User.roles.any(Role.name.in_(['manager']))).all()
+        manager = User.query.filter(User.roles.any(Role.name.in_(['manager']))).order_by(User.last_name).all()
     except Exception as e:
         logger.warning(
             f'managers - reads action failed with errors: {e}'
@@ -61,11 +61,7 @@ def get_item_manager(id):
 @login_required
 def add_manager():
     form = ManagerForm()
-    # form.city_id.choices = ArenaForm.city_choices()
-    # form.city_id.choices = [(g.id, g.name) for g in City.query.order_by('name')]
     if request.method == 'POST':
-
-        # print(request.form)
         manager = Manager(name=request.form['name'],
                           phone=request.form['phone']
                           )
