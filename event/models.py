@@ -11,7 +11,7 @@ from flask_security import UserMixin, RoleMixin
 
 
 def time_now():
-    return datetime.now(timezone('UTC'))
+    return datetime.now(timezone('Europe/Moscow'))
 
 
 arena_city = db.Table('arena_city',
@@ -41,8 +41,8 @@ class Event(db.Model):
     user = relationship('User', back_populates='event')
     tour_id = db.Column(Integer, ForeignKey('tour.id'))
     tour = relationship('Tour', back_populates='event')
-    edit_event = db.Column(db.DateTime, default=datetime.utcnow)
-    created_event = db.Column(db.DateTime)
+    edit_event = db.Column(db.DateTime, onupdate=time_now)
+    created_event = db.Column(db.DateTime, default=time_now)
 
     def __repr__(self):
         # self.date_event = self.date_event.strftime("%Y %m %d")
@@ -62,16 +62,12 @@ class TypeEvent(db.Model):
     # city_id = db.Column(Integer, ForeignKey('city.id'))
     # city = relationship('City', back_populates='event')
     edit_typeevent = db.Column(db.DateTime, onupdate=time_now)
-    created_edit_typeevent = db.Column(db.DateTime, default=datetime.utcnow)
+    created_edit_typeevent = db.Column(db.DateTime, default=time_now)
 
     def __init__(self, **kwargs):
         self.name = kwargs.get('name')
         self.description = kwargs.get('description')
         self.city_id = kwargs.get('city_id')
-
-    def created_arena_time(self):
-        if self.created_arena is None:
-            return datetime.utcnow()
 
     def __repr__(self):
         # self.date_event = self.date_event.strftime("%Y %m %d")
@@ -95,6 +91,7 @@ class Artist(db.Model):
     phone_light = db.Column(db.String(255), nullable=True)
 
     photoartist = relationship("PhotoArtist", back_populates="artist")
+
     edit_artist = db.Column(db.DateTime, onupdate=time_now)
     created_artist = db.Column(db.DateTime, onupdate=time_now)
 
@@ -114,21 +111,10 @@ class City(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False, unique=True)
-    # arena = db.Column(db.String(255))
-    # arena = relationship('Arena', secondary=arena_city, back_populates='city', lazy=True)
     event = relationship("Event", back_populates='city')
     arena = relationship("Arena", back_populates="city")
     edit_city = db.Column(db.DateTime, onupdate=time_now)
-    created_city = db.Column(db.DateTime)
-
-    def __init__(self, **kwargs):
-        self.name = kwargs.get('name')
-        self.edit_city = datetime.utcnow()
-        self.created_city = self.created_city_time()
-
-    def created_city_time(self):
-        if self.created_city is None:
-            return datetime.utcnow()
+    created_city = db.Column(db.DateTime, default=time_now)
 
     def __repr__(self):
         return self.name
@@ -144,7 +130,6 @@ class Arena(db.Model):
     city = relationship("City", back_populates="arena")
     typehall_id = db.Column(Integer, ForeignKey('typehall.id'))
     typehall = relationship("TypeHall", back_populates="arena")
-    # city = relationship('City', secondary=arena_city, back_populates='arena', lazy=True)
     address = db.Column(db.String(255))
     phone_admin = db.Column(db.String(20))
     number_of_seats = db.Column(db.String(20))
@@ -159,7 +144,7 @@ class Arena(db.Model):
     event = relationship('Event', back_populates='arena')
 
     edit_arena = db.Column(db.DateTime, onupdate=time_now)
-    created_arena = db.Column(db.DateTime, default=datetime.utcnow)
+    created_arena = db.Column(db.DateTime, default=time_now)
 
     def __init__(self, **kwargs):
         self.name = kwargs.get('name')
@@ -168,7 +153,6 @@ class Arena(db.Model):
         self.typehall_id = kwargs.get('typehall_id')
         self.address = kwargs.get('address')
         self.phone_admin = kwargs.get('phone_admin')
-        # if kwargs.get('number_of_seats'):
         self.number_of_seats = kwargs.get('number_of_seats')
         self.hall_size = kwargs.get('hall_size')
         self.razgruzka = kwargs.get('razgruzka')
@@ -176,12 +160,6 @@ class Arena(db.Model):
         self.phone_sound = kwargs.get('phone_sound')
         self.light = kwargs.get('light')
         self.phone_light = kwargs.get('phone_light')
-        self.edit_arena = datetime.utcnow()
-        self.created_arena = self.created_arena_time()
-
-    def created_arena_time(self):
-        if self.created_arena is None:
-            return datetime.utcnow()
 
     def __repr__(self):
         return self.name
@@ -194,6 +172,9 @@ class TypeHall(db.Model):
     description = db.Column(db.String(500))
     # arena_id = db.Column(Integer, ForeignKey('typehall.id'))
     arena = relationship("Arena", back_populates="typehall")
+
+    edit_time = db.Column(DateTime, onupdate=time_now)
+    create_time = db.Column(DateTime, default=time_now)
 
     def __repr__(self):
         return self.name
@@ -208,7 +189,7 @@ class ImgArena(db.Model):
     arena = relationship("Arena", back_populates="imgarena")
 
     edit_imgarena = db.Column(db.DateTime, onupdate=time_now)
-    created_imgarena = db.Column(db.DateTime, default=datetime.utcnow)
+    created_imgarena = db.Column(db.DateTime, default=time_now)
 
     def __repr__(self):
         return self.url
@@ -223,7 +204,7 @@ class PhotoArtist(db.Model):
     artist = relationship("Artist", back_populates="photoartist")
 
     edit_imgarena = db.Column(db.DateTime, onupdate=time_now)
-    created_imgarena = db.Column(db.DateTime, default=datetime.utcnow)
+    created_imgarena = db.Column(db.DateTime, default=time_now)
 
     def __repr__(self):
         return self.url
@@ -237,7 +218,7 @@ class ManagerPhoto(db.Model):
     manager = relationship("Manager", back_populates="managerphoto")
 
     edit_managerphoto = db.Column(db.DateTime, onupdate=time_now)
-    created_managerphoto = db.Column(db.DateTime, default=datetime.utcnow)
+    created_managerphoto = db.Column(db.DateTime, default=time_now)
 
     def __repr__(self):
         return self.url
@@ -246,14 +227,10 @@ class ManagerPhoto(db.Model):
 class Manager(db.Model):
     __tablename__ = 'manager'
     id = db.Column(db.Integer, primary_key=True)
-    # name = db.Column(db.String(255), nullable=False, unique=True)
-    # event = relationship('Event', back_populates='manager')
     managerphoto = relationship("ManagerPhoto", back_populates="manager")
-    # user_id = db.Column(Integer, ForeignKey('users.id'))
-    # user = relationship("User", back_populates='manager')
 
-    edit_manager = db.Column(db.DateTime, onupdate=datetime.now)
-    created_manager = db.Column(db.DateTime, default=datetime.now())
+    edit_manager = db.Column(db.DateTime, onupdate=time_now)
+    created_manager = db.Column(db.DateTime, default=time_now)
 
     # def __repr__(self):
     #     return self.user
@@ -266,8 +243,8 @@ class Tour(db.Model):
     event = relationship('Event', back_populates='tour')
     # event_id = relationship('Event', back_populates='tour')
 
-    edit_tour = db.Column(db.DateTime, onupdate=datetime.now)
-    created_tour = db.Column(db.DateTime, default=datetime.now())
+    edit_tour = db.Column(db.DateTime, onupdate=time_now)
+    created_tour = db.Column(db.DateTime, default=time_now())
 
     def __repr__(self):
         return self.name
@@ -301,6 +278,9 @@ class User(db.Model, UserMixin):
     facebook = db.Column(db.String(255))
     instagram = db.Column(db.String(255))
 
+    edit_time = db.Column(DateTime, onupdate=time_now)
+    create_time = db.Column(DateTime, default=time_now)
+
     # def __init__(self, **kwargs):
     #     self.name = kwargs.get('name')
     #     self.email = kwargs.get('email')
@@ -332,6 +312,9 @@ class Role(db.Model, RoleMixin):
     name = db.Column(db.String(250), nullable=False)
     description = db.Column(db.String(255), nullable=False)
     users = relationship('User', secondary=association, back_populates='roles', lazy=True)
+
+    edit_time = db.Column(DateTime, onupdate=time_now)
+    create_time = db.Column(DateTime, default=time_now)
 
     def __repr__(self):
         return self.name
