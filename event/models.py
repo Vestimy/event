@@ -138,7 +138,7 @@ class Arena(db.Model):
     __tablename__ = 'arena'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False)
+    name = db.Column(db.String(255), nullable=False, unique=True)
     description = db.Column(db.String(500))
     city_id = db.Column(Integer, ForeignKey('city.id'))
     city = relationship("City", back_populates="arena")
@@ -146,17 +146,18 @@ class Arena(db.Model):
     typehall = relationship("TypeHall", back_populates="arena")
     # city = relationship('City', secondary=arena_city, back_populates='arena', lazy=True)
     address = db.Column(db.String(255))
-    phone_admin = db.Column(db.String(255))
-    number_of_seats = db.Column(db.String(255))
-    hall_size = db.Column(db.String(255), nullable=True)
-    razgruzka = db.Column(db.String(255), nullable=True)
+    phone_admin = db.Column(db.String(20))
+    number_of_seats = db.Column(db.String(20))
+    hall_size = db.Column(db.String(255))
+    razgruzka = db.Column(db.String(255))
     sound = db.Column(db.String(255))
-    phone_sound = db.Column(db.String(255))
+    phone_sound = db.Column(db.String(20))
     light = db.Column(db.String(255))
-    phone_light = db.Column(db.String(255))
+    phone_light = db.Column(db.String(20))
 
     imgarena = relationship("ImgArena", back_populates="arena")
     event = relationship('Event', back_populates='arena')
+
     edit_arena = db.Column(db.DateTime, onupdate=time_now)
     created_arena = db.Column(db.DateTime, default=datetime.utcnow)
 

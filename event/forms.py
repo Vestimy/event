@@ -55,7 +55,7 @@ class EventForm(Form):
         # self.manager_id.choices.insert(0, (0, u"Не выбрана"))
 
         self.user_id.choices = [(g.id, g) for g in User.query.filter(User.roles.any(Role.name.in_(["manager"])))]
-        self.user_id.choices.insert(0, (0, u"Не выбран"))
+        self.user_id.choices.insert(0, (None, u"Не выбран"))
 
         self.artist_id.choices = [(g.id, g.name) for g in Artist.query.order_by('name')]
         self.artist_id.choices.insert(0, (0, u"Не выбран"))
@@ -69,6 +69,11 @@ class EventForm(Form):
         #  выбранное поле по умолчанию
         self.arena_id.choices.insert(0, (0, u"Не выбрана"))
 
+    def validate_name(self, field):
+        event = Event.query.filter(City.name == field.data).first()
+        if event:
+            raise ValidationError(u'Такой город уже существует')
+
 
 class CityForm(Form):
     name = StringField('Город', [InputRequired()])
@@ -80,7 +85,7 @@ class CityForm(Form):
         self.arena.choices = [(g.id, g.name) for g in Arena.query.order_by('name') if not g.city_id]
 
     def validate_name(self, field):
-        city = City.query.filter(City.name==field.data).first()
+        city = City.query.filter(City.name == field.data).first()
         if city:
             raise ValidationError(u'Такой город уже существует')
 
@@ -92,7 +97,7 @@ class ArenaForm(Form):
     typehall_id = SelectField('Тип площадки', validate_choice=False)
     address = StringField('Адрес')
     phone_admin = StringField('Тел. Администратора')
-    number_of_seats = IntegerField('Количество мест')
+    number_of_seats = StringField('Количество мест')
     hall_size = StringField('Размеры зала')
     razgruzka = StringField('Разгрузка')
     sound = StringField('Местный звук')
@@ -102,24 +107,15 @@ class ArenaForm(Form):
 
     submit = SubmitField('Сохранить')
 
-
-
     def __init__(self, *args, **kwargs):
         super(ArenaForm, self).__init__(*args, **kwargs)
         self.city_id.choices = [(g.id, g.name) for g in City.query.order_by('name')]
-        self.city_id.choices.insert(0, (0, u"Не выбран"))
-
         self.typehall_id.choices = [(g.id, g.name) for g in TypeHall.query.order_by('name')]
-        # self.typehall_id.choices.insert(0, (0, u"Не выбран"))
-        # self.city_id.choices = \
-        #     [(g.id, u"%s" % g.name) for g in City.query.order_by('name')]
-        # #  выбранное поле по умолчанию
-        # self.city_id.choices.insert(0, (0, u"Не выбрана"))
-        #
-        # # self.arena_id.choices = list()
-        # self.arena_id.choices = [(g.id, u"%s" % g.name) for g in Arena.query.order_by('name')]
-        # #  выбранное поле по умолчанию
-        # self.arena_id.choices.insert(0, (0, u"Не выбрана"))
+
+    def validate_name(self, field):
+        arena = Arena.query.filter(Arena.name == field.data).first()
+        if arena:
+            raise ValidationError(u'Площадка уже существует')
 
 
 class ArtistForm(Form):
@@ -136,10 +132,8 @@ class ArtistForm(Form):
     submit = SubmitField('Сохранить')
 
     def validate_name(self, field):
-        print("Попадает сюда")
         if Artist.query.filter(name=field.data).first():
-            print("lsfkelwkfewlfkewlfk;welkf")
-            raise ValidationError(u'Login уже занят')
+            raise ValidationError('Такой артист уже существует')
 
 
 class ManagerForm(Form):
@@ -165,6 +159,3 @@ class ManagerForm(Form):
 class UploadForm(Form):
     file = FileField('Выбирите изображение')
     save = SubmitField('Сохранить')
-
-
-

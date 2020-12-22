@@ -10,7 +10,6 @@ from flask_security import login_required, roles_required, current_user, login_u
 import os
 from flask import flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
-
 from event.forms import *
 
 arenas = Blueprint('arenas', __name__)
@@ -53,26 +52,10 @@ def get_item_arena(id):
 @arenas.route('/arena/add', methods=['GET', 'POST'])
 @login_required
 def add_arena():
-    form = ArenaForm()
-    # form.city_id.choices = ArenaForm.city_choices()
-    # form.city_id.choices = [(g.id, g.name) for g in City.query.order_by('name')]
-    if request.method == 'POST':
-
-        arena = Arena(name=request.form['name'],
-                      description=request.form['description'],
-                      city_id=request.form['city_id'],
-                      typehall_id=request.form['typehall_id'],
-                      address=request.form['address'],
-                      phone_admin=request.form['phone_admin'],
-                      number_of_seats=request.form['number_of_seats'],
-                      hall_size=request.form['hall_size'],
-                      razgruzka=request.form['razgruzka'],
-                      sound=request.form['sound'],
-                      phone_sound=request.form['phone_sound'],
-                      light=request.form['light'],
-                      phone_light=request.form['phone_light']
-                      )
-
+    arena = Arena()
+    form = ArenaForm(request.form, obj=arena)
+    if request.method == 'POST' and form.validate():
+        form.populate_obj(arena)
         try:
             db.session.add(arena)
             db.session.commit()
@@ -80,12 +63,31 @@ def add_arena():
         except Exception as e:
             db.session.rollback()
             logger.warning(
-                f'arenas - wright action failed with errors: {e}'
+                f'{current_user.id}-{current_user.name} - Ошибка при добавлении площадки: {e}'
             )
 
         return redirect(url_for('arenas.get_list_arena'))
 
     return render_template('arena/add_arena.html', menu='arenas', form=form)
+
+
+@arenas.route('/arena/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_arena(id):
+    arena = Arena.query.get(id)
+    form = ArenaForm(request.form, obj=arena)
+    if request.method == 'POST':
+        if arena.name == request.form['name']:
+            form.populate_obj(arena)
+            db.session.commit()
+            return redirect(url_for('arenas.get_list_arena'))
+        if form.validate():
+            form.populate_obj(arena)
+            db.session.commit()
+            return redirect(url_for('arenas.get_list_arena'))
+
+    form.city_id.choices = [(g.id, g.name) for g in City.query.order_by('name')]
+    return render_template('arena/edit_arena.html', menu='arenas', item=arena, form=form)
 
 
 @arenas.route('/arena/delete/<int:id>', methods=['GET'])
@@ -95,25 +97,6 @@ def delete_arena(id):
     db.session.delete(arena)
     db.session.commit()
     return redirect(url_for('arenas.get_list_arena'))
-
-
-@arenas.route('/arena/edit/<int:id>', methods=['GET', 'POST'])
-@login_required
-@roles_required('admin')
-def edit_arena(id):
-    arena = Arena.query.get(id)
-    form = ArenaForm(request.form, obj=arena)
-    if request.method == 'POST':
-        # if 'file' not in request.files:
-        #     flash('No file part')
-        #     return redirect(request.url)
-        print(request.form)
-        form.populate_obj(arena)
-        db.session.commit()
-        return redirect(url_for('arenas.get_list_arena'))
-
-    form.city_id.choices = [(g.id, g.name) for g in City.query.order_by('name')]
-    return render_template('arena/edit_arena.html', menu='arenas', item=arena, form=form)
 
 
 @arenas.route('/arena/img_add', methods=['GET', 'POST'])
