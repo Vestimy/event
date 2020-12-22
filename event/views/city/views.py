@@ -58,12 +58,11 @@ def edit_city(id):
 
         return render_template('city/edit_city.html', menu='citys', form=form)
     except Exception as e:
+        db.session.rollback()
         logger.warning(
             f"{current_user.id}-{current_user.name} - Ошибка в обновлении города: {e} "
 
         )
-        db.session.rollback()
-
 
 @citys.route('/city/delete/<int:id>', methods=['GET', 'POST'])
 def delete_city(id):
