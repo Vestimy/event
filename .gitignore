@@ -18,3 +18,4 @@ event/views/main/__pycache__/
 event/views/manager/__pycache__/
 event/views/tour/__pycache__/
 migrations/versions/__pycache__/
+migrations/__pycache__/
