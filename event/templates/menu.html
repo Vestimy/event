@@ -55,18 +55,18 @@
         <!--            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
         <!--            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>-->
         <!--        </form>-->
-{% if current_user.has_role('admin') %}
+        {% if current_user.has_role('admin') %}
         <div class='my-2 my-lg-0'>
             <li class="nav-item my-2 my-2 my-sm-0">
-                <a class="nav-link my-2 my-sm-0 {% if menu == 'None' %} active {% endif %}"
+                <a class="btn btn-outline-primary {% if menu == 'None' %} active {% endif %}"
                    href="{{ url_for('admin.index') }}">Админ панель </a>
             </li>
         </div>
-    {% endif %}
+        {% endif %}
         {% if current_user.is_authenticated %}
         <div class='my-2 my-lg-0'>
             <li class="nav-item my-2 my-2 my-sm-0">
-                <a class="nav-link my-2 my-sm-0 {% if menu == 'None' %} active {% endif %}"
+                <a class="btn btn-outline-primary {% if menu == 'None' %} active {% endif %}"
                    href="{{ url_for('security.logout')}}">Выйти </a>
             </li>
 
@@ -76,7 +76,7 @@
         <div class='my-2 my-lg-0'>
             <li class="nav-item my-2 mr-sm-2">
                 <a class="btn btn-outline-primary {% if menu == 'None' %} active {% endif %}"
-                   href="{{ url_for('security.register') }}" >Регистрация</a>
+                   href="{{ url_for('security.register') }}">Регистрация</a>
             </li>
         </div>
         <div class='my-2 my-lg-0'>

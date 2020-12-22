@@ -32,11 +32,7 @@ class TourForm(Form):
 class EventForm(Form):
     name = StringField("Имя: ")
     artist_id = SelectField("Артист")
-    # date_event = DateField('Дата', format='%Y.%m.%d',
-    #                          render_kw={'placeholder': '2020.10.22 for June 20, 2015'})
     date_event = DateField('Дата', format='%Y-%m-%d')
-    #
-    # datepicker = DateTimeField('Start at')
     typeevent_id = SelectField("Тип")
     time_event = TimeField("Время мероприятия", format='%H:%M')
     description = StringField("Описание")
@@ -62,7 +58,7 @@ class EventForm(Form):
         self.city_id.choices = \
             [(g.id, u"%s" % g.name) for g in City.query.order_by('name')]
         #  выбранное поле по умолчанию
-        self.city_id.choices.insert(0, (0, u"Не выбрана"))
+        self.city_id.choices.insert(0, (None, u"Не выбрана"))
 
         # self.arena_id.choices = list()
         self.arena_id.choices = [(g.id, g.name) for g in Arena.query.order_by('name')]
