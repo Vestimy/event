@@ -32,7 +32,7 @@
                 <div class="member" data-aos="fade-left">
                     <div class="member-img">
                         {% if item.photo %}
-                        <img src="{{url_for('static', filename=item.photo) }}" class="img-fluid" alt="">
+                        <img src="{{url_for('photo_profile', filename=item.photo) }}" class="img-fluid" alt="">
                         <!--                        <img src="{{url_for('static', filename='managers/vesti_1.jpg') }}" class="img-fluid"-->
 
                         {% else %}

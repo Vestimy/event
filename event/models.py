@@ -140,27 +140,27 @@ class Arena(db.Model):
     phone_sound = db.Column(db.String(20))
     light = db.Column(db.String(255))
     phone_light = db.Column(db.String(20))
-
+    img = db.Column(String(255))
     imgarena = relationship("ImgArena", back_populates="arena")
     event = relationship('Event', back_populates='arena')
 
     edit_arena = db.Column(db.DateTime, onupdate=time_now)
     created_arena = db.Column(db.DateTime, default=time_now)
 
-    def __init__(self, **kwargs):
-        self.name = kwargs.get('name')
-        self.description = kwargs.get('description')
-        self.city_id = kwargs.get('city_id')
-        self.typehall_id = kwargs.get('typehall_id')
-        self.address = kwargs.get('address')
-        self.phone_admin = kwargs.get('phone_admin')
-        self.number_of_seats = kwargs.get('number_of_seats')
-        self.hall_size = kwargs.get('hall_size')
-        self.razgruzka = kwargs.get('razgruzka')
-        self.sound = kwargs.get('sound')
-        self.phone_sound = kwargs.get('phone_sound')
-        self.light = kwargs.get('light')
-        self.phone_light = kwargs.get('phone_light')
+    # def __init__(self, **kwargs):
+    #     self.name = kwargs.get('name')
+    #     self.description = kwargs.get('description')
+    #     self.city_id = kwargs.get('city_id')
+    #     self.typehall_id = kwargs.get('typehall_id')
+    #     self.address = kwargs.get('address')
+    #     self.phone_admin = kwargs.get('phone_admin')
+    #     self.number_of_seats = kwargs.get('number_of_seats')
+    #     self.hall_size = kwargs.get('hall_size')
+    #     self.razgruzka = kwargs.get('razgruzka')
+    #     self.sound = kwargs.get('sound')
+    #     self.phone_sound = kwargs.get('phone_sound')
+    #     self.light = kwargs.get('light')
+    #     self.phone_light = kwargs.get('phone_light')
 
     def __repr__(self):
         return self.name

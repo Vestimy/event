@@ -13,7 +13,8 @@
                 </li>
                 {% for type in typehall %}
                 <li class="nav-item">
-                    <a class="nav-link {% if type.id == id %}active{% endif %}" aria-current="page" href="{{ url_for('arenas.get_list_arena', id=type.id) }}">{{ type.name }}</a>
+                    <a class="nav-link {% if type.id == id %}active{% endif %}" aria-current="page"
+                       href="{{ url_for('arenas.get_list_arena', id=type.id) }}">{{ type.name }}</a>
                 </li>
                 {% endfor %}
 
@@ -33,8 +34,8 @@
             <div class="col-md-4">
                 <div class="member" data-aos="fade-up">
                     <div class="member-img" style="height: 100%;">
-                        {% if item.imgarena %}
-                        <img src="{{url_for('static', filename=item.imgarena[0]) }}" class="img-fluid"
+                        {% if item.img %}
+                        <img src="{{url_for('photo_arena', filename=item.img) }}" class="img-fluid"
                              alt="{{ item.name }}">
                         <!--                        <img src="{{url_for('static', filename='managers/vesti_1.jpg') }}" class="img-fluid"-->
 
@@ -62,7 +63,7 @@
                         <h5>{{ item.city }}</h5>
 
                     </div>
-<!--                    <small class="text-muted">9 mins</small>-->
+                    <!--                    <small class="text-muted">9 mins</small>-->
                 </div>
             </div>
             {% endfor %}

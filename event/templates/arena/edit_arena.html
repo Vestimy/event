@@ -12,7 +12,7 @@
                 <div class="form-group">
                     {% from "security/_macros.html" import render_field_with_errors, render_field %}
                     {% include "_messages_form.html" %}
-                    <form action="" method="post" novalidate>
+                    <form action="" method="post" enctype=multipart/form-data>
                         <p>{{ render_field_with_errors(form.name, class ="form-control") }}</p>
                         <p> {{ form.description.label }}
                             {{ form.description(class ="form-control") }}
@@ -50,6 +50,9 @@
                         <p> {{ form.phone_light.label }}
                             {{ form.phone_light(class ="form-control") }}
                         </p>
+                        <p> {{ form.img.label }}
+                            {{ form.img(class ="form-control") }}
+                        </p>
                         <p>{{ form.submit(class="btn btn-primary mb-2") }}</p>
                     </form>
                 </div>
@@ -67,10 +70,11 @@
 
 
                             <rect width="100%" height="100%" fill="#55595c"/>
-
-                            <image xlink:href="{{ url_for('static', filename=item.imgarena[0]) }}" x="0" y="0"
+                            {% if item.img %}
+                            <image xlink:href="{{ url_for('photo_arena', filename=item.img) }}" x="0" y="0"
                                    width="100%"
-                                   height="100%"/>
+                                   hphoto_arenaeight="100%"/>
+                            {% endif %}
 
 
                             <text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ item.name }}</text>

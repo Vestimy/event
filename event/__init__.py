@@ -10,19 +10,13 @@ from flask_admin.contrib.sqla import ModelView
 from flask_login import LoginManager
 
 from flask_security import SQLAlchemySessionUserDatastore, Security
-from flask_security import current_user, user_registered
+from flask_security import current_user, user_registered, login_required
 from flask_mail import Mail
 from flask_datepicker import datepicker
 from flask_bootstrap import Bootstrap
 
 UPLOAD_FOLDER = '/home/vestimy/uploads'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
-
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in Config.ALLOWED_EXTENSIONS
-
 
 db = SQLAlchemy()
 jwt = JWTManager()
@@ -81,50 +75,20 @@ def create_app():
 
     @app.route('/uploads/<filename>')
     def uploaded_file(filename):
-        return send_from_directory(app.config['UPLOAD_FOLDER'],
+        return send_from_directory(app.config['UPLOAD_PHOTO_PROFILES'],
                                    filename)
 
-    @app.route('/photo/<filename>')
-    def uploaded_photo(filename):
+    @app.route('/photo_profile/<filename>')
+    @login_required
+    def photo_profile(filename):
         return send_from_directory(Config.UPLOAD_PHOTO_PROFILES,
                                    filename)
 
-    @app.route('/upls', methods=['GET', 'POST'])
-    def upload_file():
-        if request.method == 'POST':
-            # check if the post request has the file part
-            if 'file' not in request.files:
-                flash('No file part')
-                return redirect(request.url)
-            file = request.files['file']
-            # if user does not select file, browser also
-            # submit an empty part without filename
-            if file.filename == '':
-                flash('No selected file')
-                return redirect(request.url)
-            if file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                return redirect(url_for('uploaded_file',
-                                        filename=filename))
-        return '''
-        <!doctype html>
-        <title>Upload new File</title>
-        <h1>Upload new File</h1>
-        <form method=post enctype=multipart/form-data>
-          <input type=file name=file>
-          <input type=submit value=Upload>
-        </form>
-        '''
-
-    @app.route('/gg', methods=['GET', "POST"])
-    def ggg():
-        photos = ['bahmeto.jpg', 'dvuh.jpg', 'dvuhg.jpg', 'vesti.jpg']
-        photo = []
-        for i in photos:
-            photo.append(url_for('uploaded_photo',
-                                 filename=i))
-        return json.dumps(photo)
+    @app.route('/photo_arena/<filename>')
+    @login_required
+    def photo_arena(filename):
+        return send_from_directory(Config.UPLOAD_PHOTO_ARENA,
+                                   filename)
 
     return app
 
@@ -159,8 +123,6 @@ class HomeAdminView(AdminMixIn, AdminIndexView):
     #     return redirect(url_for('security.login', next=request.url))
 
 
-# admin.index_view =
-
 admin.add_view(AdminView(Tour, db.session))
 admin.add_view(AdminView(Event, db.session))
 admin.add_view(AdminView(Artist, db.session))
@@ -178,14 +140,7 @@ admin.add_view(AdminView(TypeEvent, db.session))
 admin.add_view(AdminView(User, db.session))
 admin.add_view(AdminView(Role, db.session))
 
-# from .models import Role, User
-
 user_datastore = SQLAlchemySessionUserDatastore(db.session, User, Role)
-
-
-# @login.user_loader
-# def load_user(user_id):
-#     return User.get(user_id)
 
 
 def setup_logger():
@@ -200,5 +155,9 @@ def setup_logger():
     return logger
 
 
-# db.create_all()
 logger = setup_logger()
+
+
+def allowed_photo_profile(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in Config.ALLOWED_PHOTO

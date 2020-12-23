@@ -1,6 +1,6 @@
 import os
 from flask import Blueprint, jsonify, request, render_template, redirect
-from event import logger, config
+from event import logger, config, allowed_photo_profile
 
 from flask_security import login_required, roles_required, current_user, login_user, roles_accepted
 from flask import flash, request, redirect, url_for
@@ -10,7 +10,7 @@ from event.forms import *
 
 managers = Blueprint('managers', __name__)
 
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_PHOTO = set(['png', 'jpg', 'jpeg', 'gif'])
 
 UPLOAD_FOLDER = 'static'
 
@@ -99,11 +99,11 @@ def edit_manager(id):
                     flash('No selected file')
                     return redirect(request.url)
                 try:
-                    if file and allowed_file(file.filename):
+                    if file and allowed_photo_profile(file.filename):
                         filename = secure_filename(file.filename)
-                        file.save(os.path.join('/var/www/event/event/static/profiles', filename))
+                        file.save(os.path.join(config.Config.UPLOAD_PHOTO_PROFILES, filename))
                         form.populate_obj(manager)
-                        manager.photo = "profiles/" + filename
+                        manager.photo = filename
                         db.session.commit()
                         return render_template('manager/edit_manager.html', menu='managers', item=manager, form=form)
                 except Exception as e:
@@ -111,7 +111,7 @@ def edit_manager(id):
                     logger.warning(
                         f"{current_user.first_name} - Ошибка при обновлении профиля: {e}"
                     )
-
+                    return redirect(request.url)
             form.populate_obj(manager)
             db.session.commit()
             return redirect(url_for('managers.get_list_manager'))
@@ -120,31 +120,6 @@ def edit_manager(id):
     return redirect(url_for("main.index"))
 
 
-@managers.route('/arena/img_add', methods=['GET', 'POST'])
-@login_required
-def arena_img_upload():
-    if request.method == 'POST':
-        # check if the post request has the file part
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
-        # if user does not select file, browser also
-        # submit an empty part without filename
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            item = ImgArena(url=filename)
-            db.session.add(item)
-            db.session.commit()
-            file.save(os.path.join('/home/vestimy/project/python/event/event/static', filename))
-            return redirect(url_for('arenas.arena_img_upload',
-                                    filename=filename))
-
-    else:
-        return render_template('upload.html', menu='arenas')
 
 
 @managers.errorhandler(422)

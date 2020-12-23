@@ -1,4 +1,6 @@
 import os, inspect, sys
+
+
 class Config:
     PATH = sys.path[0]
     FILENAME = inspect.getframeinfo(inspect.currentframe()).filename
@@ -8,8 +10,10 @@ class Config:
     # SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:user1816@touremanager.ru/mydb'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     UPLOAD_FOLDER = 'uploads'
-    UPLOAD_PHOTO_PROFILES = 'profiles'
+    UPLOAD_PHOTO_PROFILES = PATH_EVENTS + '/uploads/profiles'
+    UPLOAD_PHOTO_ARENA = PATH_EVENTS + '/uploads/arena'
     ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+    ALLOWED_PHOTO = set(['png', 'jpg', 'jpeg', 'gif'])
     DEBUG = True
     SECRET_KEY = '26edec8e275e43cab5777cb9050906f9'
     ADMIN_PASSWD_HASH = '7ULJ61PMMGBJ1KWQB64P7D'

@@ -101,6 +101,7 @@ class ArenaForm(Form):
     light = StringField('Местный свет')
     phone_light = StringField('Тел. Свет')
 
+    img = FileField("Фото")
     submit = SubmitField('Сохранить')
 
     def __init__(self, *args, **kwargs):

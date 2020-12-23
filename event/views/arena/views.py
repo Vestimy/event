@@ -1,8 +1,10 @@
+import os
 from flask import Blueprint, jsonify, request, render_template, redirect
-from event import logger, config
+from event import logger, config, allowed_photo_profile
 from flask_security import login_required, roles_required, current_user, login_user
 from flask import flash, request, redirect, url_for
 from event.forms import *
+from werkzeug.utils import secure_filename
 
 arenas = Blueprint('arenas', __name__)
 
@@ -52,6 +54,26 @@ def add_arena():
     arena = Arena()
     form = ArenaForm(request.form, obj=arena)
     if request.method == 'POST' and form.validate():
+        if request.files['img']:
+            file = request.files['img']
+            if file.filename == '':
+                flash('No selected file')
+                return redirect(request.url)
+            try:
+                if file and allowed_photo_profile(file.filename):
+                    filename = secure_filename(file.filename)
+                    file.save(os.path.join(config.Config.UPLOAD_PHOTO_ARENA, filename))
+                    form.populate_obj(arena)
+                    db.session.add(arena)
+                    db.session.commit()
+                    arena.img = filename
+                    db.session.commit()
+                    return redirect(url_for('arenas.get_list_arena'))
+            except Exception as e:
+                logger.warning(
+                    f"{filename}-Ошибка файла: {e}"
+                )
+                return 404
         form.populate_obj(arena)
         try:
             db.session.add(arena)
@@ -73,16 +95,34 @@ def edit_arena(id):
     arena = Arena.query.get(id)
     form = ArenaForm(request.form, obj=arena)
     if request.method == 'POST':
+        if request.files['img']:
+            file = request.files['img']
+            if file.filename == '':
+                flash('No selected file')
+                return redirect(request.url)
+            try:
+                if file and allowed_photo_profile(file.filename):
+                    filename = secure_filename(file.filename)
+                    file.save(os.path.join(config.Config.UPLOAD_PHOTO_ARENA, filename))
+            except Exception as e:
+                logger.warning(
+                    f"{filename}-Ошибка файла: {e}"
+                )
+                return 404
         if arena.name == request.form['name']:
             form.populate_obj(arena)
+            if request.files['img']:
+                arena.img = filename
             db.session.commit()
             return redirect(url_for('arenas.get_list_arena'))
         if form.validate():
             form.populate_obj(arena)
+            if request.files['img']:
+                arena.img = filename
             db.session.commit()
             return redirect(url_for('arenas.get_list_arena'))
 
-    form.city_id.choices = [(g.id, g.name) for g in City.query.order_by('name')]
+    # form.city_id.choices = [(g.id, g.name) for g in City.query.order_by('name')]
     return render_template('arena/edit_arena.html', menu='arenas', item=arena, form=form)
 
 
