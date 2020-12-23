@@ -1,5 +1,8 @@
-import os, inspect
+import os, inspect, sys
 class Config:
+    PATH = sys.path[0]
+    FILENAME = inspect.getframeinfo(inspect.currentframe()).filename
+    PATH_EVENTS = os.path.dirname(os.path.abspath(FILENAME))
     # SQLALCHEMY_DATABASE_URI = 'sqlite:///../db.sqlite'
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:@localhost/mydb'
     # SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:user1816@touremanager.ru/mydb'

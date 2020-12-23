@@ -18,9 +18,6 @@ from flask_bootstrap import Bootstrap
 UPLOAD_FOLDER = '/home/vestimy/uploads'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
-FILENAME = inspect.getframeinfo(inspect.currentframe()).filename
-PATH = os.path.dirname(os.path.abspath(FILENAME))
-
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -196,7 +193,7 @@ def setup_logger():
     logger.setLevel(logging.DEBUG)
 
     formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
-    file_heandler = logging.FileHandler(sys.path[0]+'/log/api.log')
+    file_heandler = logging.FileHandler(Config.PATH + '/log/api.log')
     file_heandler.setFormatter(formatter)
     logger.addHandler(file_heandler)
 
