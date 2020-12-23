@@ -1,10 +1,11 @@
-import os
+import os, inspect
 class Config:
     # SQLALCHEMY_DATABASE_URI = 'sqlite:///../db.sqlite'
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:@localhost/mydb'
     # SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:user1816@touremanager.ru/mydb'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     UPLOAD_FOLDER = 'uploads'
+    UPLOAD_PHOTO_PROFILES = 'profiles'
     ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
     DEBUG = True
     SECRET_KEY = '26edec8e275e43cab5777cb9050906f9'

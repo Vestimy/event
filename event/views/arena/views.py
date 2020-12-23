@@ -1,15 +1,7 @@
 from flask import Blueprint, jsonify, request, render_template, redirect
 from event import logger, config
-from werkzeug.utils import secure_filename
-from event import logger, config
-from event.models import *
-# from flask_jwt_extended import jwt_required, get_jwt_identity
-# from blog.base_view import BaseView
-# from blog.utils import upload_file
 from flask_security import login_required, roles_required, current_user, login_user
-import os
 from flask import flash, request, redirect, url_for
-from werkzeug.utils import secure_filename
 from event.forms import *
 
 arenas = Blueprint('arenas', __name__)
@@ -45,7 +37,12 @@ def get_list_arena():
 @arenas.route('/arena/<int:id>', methods=['GET'])
 @login_required
 def get_item_arena(id):
-    arena = Arena.query.get(id)
+    try:
+        arena = Arena.query.get(id)
+    except Exception as e:
+        logger.warning(
+            f"{current_user.last_name} - Ошибка при загрузке всех площадок: {e}"
+        )
     return render_template('arena/item_arena.html', menu='arenas', item=arena)
 
 
@@ -59,7 +56,6 @@ def add_arena():
         try:
             db.session.add(arena)
             db.session.commit()
-
         except Exception as e:
             db.session.rollback()
             logger.warning(
@@ -97,36 +93,6 @@ def delete_arena(id):
     db.session.delete(arena)
     db.session.commit()
     return redirect(url_for('arenas.get_list_arena'))
-
-
-@arenas.route('/arena/img_add', methods=['GET', 'POST'])
-@login_required
-def arena_img_upload():
-    if request.method == 'POST':
-        # check if the post request has the file part
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
-        # if user does not select file, browser also
-        # submit an empty part without filename
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            filename = 'img/arena/' + filename
-            print(filename)
-
-            item = ImgArena(url=filename)
-            db.session.add(item)
-            db.session.commit()
-            file.save(os.path.join('/home/vestimy/project/python/event/event/static', filename))
-            return redirect(url_for('arenas.arena_img_upload',
-                                    filename=filename))
-
-    else:
-        return render_template('upload.html', menu='arenas')
 
 
 @arenas.errorhandler(422)

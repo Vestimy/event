@@ -1,5 +1,7 @@
 import logging
-from flask import Flask, jsonify, request, redirect, url_for, render_template
+import os, inspect, sys
+from werkzeug.utils import secure_filename
+from flask import Flask, jsonify, flash, request, redirect, url_for, render_template, send_from_directory, json
 from flask_sqlalchemy import SQLAlchemy
 from .config import Config
 from flask_jwt_extended import JWTManager
@@ -13,6 +15,18 @@ from flask_mail import Mail
 from flask_datepicker import datepicker
 from flask_bootstrap import Bootstrap
 
+UPLOAD_FOLDER = '/home/vestimy/uploads'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
+FILENAME = inspect.getframeinfo(inspect.currentframe()).filename
+PATH = os.path.dirname(os.path.abspath(FILENAME))
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in Config.ALLOWED_EXTENSIONS
+
+
 db = SQLAlchemy()
 jwt = JWTManager()
 login = LoginManager()
@@ -21,8 +35,9 @@ security = Security()
 mail = Mail()
 bootstrap = Bootstrap()
 
-
 from .forms_security import ExtendedRegisterForm
+
+
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
@@ -61,10 +76,58 @@ def create_app():
 
     jwt.init_app(app)
 
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
     @app.errorhandler(404)
     def page_not_found(e):
         return render_template('404.html'), 404
+
+    @app.route('/uploads/<filename>')
+    def uploaded_file(filename):
+        return send_from_directory(app.config['UPLOAD_FOLDER'],
+                                   filename)
+
+    @app.route('/photo/<filename>')
+    def uploaded_photo(filename):
+        return send_from_directory(Config.UPLOAD_PHOTO_PROFILES,
+                                   filename)
+
+    @app.route('/upls', methods=['GET', 'POST'])
+    def upload_file():
+        if request.method == 'POST':
+            # check if the post request has the file part
+            if 'file' not in request.files:
+                flash('No file part')
+                return redirect(request.url)
+            file = request.files['file']
+            # if user does not select file, browser also
+            # submit an empty part without filename
+            if file.filename == '':
+                flash('No selected file')
+                return redirect(request.url)
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                return redirect(url_for('uploaded_file',
+                                        filename=filename))
+        return '''
+        <!doctype html>
+        <title>Upload new File</title>
+        <h1>Upload new File</h1>
+        <form method=post enctype=multipart/form-data>
+          <input type=file name=file>
+          <input type=submit value=Upload>
+        </form>
+        '''
+
+    @app.route('/gg', methods=['GET', "POST"])
+    def ggg():
+        photos = ['bahmeto.jpg', 'dvuh.jpg', 'dvuhg.jpg', 'vesti.jpg']
+        photo = []
+        for i in photos:
+            photo.append(url_for('uploaded_photo',
+                                 filename=i))
+        return json.dumps(photo)
 
     return app
 
@@ -133,7 +196,7 @@ def setup_logger():
     logger.setLevel(logging.DEBUG)
 
     formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
-    file_heandler = logging.FileHandler('/var/www/event/log/api.log')
+    file_heandler = logging.FileHandler(sys.path[0]+'/log/api.log')
     file_heandler.setFormatter(formatter)
     logger.addHandler(file_heandler)
 
@@ -142,7 +205,3 @@ def setup_logger():
 
 # db.create_all()
 logger = setup_logger()
-
-
-
-
