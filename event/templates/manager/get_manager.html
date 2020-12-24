@@ -1,17 +1,10 @@
 {% extends "base.html" %}
-
-
 {% block content %}
-
 <section id="team" class="team">
     <div class="container aos-init aos-animate" data-aos="fade-up">
-
         <div class="section-title" data-aos="zoom-out">
             <h2>Менеджеры</h2>
-            <!--                        <p>Менеджеры</p>-->
         </div>
-
-
         <div class="row aos-init aos-animate">
             {% for item in managers %}
             <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
@@ -19,18 +12,12 @@
                     <div class="member-img">
                         {% if item.photo %}
                         <img src="{{url_for('photo_profile', filename=item.photo) }}" class="img-fluid" alt="">
-                        <!--                        <img src="{{url_for('static', filename='managers/vesti_1.jpg') }}" class="img-fluid"-->
-
                         {% else %}
-
                         <img src="{{url_for('static', filename='assets/img/team/portfolio.jpeg') }}" class="img-fluid"
                              alt="">
                         {% endif %}
                         <div class="social">
-                            <!--                            <a href=""><i class="icofont-twitter"></i></a>-->
-
                             {% if (current_user.has_role('admin') or current_user.id == item.id) %}
-
                             <a href="{{ url_for('managers.edit_manager', id=item.id) }}"><i
                                     class="icofont-edit"></i></a>
                             {% endif %}
@@ -48,17 +35,11 @@
                             <a type="button" data-bs-toggle="modal"
                                data-bs-target="#name{{ item.id }}"><i
                                     class="icofont-ui-delete"></i></a>
-                            <!--                            <a href=""><i-->
-                            <!--                                    class="icofont-ui-delete" data-bs-toggle="modal" data-bs-target="#exampleModal"></i></a>-->
-
                             {% endif %}
-
-                            <!--                            <a href=""><i class="icofont-linkedin"></i></a>-->
                         </div>
                     </div>
                     <div class="member-info">
                         <h4>{{ item.last_name }} {{ item.first_name }}</h4>
-                        <!--                        <span>Chief Executive Officer</span>-->
                         {% if item.phone %}
                         <span class="icofont-mobile-phone">{{ item.phone }}</span>
                         {% endif %}
@@ -90,13 +71,9 @@
                 </div>
             </div>
             {% endfor %}
-
         </div>
-
-
     </div>
-</section><!-- End Team Section -->
-
+</section>
 <script>
 $(document).ready(function(){
     $("#myBtn").click(function(){

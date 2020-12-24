@@ -7,70 +7,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico')}}" type="image/png">
-    <!-- Bootstrap CSS -->
-    <!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"-->
-    <!--          integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
-    <!--    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='sticky-footer.css') }}">-->
-    <!--    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/album.css') }}">-->
-    <!--    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/album/">-->
+    {% include "style.html" %}
 
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-    <!--    <link href="{{ url_for('static', filename='css/signin.css') }}" rel="stylesheet">-->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/eventCalendar.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/eventCalendar_theme_responsive.css') }}">
-    <!--        <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/aos/aos.css') }}">-->
-    <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
-    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css"/>
-    <link href="{{ url_for('static', filename='assets/vendor/icofont/icofont.min.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='calendar/css/main.css') }}" rel='stylesheet'/>
-    <!--    <link href="{{ url_for('static', filename='calendar/css/main.min.css') }}" rel='stylesheet' />-->
-
-    <script
-            src="https://code.jquery.com/jquery-3.4.1.min.js"
-            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-            crossorigin="anonymous"></script>
-    {% block head %}
-    <title>Toure Manager</title>
-
-    {% endblock %}
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-  #calendar {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
-footer {
-    position: fixed;
-    height: 50px;
-    bottom: 0;
-    width: 100%;
-    padding: 1rem 0;
-color: #727272;
-text-align: center;
-background-color: #f9f9f9;
-}
-
-
-    </style>
-    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/album.css') }}">
-    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/blog.css') }}">
     <!--    {% import 'admin/static.html' as admin_static with context %}-->
 </head>
 <body data-aos-easing="ease" data-aos-duration="1000" data-aos-delay="0">

@@ -1,29 +1,53 @@
 {% extends "base.html" %}
 {% block content %}
 
-    <div class="container aos-init aos-animate" data-aos="fade-up">
-        <div class="row justify-content-evenly aos-init aos-animate">
-{% from "security/_macros.html" import render_field_with_errors, render_field %}
-{% include "security/_messages.html" %}
+<div class="container aos-init aos-animate" data-aos="fade-up">
+    <div class="row justify-content-evenly aos-init aos-animate">
+        {% from "security/_macros.html" import render_field_with_errors, render_field %}
+        {% include "security/_messages.html" %}
 
-<!--<h1>{{ _('Login') }}</h1>-->
-<form class="form-signin" action="{{ url_for_security('login') }}" method="POST" name="login_user_form" data-aos="fade-up">
-<!--    <img class="mb-4" src="{{ url_for('static', filename='/assets/brand/bootstrap-solid.svg') }}" alt="" width="72" height="72">-->
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+        <!--<h1>{{ _('Login') }}</h1>-->
+        <form class="login-form" action="{{ url_for_security('login') }}" method="POST" name="login_user_form"
+              data-aos="fade-up">
 
-    {{ login_user_form.hidden_tag() }}
-    {{ render_field_with_errors(login_user_form.email, class='form-control') }}
-    {{ render_field_with_errors(login_user_form.password, class='form-control') }}
-    <div class="checkbox mb-3">
-    <label>
-    {{ render_field_with_errors(login_user_form.remember) }}
-    </label>
-  </div>
-    {{ render_field(login_user_form.next) }}
-    {{ render_field(login_user_form.submit, class="btn btn-lg btn-primary btn-block") }}
-</form>
-<!--{% include "security/_menu.html" %}-->
-        </div>
 
+            {{ login_user_form.hidden_tag() }}
+            <!--    <img class="mb-4" src="{{ url_for('static', filename='/assets/brand/bootstrap-solid.svg') }}" alt="" width="72" height="72">-->
+            <div class="login-wrap">
+                <p class="login-img"><i class="icon_lock_alt"></i></p>
+                {% if login_user_form.email.errors %}
+                {% for error in login_user_form.email.errors %}
+                <p class="alert-danger">{{ error }}</p>
+                {% endfor %}
+                {% endif %}
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="icon_profile"></i></span>
+                    {{ login_user_form.email(class='form-control')}}
+                </div>
+
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="icon_key_alt"></i></span>
+                    {{ login_user_form.password(class='form-control') }}
+                </div>
+                {% if login_user_form.password.errors %}
+                {% for error in login_user_form.password.errors %}
+                <p class="alert-danger">{{ error }}</p>
+                {% endfor %}
+                {% endif %}
+                <label class="checkbox">
+                    {{ login_user_form.remember.label }}
+                    {{ login_user_form.remember }}
+                    <span class="pull-right"> <a href="#"> Forgot Password?</a></span>
+                </label>
+
+                {{ render_field(login_user_form.next) }}
+                {{ render_field(login_user_form.submit, class="btn btn-primary btn-lg btn-block") }}
+                <a href="{{ url_for('security.register') }}" class="btn btn-info btn-lg btn-block"
+                   type="submit">Signup</a>
+            </div>
+        </form>
+        <!--{% include "security/_menu.html" %}-->
     </div>
+
+</div>
 {% endblock %}

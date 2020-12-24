@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark dark-bg">
     <a class="navbar-brand" href="#">{{ "touremanager".upper() }}</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,44 +49,25 @@
             </li>
             {% endif %}
 
+
         </ul>
 
         <!--        <form class="form-inline my-2 my-lg-0">-->
         <!--            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
         <!--            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>-->
         <!--        </form>-->
-        {% if current_user.has_role('admin') %}
-        <div class='my-2 my-lg-0'>
-            <li class="nav-item my-2 my-2 my-sm-0">
-                <a class="btn btn-outline-primary {% if menu == 'None' %} active {% endif %}"
-                   href="{{ url_for('admin.index') }}">Админ панель </a>
-            </li>
-        </div>
-        {% endif %}
-        {% if current_user.is_authenticated %}
-        <div class='my-2 my-lg-0'>
-            <li class="nav-item my-2 my-2 my-sm-0">
-                <a class="btn btn-outline-primary {% if menu == 'None' %} active {% endif %}"
-                   href="{{ url_for('security.logout')}}">Выйти </a>
-            </li>
 
-
-        </div>
-        {% else %}
-        <div class='my-2 my-lg-0'>
-            <li class="nav-item my-2 mr-sm-2">
-                <a class="btn btn-outline-primary {% if menu == 'None' %} active {% endif %}"
-                   href="{{ url_for('security.register') }}">Регистрация</a>
-            </li>
-        </div>
-        <div class='my-2 my-lg-0'>
-            <li class="nav-item my-2 mr-sm-2">
-                <a class="btn btn-outline-primary {% if menu == 'None' %} active {% endif %}"
-                   href="{{ url_for('security.login')}}">Войти</a>
-            </li>
-        </div>
-        {% endif %}
     </div>
+    {% if current_user.is_authenticated %}
+    {% include "menu_profile.html" %}
+    {% else %}
+    <div class='my-2 my-lg-0'>
+        <li class="nav-item my-2 mr-sm-2">
+            <a class="btn btn-outline-primary {% if menu == 'None' %} active {% endif %}"
+               href="{{ url_for('security.login')}}">Войти</a>
+        </li>
+    </div>
+    {% endif %}
 
 
 </nav>
