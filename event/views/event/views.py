@@ -45,17 +45,24 @@ def allowed_file(filename):
 @events.route('/events/', methods=['GET'])
 def get_event():
     try:
-        # user_id = get_jwt_identity()
-        # events = Event.get_list()
-
         event = Event.query.order_by(Event.date_event.desc())
+        type_event = TypeEvent.query.order_by('name').all()
+        id = None
     except Exception as e:
         logger.warning(
-            f'user: {user_id} tutorials - read action failed with errors: {e}'
+            f'user: {current_user.last_name} Events - read action failed with errors: {e}'
         )
         return {'message': str(e)}, 400
-    # return videos
-    return render_template('event/get_event.html', menu='events', events=event)
+    if request.args.get('id'):
+        try:
+            id = int(request.args.get('id'))
+        except Exception as e:
+            logger.warning(
+                f'arenas -  action failed with errors: {e}'
+            )
+        if isinstance(id, int):
+            event = Event.query.filter(Event.typeevent_id == id).order_by('name').all()
+    return render_template('event/get_event.html', id=id, menu='events', events=event, type_event=type_event)
 
 
 @events.route('/events/<int:id>', methods=['GET'])
@@ -115,7 +122,7 @@ def add_event():
     # form..choices = [(g.id, g.name) for g in City.query.order_by('name')]
     # form.managers.choices = [(g.id, g.name) for g in Manager.query.order_by('name')]
     # form.arenas.choices = [(g.id, g.title) for g in Arena.query.order_by('title')]
-    return render_template('event/add_event.html', form=form)
+    return render_template('event/add_event.html',menu='events', form=form)
 
 
 @events.route('/events/edit/<int:id>', methods=['GET', 'POST'])

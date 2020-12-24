@@ -45,9 +45,9 @@
                             <a href="{{ item.instagram }}"><i class="icofont-instagram"></i></a>
                             {% endif %}
                             {% if current_user.has_role('admin') %}
-                            <a type="button" class="icofont-ui-delete" data-bs-toggle="modal"
-                               data-bs-target="#name{{ item.id }}">
-                            </a>
+                            <a type="button" data-bs-toggle="modal"
+                               data-bs-target="#name{{ item.id }}"><i
+                                    class="icofont-ui-delete"></i></a>
                             <!--                            <a href=""><i-->
                             <!--                                    class="icofont-ui-delete" data-bs-toggle="modal" data-bs-target="#exampleModal"></i></a>-->
 
@@ -103,6 +103,7 @@ $(document).ready(function(){
         $("#myModal").modal();
     });
 });
+
 
 </script>
 {% endblock %}
