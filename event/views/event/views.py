@@ -73,7 +73,7 @@ def get_item_event(id):
         event = Event.query.get(id)
     except Exception as e:
         logger.warning(
-            f'user: {user_id} tutorials - read action failed with errors: {e}'
+            f'user: {current_user.last_name} tutorials - read action failed with errors: {e}'
         )
         return {'message': str(e)}, 400
     # return videos

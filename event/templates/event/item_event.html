@@ -23,7 +23,7 @@
 
                         <rect width="100%" height="100%" fill="#55595c"/>
                         {% if item.artist.img %}
-                        <image xlink:href="{{ url_for('static', filename=item.artist.img) }}" x="0" y="0"
+                        <image xlink:href="{{ url_for('photo_artist', filename=item.artist.img) }}" x="0" y="0"
                                width="100%" height="100%"/>
                         {% endif %}
 
