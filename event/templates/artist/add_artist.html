@@ -2,51 +2,12 @@
 
 {% block content %}
 <div class="album py-5 bg-light">
-    <div class="container">
-        <div class="row">
-{% from "_macros_form.html" import render_field_with_errors, render_field %}
-            {% include "_messages_form.html" %}
-            <div class="form-group">
-                <form action="" method="post" novalidate>
-                    <p> {{ form.name.label(class='control-label') }}
-                        {{ form.name(class="form-control") }}
-                    </p>
-                    <p>
-                        {{ form.administrator.label }}
-                        {{ form.administrator(class ="form-control") }}
-                    </p>
-                    <p>
-                        {{ form.phone_administrator.label }}
-                        {{ form.phone_administrator(class ="form-control") }}
-                    </p>
-                    <p>
-                        {{ form.sound_engineer.label }}
-                        {{ form.sound_engineer(class ="form-control") }}
-                    </p>
-                    <p>
-                        {{ form.phone_sound.label }}
-                        {{ form.phone_sound(class ="form-control") }}
-                    </p>
-                    <p>
-                        {{ form.monitor_engineer.label }}
-                        {{ form.monitor_engineer(class ="form-control") }}
-                    </p>
-                    <p>
-                        {{ form.phone_monitor.label }}
-                        {{ form.phone_monitor(class ="form-control") }}
-                    </p>
-                    <p>
-                        {{ form.light.label }}
-                        {{ form.light(class ="form-control") }}
-                    </p>
-                    <p>
-                        {{ form.phone_light.label }}
-                        {{ form.phone_light(class ="form-control") }}
-                    </p>
-                    <p>
-                        {{ form.submit(class="btn btn-primary mb-2") }}
-                    </p>
-                </form>
+    <div class="container aos-init aos-animate" data-aos="fade-up">
+        <div class="row  aos-init aos-animate">
+
+            <div class="form-group" data-aos="fade-up">
+                {% include "artist/form.html" %}
+
             </div>
         </div>
     </div>

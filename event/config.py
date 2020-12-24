@@ -12,6 +12,7 @@ class Config:
     UPLOAD_FOLDER = 'uploads'
     UPLOAD_PHOTO_PROFILES = PATH_EVENTS + '/uploads/profiles'
     UPLOAD_PHOTO_ARENA = PATH_EVENTS + '/uploads/arena'
+    UPLOAD_PHOTO_ARTIST = PATH_EVENTS + '/uploads/artist'
     ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
     ALLOWED_PHOTO = set(['png', 'jpg', 'jpeg', 'gif'])
     DEBUG = True

@@ -53,7 +53,7 @@ class EventForm(Form):
         self.user_id.choices = [(g.id, g) for g in User.query.filter(User.roles.any(Role.name.in_(["manager"])))]
         self.user_id.choices.insert(0, (None, u"Не выбран"))
 
-        self.artist_id.choices = [(g.id, g.name) for g in Artist.query.order_by('name')]
+        self.artist_id.choices = [(g.id, f'{g.last_name} {g.first_name}') for g in Artist.query.order_by('last_name')]
         self.artist_id.choices.insert(0, (0, u"Не выбран"))
         self.city_id.choices = \
             [(g.id, u"%s" % g.name) for g in City.query.order_by('name')]
@@ -116,20 +116,23 @@ class ArenaForm(Form):
 
 
 class ArtistForm(Form):
-    name = StringField('Артист', validators=[])
+    last_name = StringField('Фамилия')
+    first_name = StringField('Имя')
     administrator = StringField('Администратор')
     phone_administrator = StringField('Тел. Администратора')
     sound_engineer = StringField('Звукорежиссер')
-    phone_sound = StringField('Тел. Звукорежиссера')
+    phone_sound = StringField('Тел.')
     monitor_engineer = StringField('Мон. Звукорежиссер')
-    phone_monitor = StringField('Тел. Мон. Звукорежиссера')
-    light = StringField('Световик')
-    phone_light = IntegerField('Тел. Световика')
+    phone_monitor = StringField('Тел.')
+    light = StringField('Художник по свету')
+    phone_light = StringField('Тел. ')
+    img = FileField("Фото")
 
     submit = SubmitField('Сохранить')
 
     def validate_name(self, field):
-        if Artist.query.filter(name=field.data).first():
+        artist = Artist.query.filter(Artist.name == field.data).first()
+        if artist:
             raise ValidationError('Такой артист уже существует')
 
 

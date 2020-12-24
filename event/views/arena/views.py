@@ -8,15 +8,6 @@ from werkzeug.utils import secure_filename
 
 arenas = Blueprint('arenas', __name__)
 
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
-
-UPLOAD_FOLDER = 'static'
-
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
-
 
 @arenas.route('/arena', methods=['GET'])
 @login_required
@@ -81,7 +72,7 @@ def add_arena():
         except Exception as e:
             db.session.rollback()
             logger.warning(
-                f'{current_user.id}-{current_user.name} - Ошибка при добавлении площадки: {e}'
+                f'{current_user.id}-{current_user.last_name} - Ошибка при добавлении площадки: {e}'
             )
 
         return redirect(url_for('arenas.get_list_arena'))

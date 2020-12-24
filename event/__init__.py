@@ -90,6 +90,12 @@ def create_app():
         return send_from_directory(Config.UPLOAD_PHOTO_ARENA,
                                    filename)
 
+    @app.route('/photo_artist/<filename>')
+    @login_required
+    def photo_artist(filename):
+        return send_from_directory(Config.UPLOAD_PHOTO_ARTIST,
+                                   filename)
+
     return app
 
 

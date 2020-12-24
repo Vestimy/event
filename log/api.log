@@ -90,3 +90,25 @@ FROM tour ORDER BY tour.id = event.tour_id]
 (Background on this error at: http://sqlalche.me/e/13/gkpj)
 2020-12-23 15:20:36,327:event:WARNING:Андрей - Ошибка при обновлении профиля: 'set' object is not callable
 2020-12-23 15:37:05,352:event:WARNING:Андрей - Ошибка при обновлении профиля: 'set' object is not callable
+2020-12-23 21:47:51,935:event:WARNING:Voronezhsky_dramatichesky_teatr_2008.jpg-Ошибка файла: Could not build url for endpoint 'artist.get_artist'. Did you mean 'artists.get_artist' instead?
+2020-12-23 21:50:22,685:event:WARNING:1355832_66716607.png-Ошибка файла: Could not build url for endpoint 'artist.get_artist'. Did you mean 'artists.get_artist' instead?
+2020-12-23 23:46:09,551:event:WARNING:5-Вестимый - Ошибка при обнвлении артиста: (pymysql.err.IntegrityError) (1062, "Duplicate entry 'Валерий Меладзе' for key 'artist.name'")
+[SQL: UPDATE artist SET name=%(name)s, edit_artist=%(edit_artist)s WHERE artist.id = %(artist_id)s]
+[parameters: {'name': 'Валерий Меладзе', 'edit_artist': datetime.datetime(2020, 12, 23, 23, 46, 9, 540348, tzinfo=<DstTzInfo 'Europe/Moscow' MSK+3:00:00 STD>), 'artist_id': 11}]
+(Background on this error at: http://sqlalche.me/e/13/gkpj)
+2020-12-23 23:47:33,134:event:WARNING:5-Вестимый - Ошибка при обнвлении артиста: (pymysql.err.IntegrityError) (1062, "Duplicate entry 'Валерий Меладзе' for key 'artist.name'")
+[SQL: UPDATE artist SET name=%(name)s, edit_artist=%(edit_artist)s WHERE artist.id = %(artist_id)s]
+[parameters: {'name': 'Валерий Меладзе', 'edit_artist': datetime.datetime(2020, 12, 23, 23, 47, 33, 128612, tzinfo=<DstTzInfo 'Europe/Moscow' MSK+3:00:00 STD>), 'artist_id': 11}]
+(Background on this error at: http://sqlalche.me/e/13/gkpj)
+2020-12-23 23:48:59,175:event:WARNING:5-Вестимый - Ошибка при обнвлении артиста: (pymysql.err.IntegrityError) (1062, "Duplicate entry 'Валерий Меладзе' for key 'artist.name'")
+[SQL: UPDATE artist SET name=%(name)s, edit_artist=%(edit_artist)s WHERE artist.id = %(artist_id)s]
+[parameters: {'name': 'Валерий Меладзе', 'edit_artist': datetime.datetime(2020, 12, 23, 23, 48, 59, 169397, tzinfo=<DstTzInfo 'Europe/Moscow' MSK+3:00:00 STD>), 'artist_id': 11}]
+(Background on this error at: http://sqlalche.me/e/13/gkpj)
+2020-12-23 23:49:36,443:event:WARNING:5-Вестимый - Ошибка при обнвлении артиста: (pymysql.err.IntegrityError) (1062, "Duplicate entry 'Валерий Меладзе' for key 'artist.name'")
+[SQL: UPDATE artist SET name=%(name)s, edit_artist=%(edit_artist)s WHERE artist.id = %(artist_id)s]
+[parameters: {'name': 'Валерий Меладзе', 'edit_artist': datetime.datetime(2020, 12, 23, 23, 49, 36, 435472, tzinfo=<DstTzInfo 'Europe/Moscow' MSK+3:00:00 STD>), 'artist_id': 11}]
+(Background on this error at: http://sqlalche.me/e/13/gkpj)
+2020-12-23 23:49:51,669:event:WARNING:5-Вестимый - Ошибка при обнвлении артиста: (pymysql.err.IntegrityError) (1062, "Duplicate entry 'Валерий Меладзе' for key 'artist.name'")
+[SQL: UPDATE artist SET name=%(name)s, edit_artist=%(edit_artist)s WHERE artist.id = %(artist_id)s]
+[parameters: {'name': 'Валерий Меладзе', 'edit_artist': datetime.datetime(2020, 12, 23, 23, 49, 51, 663997, tzinfo=<DstTzInfo 'Europe/Moscow' MSK+3:00:00 STD>), 'artist_id': 11}]
+(Background on this error at: http://sqlalche.me/e/13/gkpj)

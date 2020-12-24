@@ -14,11 +14,6 @@ def time_now():
     return datetime.now(timezone('Europe/Moscow'))
 
 
-arena_city = db.Table('arena_city',
-                      db.metadata,
-                      db.Column('city_id', db.Integer, db.ForeignKey('city.id')),
-                      db.Column('arena_id', db.Integer, db.ForeignKey('arena.id'))
-                      )
 
 
 class Event(db.Model):
@@ -79,21 +74,24 @@ class Artist(db.Model):
     __tablename__ = 'artist'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False, unique=True)
+    last_name = db.Column(db.String(255), unique=True)
+    first_name = db.Column(db.String(255))
     administrator = db.Column(db.String(255))
-    event = relationship("Event", back_populates="artist")
     phone_administrator = db.Column(db.String(255))
     sound_engineer = db.Column(db.String(255))
     phone_sound = db.Column(db.String(255))
     monitor_engineer = db.Column(db.String(255))
     phone_monitor = db.Column(db.String(255))
-    light = db.Column(db.String(255), nullable=True)
-    phone_light = db.Column(db.String(255), nullable=True)
+    light = db.Column(db.String(255))
+    phone_light = db.Column(db.String(255))
 
+    img = db.Column(db.String(255))
+
+    event = relationship("Event", back_populates="artist")
     photoartist = relationship("PhotoArtist", back_populates="artist")
 
     edit_artist = db.Column(db.DateTime, onupdate=time_now)
-    created_artist = db.Column(db.DateTime, onupdate=time_now)
+    created_artist = db.Column(db.DateTime, default=time_now)
 
     # def __init__(self, **kwargs):
     #     self.name = kwargs.get('name')
@@ -103,7 +101,7 @@ class Artist(db.Model):
     #         return datetime.utcnow()
 
     def __repr__(self):
-        return self.name
+        return self.last_name
 
 
 class City(db.Model):
@@ -147,20 +145,7 @@ class Arena(db.Model):
     edit_arena = db.Column(db.DateTime, onupdate=time_now)
     created_arena = db.Column(db.DateTime, default=time_now)
 
-    # def __init__(self, **kwargs):
-    #     self.name = kwargs.get('name')
-    #     self.description = kwargs.get('description')
-    #     self.city_id = kwargs.get('city_id')
-    #     self.typehall_id = kwargs.get('typehall_id')
-    #     self.address = kwargs.get('address')
-    #     self.phone_admin = kwargs.get('phone_admin')
-    #     self.number_of_seats = kwargs.get('number_of_seats')
-    #     self.hall_size = kwargs.get('hall_size')
-    #     self.razgruzka = kwargs.get('razgruzka')
-    #     self.sound = kwargs.get('sound')
-    #     self.phone_sound = kwargs.get('phone_sound')
-    #     self.light = kwargs.get('light')
-    #     self.phone_light = kwargs.get('phone_light')
+
 
     def __repr__(self):
         return self.name

@@ -19,6 +19,24 @@
 -- Table structure for table `alembic_version`
 --
 
+DROP TABLE IF EXISTS `alembic_version`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `alembic_version` (
+  `version_num` varchar(32) NOT NULL,
+  PRIMARY KEY (`version_num`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `alembic_version`
+--
+
+LOCK TABLES `alembic_version` WRITE;
+/*!40000 ALTER TABLE `alembic_version` DISABLE KEYS */;
+INSERT INTO `alembic_version` VALUES ('34246ea2315f');
+/*!40000 ALTER TABLE `alembic_version` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `arena`
@@ -44,6 +62,7 @@ CREATE TABLE `arena` (
   `razgruzka` varchar(255) DEFAULT NULL,
   `typehall_id` int DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,
+  `img` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   KEY `city_id` (`city_id`),
@@ -59,7 +78,7 @@ CREATE TABLE `arena` (
 
 LOCK TABLES `arena` WRITE;
 /*!40000 ALTER TABLE `arena` DISABLE KEYS */;
-INSERT INTO `arena` VALUES (1,'БКЗ. Большой Концертынй Зал',NULL,'2020-12-17 17:00:23',NULL,14,NULL,NULL,'3727','Meyer Sound Milo',' 8 (812) 275-13-00',NULL,NULL,NULL,7,NULL),(2,'ВКЗ. Воронежский концертный зал',NULL,'2020-12-17 17:00:30',NULL,12,NULL,NULL,'782',NULL,'+7 (473) 254-56-66',NULL,NULL,NULL,7,NULL),(3,'Крокус',NULL,'2020-11-13 23:57:11',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(4,'Театр золотое кольцо','','2020-12-22 14:46:21',NULL,13,'','',NULL,'','','','','',6,''),(5,'EventHall','Площадка в торговом центре','2020-12-22 17:09:37',NULL,12,'','ClayPaky','5000','Meyer Sound Mica','8 (473) 228-02-01','','','',7,''),(6,'Тинькофф Арена','','2020-12-22 12:59:26',NULL,14,'','',NULL,'','','','','',7,''),(8,'Барвиха','В барвихенском dрайоне','2020-12-17 17:01:12',NULL,13,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL),(14,'КЗ Губернский','','2020-12-22 13:01:33','2020-11-14 20:24:29',19,'','',NULL,'','','','','',2,''),(25,'ДК Яуза',NULL,NULL,'2020-11-20 19:57:37',27,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(26,'ДК Салют',NULL,NULL,'2020-11-20 20:06:20',13,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(27,'АЗЛК','','2020-12-22 17:10:56','2020-11-20 20:07:44',13,'','','','','','','','',2,''),(28,'КДЦ Сатурн',NULL,NULL,'2020-11-20 20:07:58',30,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(29,'ДК Металлист',NULL,NULL,'2020-11-20 20:32:57',33,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(30,'КДЦ Губернский',NULL,NULL,'2020-11-20 20:33:19',34,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(31,'Театр Оперы и Балета РК',NULL,NULL,'2020-11-20 20:33:54',35,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(32,'Вятская Филармония',NULL,NULL,'2020-11-20 20:34:16',36,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(33,'Бекстейдж','','2020-12-17 19:23:48','2020-11-20 20:34:38',13,'','',NULL,'','','','','',8,''),(34,'ДК Якова Ухсая',NULL,NULL,'2020-11-20 20:35:06',38,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(35,'ДК ХХХ-летия Победы',NULL,NULL,'2020-11-20 20:35:33',39,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(36,'КЗ Сары Садыковой',NULL,NULL,'2020-11-20 20:35:50',40,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(37,'ОДК Пролетарка',NULL,NULL,'2020-11-20 20:36:18',33,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(38,'ДК Гагарина',NULL,NULL,'2020-11-20 20:36:38',42,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(39,'КЦ Зеленоград',NULL,NULL,'2020-11-20 20:36:59',24,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(40,'ДК Мир',NULL,NULL,'2020-11-20 20:37:17',43,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(41,'ДК Калинина','','2020-12-17 19:11:30','2020-11-20 20:37:35',44,'','',NULL,'','','','','',2,''),(42,'ДС Звездный',NULL,NULL,'2020-11-20 20:38:17',46,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(43,'ДИ Нефтяник','','2020-12-17 19:11:19','2020-11-20 20:38:38',48,'','',NULL,'','','','','',2,''),(44,'Дворец Искуств',NULL,NULL,'2020-11-20 20:38:56',49,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(52,'Триумф','','2020-12-18 19:21:02','2020-12-18 19:16:43',25,'','',NULL,'','','','','',2,''),(53,'ДК Карла Маркса','','2020-12-18 19:37:54','2020-12-18 19:37:54',26,'','','','','','','','',2,''),(54,'Городской концертный зал','','2020-12-18 19:46:18','2020-12-18 19:46:18',28,'','','','','','','','',7,''),(55,'Конькобежный центр','','2020-12-18 19:48:51','2020-12-18 19:48:51',29,'','','','','','','','',9,''),(56,'ДК Подмосковье','','2020-12-18 19:53:10','2020-12-18 19:53:10',31,'','','','','','','','',2,''),(57,'Ласточка','','2020-12-21 21:06:15','2020-12-21 21:06:15',13,'','','','','','','','',8,'');
+INSERT INTO `arena` VALUES (1,'БКЗ. Большой Концертынй Зал',NULL,'2020-12-17 17:00:23',NULL,14,NULL,NULL,'3727','Meyer Sound Milo',' 8 (812) 275-13-00',NULL,NULL,NULL,7,NULL,NULL),(2,'ВКЗ. Воронежский концертный зал',NULL,'2020-12-17 17:00:30',NULL,12,NULL,NULL,'782',NULL,'+7 (473) 254-56-66',NULL,NULL,NULL,7,NULL,NULL),(3,'Крокус',NULL,'2020-11-13 23:57:11',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(4,'Театр золотое кольцо','','2020-12-22 14:46:21',NULL,13,'','',NULL,'','','','','',6,'',NULL),(5,'EventHall','Площадка в торговом центре','2020-12-22 17:09:37',NULL,12,'','ClayPaky','5000','Meyer Sound Mica','8 (473) 228-02-01','','','',7,'',NULL),(6,'Тинькофф Арена','','2020-12-22 12:59:26',NULL,14,'','',NULL,'','','','','',7,'',NULL),(8,'Барвиха','В барвихенском dрайоне','2020-12-17 17:01:12',NULL,13,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL),(14,'КЗ Губернский','','2020-12-22 13:01:33','2020-11-14 20:24:29',19,'','',NULL,'','','','','',2,'',NULL),(25,'ДК Яуза',NULL,NULL,'2020-11-20 19:57:37',27,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(26,'ДК Салют',NULL,NULL,'2020-11-20 20:06:20',13,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(27,'АЗЛК','','2020-12-22 17:10:56','2020-11-20 20:07:44',13,'','','','','','','','',2,'',NULL),(28,'КДЦ Сатурн',NULL,NULL,'2020-11-20 20:07:58',30,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(29,'ДК Металлист',NULL,NULL,'2020-11-20 20:32:57',33,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(30,'КДЦ Губернский',NULL,NULL,'2020-11-20 20:33:19',34,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(31,'Театр Оперы и Балета РК',NULL,NULL,'2020-11-20 20:33:54',35,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(32,'Вятская Филармония',NULL,NULL,'2020-11-20 20:34:16',36,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(33,'Бекстейдж','','2020-12-17 19:23:48','2020-11-20 20:34:38',13,'','',NULL,'','','','','',8,'',NULL),(34,'ДК Якова Ухсая',NULL,NULL,'2020-11-20 20:35:06',38,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(35,'ДК ХХХ-летия Победы',NULL,NULL,'2020-11-20 20:35:33',39,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(36,'КЗ Сары Садыковой',NULL,NULL,'2020-11-20 20:35:50',40,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(37,'ОДК Пролетарка',NULL,NULL,'2020-11-20 20:36:18',33,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(38,'ДК Гагарина',NULL,NULL,'2020-11-20 20:36:38',42,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(39,'КЦ Зеленоград',NULL,NULL,'2020-11-20 20:36:59',24,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(40,'ДК Мир',NULL,NULL,'2020-11-20 20:37:17',43,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(41,'ДК Калинина','','2020-12-17 19:11:30','2020-11-20 20:37:35',44,'','',NULL,'','','','','',2,'',NULL),(42,'ДС Звездный',NULL,NULL,'2020-11-20 20:38:17',46,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(43,'ДИ Нефтяник','','2020-12-17 19:11:19','2020-11-20 20:38:38',48,'','',NULL,'','','','','',2,'',NULL),(44,'Дворец Искуств',NULL,NULL,'2020-11-20 20:38:56',49,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(52,'Триумф','','2020-12-18 19:21:02','2020-12-18 19:16:43',25,'','',NULL,'','','','','',2,'',NULL),(53,'ДК Карла Маркса','','2020-12-18 19:37:54','2020-12-18 19:37:54',26,'','','','','','','','',2,'',NULL),(54,'Городской концертный зал','','2020-12-18 19:46:18','2020-12-18 19:46:18',28,'','','','','','','','',7,'',NULL),(55,'Конькобежный центр','','2020-12-18 19:48:51','2020-12-18 19:48:51',29,'','','','','','','','',9,'',NULL),(56,'ДК Подмосковье','','2020-12-18 19:53:10','2020-12-18 19:53:10',31,'','','','','','','','',2,'',NULL),(57,'Ласточка','','2020-12-21 21:06:15','2020-12-21 21:06:15',13,'','','','','','','','',8,'',NULL);
 /*!40000 ALTER TABLE `arena` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -98,7 +117,8 @@ DROP TABLE IF EXISTS `artist`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `artist` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
+  `last_name` varchar(255) DEFAULT NULL,
+  `first_name` varchar(255) DEFAULT NULL,
   `sound_engineer` varchar(255) DEFAULT NULL,
   `administrator` varchar(255) DEFAULT NULL,
   `edit_artist` datetime DEFAULT NULL,
@@ -109,8 +129,9 @@ CREATE TABLE `artist` (
   `phone_administrator` varchar(255) DEFAULT NULL,
   `monitor_engineer` varchar(255) DEFAULT NULL,
   `phone_monitor` varchar(255) DEFAULT NULL,
+  `img` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
+  UNIQUE KEY `last_name` (`last_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -120,7 +141,7 @@ CREATE TABLE `artist` (
 
 LOCK TABLES `artist` WRITE;
 /*!40000 ALTER TABLE `artist` DISABLE KEYS */;
-INSERT INTO `artist` VALUES (1,'Валерий Меладзе','Дмитрий Голякин','Георгий Симонян','2020-11-23 19:40:08',NULL,'Вальковец Михаил',NULL,'89037450820','','',''),(6,'Сумишевский','Алексей','Какой то Андрей','2020-11-23 15:40:33','2020-11-20 19:55:38','Игоряныч',NULL,'','','',''),(7,'Королев','Сыряный Артём','Сыряный Артём','2020-11-23 15:40:11','2020-11-20 19:56:02','Какой то Алексей',NULL,'','','',''),(8,'Трофим','Юрий Андропов','Анна Андрон','2020-12-17 20:26:58','2020-11-20 19:56:15',NULL,NULL,NULL,NULL,NULL,NULL),(9,'Князь','','',NULL,NULL,'','','','','',''),(10,'Леонтьев','','',NULL,NULL,'','','','','',''),(11,'Белорусских','','',NULL,NULL,'','','','','',''),(18,'Дима Билан','','',NULL,NULL,'','','','','',''),(24,'Test','','',NULL,NULL,'','','','','',''),(32,'Григорий Лепс','Юрий Астфьев','',NULL,NULL,'','','','','',''),(33,'Серов','','',NULL,NULL,'','','','','','');
+INSERT INTO `artist` VALUES (1,'Валерий','Меладзе','Дмитрий Голякин','Георгий Симонян','2020-11-23 19:40:08',NULL,'Вальковец Михаил',NULL,'89037450820','','','',NULL),(6,'Сумишевский','Ярослав','Алексей','Какой то Андрей','2020-11-23 15:40:33','2020-11-20 19:55:38','Игоряныч',NULL,'','','','',NULL),(7,'Королев','Виктор','Сыряный Артём','Сыряный Артём','2020-11-23 15:40:11','2020-11-20 19:56:02','Какой то Алексей',NULL,'','','','',NULL),(8,'Трофим','Трофим','Юрий Андропов','Анна Андрон','2020-12-17 20:26:58','2020-11-20 19:56:15',NULL,NULL,NULL,NULL,NULL,NULL,NULL),(9,'Князь','','',NULL,NULL,'0000-00-00 00:00:00','','','','','',NULL,NULL),(10,'Леонтьев','Валерий','','',NULL,NULL,'','','','','','',NULL),(11,'Белорусских','Тима','','',NULL,NULL,'','','','','','',NULL),(18,'Дима','Билан','','',NULL,NULL,'','','','','','',NULL),(24,'Test','Test','','',NULL,NULL,'','','','','','',NULL),(32,'Григорий','Лепс','Юрий Астфьев','',NULL,NULL,'','','','','','',NULL),(33,'Серов','','','',NULL,NULL,'','','','','','',NULL);
 /*!40000 ALTER TABLE `artist` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -187,9 +208,9 @@ DROP TABLE IF EXISTS `equipment`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `equipment` (
   `id` int NOT NULL AUTO_INCREMENT,
+  `category_id` int DEFAULT NULL,
   `edit_equipment` datetime DEFAULT NULL,
   `created_equipment` datetime DEFAULT NULL,
-  `category_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `category_id` (`category_id`),
   CONSTRAINT `equipment_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `equipmentcategory` (`id`)
@@ -218,7 +239,7 @@ CREATE TABLE `equipmentcategory` (
   `edit_equipmentcategory` datetime DEFAULT NULL,
   `created_equipmentcategory` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -227,7 +248,6 @@ CREATE TABLE `equipmentcategory` (
 
 LOCK TABLES `equipmentcategory` WRITE;
 /*!40000 ALTER TABLE `equipmentcategory` DISABLE KEYS */;
-INSERT INTO `equipmentcategory` VALUES (1,'Звуковое оборудование','2020-12-08 22:14:00','2020-12-08 21:55:46'),(2,'Световое ооборудование',NULL,'2020-12-08 21:55:46'),(3,'Экранное оборудование',NULL,'2020-12-08 21:55:46');
 /*!40000 ALTER TABLE `equipmentcategory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -319,7 +339,7 @@ CREATE TABLE `manager` (
   `edit_manager` datetime DEFAULT NULL,
   `created_manager` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -328,7 +348,6 @@ CREATE TABLE `manager` (
 
 LOCK TABLES `manager` WRITE;
 /*!40000 ALTER TABLE `manager` DISABLE KEYS */;
-INSERT INTO `manager` VALUES (1,'2020-12-16 23:24:26','2020-11-16 17:58:28'),(2,'2020-12-18 23:15:10','2020-11-16 17:59:06'),(3,'2020-12-16 23:36:28','2020-11-16 20:59:38'),(4,'2020-12-16 23:37:23','2020-11-23 20:22:04'),(5,'2020-12-16 23:35:55','2020-12-08 21:33:45'),(6,'2020-12-16 23:36:07','2020-12-16 01:05:08');
 /*!40000 ALTER TABLE `manager` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -342,13 +361,13 @@ DROP TABLE IF EXISTS `managerphoto`;
 CREATE TABLE `managerphoto` (
   `id` int NOT NULL AUTO_INCREMENT,
   `url` varchar(255) NOT NULL,
-  `created_managerphoto` datetime DEFAULT NULL,
-  `edit_managerphoto` datetime DEFAULT NULL,
   `manager_id` int DEFAULT NULL,
+  `edit_managerphoto` datetime DEFAULT NULL,
+  `created_managerphoto` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `manager_id` (`manager_id`),
   CONSTRAINT `managerphoto_ibfk_1` FOREIGN KEY (`manager_id`) REFERENCES `manager` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -357,7 +376,6 @@ CREATE TABLE `managerphoto` (
 
 LOCK TABLES `managerphoto` WRITE;
 /*!40000 ALTER TABLE `managerphoto` DISABLE KEYS */;
-INSERT INTO `managerphoto` VALUES (7,'managers/vesti_1.jpg','2020-12-15 21:54:13','2020-12-15 21:54:24',1),(8,'managers/domi.jpg','2020-12-15 21:56:21','2020-12-15 21:56:33',4),(9,'managers/medvedev.jpg','2020-12-15 21:58:48','2020-12-15 21:58:58',3),(10,'managers/bahmetov.jpg','2020-12-15 22:00:24','2020-12-15 22:00:36',5),(12,'managers/dvuhg.jpg','2020-12-15 22:04:42','2020-12-15 22:05:21',2),(13,'managers/vetz.jpg','2020-12-15 22:12:00','2020-12-15 22:12:09',6),(14,'managers/bahmeto.jpg','2020-12-16 20:15:22',NULL,NULL),(15,'managers/domi.jpg','2020-12-16 20:16:09',NULL,NULL),(16,'managers/domin.jpg','2020-12-16 20:17:49',NULL,NULL),(17,'managers/vesti_1.jpg','2020-12-16 20:22:42',NULL,NULL);
 /*!40000 ALTER TABLE `managerphoto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -377,7 +395,7 @@ CREATE TABLE `photoartist` (
   PRIMARY KEY (`id`),
   KEY `artist_id` (`artist_id`),
   CONSTRAINT `photoartist_ibfk_1` FOREIGN KEY (`artist_id`) REFERENCES `artist` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -386,7 +404,6 @@ CREATE TABLE `photoartist` (
 
 LOCK TABLES `photoartist` WRITE;
 /*!40000 ALTER TABLE `photoartist` DISABLE KEYS */;
-INSERT INTO `photoartist` VALUES (1,'img/artist/meladze.jpeg',NULL,'2020-11-16 20:25:15','2020-11-16 20:23:16'),(2,'img/artist/meladze.jpg',1,'2020-11-16 20:25:08','2020-11-16 20:24:55'),(3,'img/artist/viktor-korolev-zhena-i-deti-lichnaia-zhizn-780.jpg',7,'2020-11-20 20:13:52','2020-11-20 20:13:06'),(4,'img/artist/yaroslav-sumishevskii.jpg',6,'2020-11-20 20:15:08','2020-11-20 20:14:54'),(5,'img/artist/uzn_16012810065.jpg',8,'2020-11-20 20:16:00','2020-11-20 20:15:49');
 /*!40000 ALTER TABLE `photoartist` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -535,7 +552,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (3,'admin@admin.ru','$2b$12$NM5gLgPCvn650S5f1LRToO7Zvrlk.pfzzVIUxKcbX3fjCsisDimhC',1,NULL,NULL,NULL,NULL,NULL,NULL,'admin','Admin','Admin','Admin',NULL,NULL),(5,'vestimyandrey@gmail.com','$2b$12$SV3G.U1zGVXZswyui9CnQuyFBK4jsS9hV.mO46k.gIfz82cCLpFbO',1,'Центральная 1','1992-02-18','https://www.facebook.com/vestimyandrey',NULL,'89192320772','profiles/vesti_1.jpg','Vestimy','Вестимый','Андрей','Петрович',NULL,NULL),(14,'domnikov@mail.ru','$2b$12$eoLF/L89SKTTZRYp1cYuWOTQVM2OpARnHHUTNnbZ5JUWIi3Lze8XS',1,NULL,'1977-01-07',NULL,NULL,NULL,'profiles/domi.jpg','domnikov','Домников','Сергей','Михайлович',NULL,NULL),(15,'rommires@yandex.ru','$2b$12$VQqu1d1DsYFyPLZEeStmpeOy7sMkGOj0I42qsQRzv0adW4M9nTDGa',1,NULL,NULL,NULL,NULL,NULL,NULL,'medvedev','Медведев','Роман','Владимирович',NULL,NULL),(39,'loglog@gmail.com','$2b$12$7qheDLPTXxtzG8rD/D5G7OtuvHUBo5Ck2v.Eegy2rB7AT8rSIeS1W',1,'','1992-02-18',NULL,NULL,'',NULL,'loglog@gmail.com','loglog','loglog','loglog','2020-12-22 21:01:38',NULL);
+INSERT INTO `users` VALUES (3,'admin@admin.ru','$2b$12$NM5gLgPCvn650S5f1LRToO7Zvrlk.pfzzVIUxKcbX3fjCsisDimhC',1,NULL,NULL,NULL,NULL,NULL,NULL,'admin','Admin','Admin','Admin',NULL,NULL),(5,'vestimyandrey@gmail.com','$2b$12$SV3G.U1zGVXZswyui9CnQuyFBK4jsS9hV.mO46k.gIfz82cCLpFbO',1,'Центральная 1','1992-02-18','https://www.facebook.com/vestimyandrey','','89192320772','vesti_1.jpg','Vestimy','Вестимый','Андрей','Петрович',NULL,'2020-12-24 10:26:07'),(14,'domnikov@mail.ru','$2b$12$eoLF/L89SKTTZRYp1cYuWOTQVM2OpARnHHUTNnbZ5JUWIi3Lze8XS',1,'','1977-01-07','','','','domin.jpg','domnikov','Домников','Сергей','Михайлович',NULL,'2020-12-24 10:25:40'),(15,'rommires@yandex.ru','$2b$12$VQqu1d1DsYFyPLZEeStmpeOy7sMkGOj0I42qsQRzv0adW4M9nTDGa',1,NULL,NULL,NULL,NULL,NULL,NULL,'medvedev','Медведев','Роман','Владимирович',NULL,NULL),(39,'loglog@gmail.com','$2b$12$7qheDLPTXxtzG8rD/D5G7OtuvHUBo5Ck2v.Eegy2rB7AT8rSIeS1W',1,'','1992-02-18',NULL,NULL,'',NULL,'loglog@gmail.com','loglog','loglog','loglog','2020-12-22 21:01:38',NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -548,4 +565,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-12-22 21:16:15
+-- Dump completed on 2020-12-24 11:08:21

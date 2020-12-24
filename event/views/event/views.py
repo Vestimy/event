@@ -216,7 +216,7 @@ def get_json_event():
 
     for item in event:
         list_json.append({"date": item.date_event.strftime("%Y-%m-%d ")+item.time_event.strftime("%H:%M:%S"),
-                          "title": item.artist.name,
+                          "title": item.artist.last_name+item.artist.first_name,
                           "description": item.description,
                           "url": url_for("events.get_item_event", id=item.id)})
 
