@@ -22,10 +22,10 @@
 
 
                         <rect width="100%" height="100%" fill="#55595c"/>
-
-                        <image xlink:href="{{ url_for('static', filename=item.artist.photoartist[0]) }}" x="0" y="0"
+                        {% if item.artist.img %}
+                        <image xlink:href="{{ url_for('static', filename=item.artist.img) }}" x="0" y="0"
                                width="100%" height="100%"/>
-
+                        {% endif %}
 
                         <text x="50%" y="50%" fill="#eceeef" dy=".3em">{{ item.name }}</text>
                     </svg>
