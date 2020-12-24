@@ -83,10 +83,7 @@
                     var json = jQuery.parseJSON(response)
                     obj = Object.keys(json)
 
-                    $('#eventCalendar').eventCalendar({
-                           jsonData: json,
-                           jsonDateFormat: 'human',
-                    });
+
                 },
             error: function(error) {
                 console.log(error);
