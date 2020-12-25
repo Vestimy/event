@@ -33,7 +33,7 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
     db.init_app(app)
-    admin.init_app(app, url='/admin', index_view=HomeAdminView(name='Home'))
+    admin.init_app(app, url='/admin', index_view=HomeAdminView(name='Главная'))
     login.init_app(app)
     app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
     mail.init_app(app)
@@ -55,6 +55,7 @@ def create_app():
     from .views.manager.views import managers
     from .views.login.views import logins
     from .views.tour.views import tours
+    from .views.administrator.views import administrator
 
     app.register_blueprint(main)
     app.register_blueprint(events)
@@ -63,6 +64,7 @@ def create_app():
     app.register_blueprint(artists)
     app.register_blueprint(managers)
     app.register_blueprint(tours)
+    app.register_blueprint(administrator)
     # app.register_blueprint(logins)
 
     jwt.init_app(app)
@@ -144,6 +146,7 @@ admin.add_view(AdminView(TypeEvent, db.session))
 
 admin.add_view(AdminView(User, db.session))
 admin.add_view(AdminView(Role, db.session))
+admin.add_view(AdminView(Document, db.session))
 
 user_datastore = SQLAlchemySessionUserDatastore(db.session, User, Role)
 

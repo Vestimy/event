@@ -14,8 +14,6 @@ def time_now():
     return datetime.now(timezone('Europe/Moscow'))
 
 
-
-
 class Event(db.Model):
     __tablename__ = 'event'
 
@@ -145,8 +143,6 @@ class Arena(db.Model):
     edit_arena = db.Column(db.DateTime, onupdate=time_now)
     created_arena = db.Column(db.DateTime, default=time_now)
 
-
-
     def __repr__(self):
         return self.name
 
@@ -263,7 +259,7 @@ class User(db.Model, UserMixin):
 
     facebook = db.Column(db.String(255))
     instagram = db.Column(db.String(255))
-
+    document = relationship("Document", back_populates='users')
     edit_time = db.Column(DateTime, onupdate=time_now)
     create_time = db.Column(DateTime, default=time_now)
 
@@ -298,6 +294,21 @@ class Role(db.Model, RoleMixin):
     name = db.Column(db.String(250), nullable=False)
     description = db.Column(db.String(255), nullable=False)
     users = relationship('User', secondary=association, back_populates='roles', lazy=True)
+
+    edit_time = db.Column(DateTime, onupdate=time_now)
+    create_time = db.Column(DateTime, default=time_now)
+
+    def __repr__(self):
+        return self.name
+
+
+class Document(db.Model):
+    __tablename__ = "document"
+    id = db.Column(Integer, primary_key=True)
+    name = db.Column(String(255))
+    resource = db.Column(db.LargeBinary)
+    users_id = db.Column(Integer, ForeignKey('users.id'))
+    users = relationship("User", back_populates='document')
 
     edit_time = db.Column(DateTime, onupdate=time_now)
     create_time = db.Column(DateTime, default=time_now)

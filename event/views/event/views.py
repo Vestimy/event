@@ -154,11 +154,13 @@ def edit_event(id):
     return redirect(url_for("events.get_event"))
 
 @events.route('/events/delete/<int:id>', methods=['GET'])
+@roles_accepted('admin', 'manager')
 def delete_event(id):
     event = Event.query.get(id)
-    db.session.delete(event)
-    db.session.commit()
-    return redirect(url_for('events.get_event'))
+    if current_user.id == event.user_id or "admin" in current_user.roles:
+        db.session.delete(event)
+        db.session.commit()
+        return redirect(url_for('events.get_event'))
 
 
 @events.route('/upload', methods=['GET', 'POST'])
