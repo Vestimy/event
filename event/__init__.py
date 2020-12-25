@@ -56,6 +56,7 @@ def create_app():
     from .views.login.views import logins
     from .views.tour.views import tours
     from .views.administrator.views import administrator
+    from .views.api.views import api
 
     app.register_blueprint(main)
     app.register_blueprint(events)
@@ -65,6 +66,7 @@ def create_app():
     app.register_blueprint(managers)
     app.register_blueprint(tours)
     app.register_blueprint(administrator)
+    app.register_blueprint(api)
     # app.register_blueprint(logins)
 
     jwt.init_app(app)
@@ -85,6 +87,11 @@ def create_app():
     def photo_profile(filename):
         return send_from_directory(Config.UPLOAD_PHOTO_PROFILES,
                                    filename)
+    @app.route('/document_profile/<filename>')
+    @login_required
+    def document_profile(filename):
+        return send_from_directory(Config.UPLOAD_DOCUMENTS_PROFILES,
+                                   filename)
 
     @app.route('/photo_arena/<filename>')
     @login_required
@@ -96,6 +103,7 @@ def create_app():
     def photo_artist(filename):
         return send_from_directory(Config.UPLOAD_PHOTO_ARTIST,
                                    filename)
+
 
     return app
 
@@ -169,3 +177,8 @@ logger = setup_logger()
 def allowed_photo_profile(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in Config.ALLOWED_PHOTO
+
+
+def allowed_document_profile(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in Config.ALLOWED_DOCUMENT

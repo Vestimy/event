@@ -217,33 +217,4 @@ def send_mail():
     return redirect(url_for('events.get_event'))
 
 
-@events.route('/events/event_month', methods=['GET', 'POST'])
-# @login_required
-def get_json_event():
-    event = Event.query.all()
-    list_json = []
-
-    for item in event:
-        list_json.append({"date": item.date_event.strftime("%Y-%m-%d ")+item.time_event.strftime("%H:%M:%S"),
-                          "title": item.artist.last_name+item.artist.first_name,
-                          "description": item.description,
-                          "url": url_for("events.get_item_event", id=item.id)})
-
-    return json.dumps(list_json)
-
-
-@events.route('/events/get_city_all', methods=('GET', 'POST'))
-def get_city_all():
-    city_id = request.form['city_id']
-    item_list = Arena.query.filter_by(city_id=city_id).all()
-    result_list = dict()
-    for item in item_list:
-        result_list[item.id] = item.name
-    return json.dumps(result_list)
-
-# docs.register(get_list, blueprint='videos')
-# docs.register(update_list, blueprint='videos')
-# docs.register(update_tutorial, blueprint='videos')
-# docs.register(delete_list, blueprint='videos')
-# # docs.register(get_video, blueprint=videos)
 # ListView.register(videos, docs, '/main', 'listview')

@@ -1,6 +1,6 @@
 import os
 from flask import Blueprint, jsonify, request, render_template, redirect
-from event import logger, config, allowed_photo_profile
+from event import logger, config, allowed_photo_profile, allowed_document_profile
 
 from flask_security import login_required, roles_required, current_user, login_user, roles_accepted
 from flask import flash, request, redirect, url_for
@@ -85,39 +85,83 @@ def delete_manager(id):
     return redirect(url_for('managers.get_list_manager'))
 
 
+# @managers.route('/manager/edit/<int:id>', methods=['GET', 'POST'])
+# @roles_accepted('admin', 'manager')
+# def edit_manager(id):
+#     # manager = Manager.query.get(id)
+#     manager = User.query.get(id)
+#     form = ManagerForm(request.form, obj=manager)
+#     if current_user.has_role('admin') or current_user.id == manager.id:
+#         if request.method == 'POST':
+#             if request.files['photo']:
+#                 file = request.files['photo']
+#                 if file.filename == '':
+#                     flash('No selected file')
+#                     return redirect(request.url)
+#                 try:
+#                     if file and allowed_photo_profile(file.filename):
+#                         filename = secure_filename(file.filename)
+#                         file.save(os.path.join(config.Config.UPLOAD_PHOTO_PROFILES, filename))
+#                         form.populate_obj(manager)
+#                         manager.photo = filename
+#                         db.session.commit()
+#                         return render_template('manager/edit_manager.html', menu='managers', item=manager, form=form)
+#                 except Exception as e:
+#                     db.session.rollback()
+#                     logger.warning(
+#                         f"{current_user.first_name} - Ошибка при обновлении профиля: {e}"
+#                     )
+#                     return redirect(request.url)
+#             form.populate_obj(manager)
+#             db.session.commit()
+#             return redirect(url_for('managers.get_list_manager'))
+#
+#         return render_template('manager/edit_manager.html', menu='managers', item=manager, form=form)
+#     return redirect(url_for("main.index"))
+
 @managers.route('/manager/edit/<int:id>', methods=['GET', 'POST'])
 @roles_accepted('admin', 'manager')
 def edit_manager(id):
     # manager = Manager.query.get(id)
     manager = User.query.get(id)
+    document_load = Document.query.filter(Document.users_id == manager.id).all()
     form = ManagerForm(request.form, obj=manager)
     if current_user.has_role('admin') or current_user.id == manager.id:
-        if request.method == 'POST':
-            if request.files['photo']:
-                file = request.files['photo']
-                if file.filename == '':
-                    flash('No selected file')
-                    return redirect(request.url)
-                try:
-                    if file and allowed_photo_profile(file.filename):
-                        filename = secure_filename(file.filename)
-                        file.save(os.path.join(config.Config.UPLOAD_PHOTO_PROFILES, filename))
-                        form.populate_obj(manager)
-                        manager.photo = filename
-                        db.session.commit()
-                        return render_template('manager/edit_manager.html', menu='managers', item=manager, form=form)
-                except Exception as e:
-                    db.session.rollback()
-                    logger.warning(
-                        f"{current_user.first_name} - Ошибка при обновлении профиля: {e}"
-                    )
-                    return redirect(request.url)
-            form.populate_obj(manager)
+        form.populate_obj(manager)
+        if request.files.get('photo'):
+        # if request.files['photo']:
+            file = request.files['photo']
+            if file.filename == '':
+                flash('No selected file')
+                return redirect(request.url)
+            if file and allowed_photo_profile(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(config.Config.UPLOAD_PHOTO_PROFILES, filename))
+                manager.photo = filename
+        if request.files.get('document_id'):
+            # return redirect(request.url)
+            files = request.files.getlist('document_id')
+            documents = []
+            for i in files:
+                if allowed_document_profile(i.filename):
+                    if i.filename != '':
+                        docname = secure_filename(i.filename)
+                        i.save(os.path.join(config.Config.UPLOAD_DOCUMENTS_PROFILES, docname))
+                        documents.append(Document(name=docname))
+            # print("KEWJLKFJ")
+            db.session.add_all(documents)
             db.session.commit()
-            return redirect(url_for('managers.get_list_manager'))
+            for i in documents:
+                manager.document.append(i)
+            db.session.commit()
 
-        return render_template('manager/edit_manager.html', menu='managers', item=manager, form=form)
-    return redirect(url_for("main.index"))
+            # files = request.files.getlist('document_id')
+            # for i in files:
+            #     dic[i.filename] = i.read()
+            # print(files)
+            # print(dic)
+        return render_template('manager/edit_manager.html', menu='managers', item=manager, form=form, documents=document_load)
+    # return redirect(url_for("main.index"))
 
 
 

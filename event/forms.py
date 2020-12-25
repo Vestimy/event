@@ -146,6 +146,7 @@ class ManagerForm(Form):
     facebook = StringField('Facebook')
     instagram = StringField('Instagram')
     photo = FileField("Фото")
+    document_id = MultipleFileField("Документы")
     submit = SubmitField('Сохранить')
 
 

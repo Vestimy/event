@@ -11,10 +11,12 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     UPLOAD_FOLDER = 'uploads'
     UPLOAD_PHOTO_PROFILES = PATH_EVENTS + '/uploads/profiles'
+    UPLOAD_DOCUMENTS_PROFILES = PATH_EVENTS + '/uploads/documents'
     UPLOAD_PHOTO_ARENA = PATH_EVENTS + '/uploads/arena'
     UPLOAD_PHOTO_ARTIST = PATH_EVENTS + '/uploads/artist'
     ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
     ALLOWED_PHOTO = set(['png', 'jpg', 'jpeg', 'gif'])
+    ALLOWED_DOCUMENT = set(['pdf', 'png', 'jpg', 'jpeg', 'gif'])
     DEBUG = True
     SECRET_KEY = '26edec8e275e43cab5777cb9050906f9'
     ADMIN_PASSWD_HASH = '7ULJ61PMMGBJ1KWQB64P7D'
@@ -32,3 +34,4 @@ class Config:
     SECURITY_REGISTER_URL = '/create_account'
     SECURITY_USER_IDENTITY_ATTRIBUTES = ['email', 'login']
     SECURITY_SEND_REGISTER_EMAIL = False
+    MAX_CONTENT_LENGTH = 16 * 1024 * 1024

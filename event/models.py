@@ -1,6 +1,6 @@
 # from .db_setings import db, session, Base
 from event import db
-from sqlalchemy import String, Integer, ForeignKey, DateTime, Date, Time, DATE
+from sqlalchemy import String, Integer, ForeignKey, DateTime, Date, Time, DATE, Binary, BINARY
 from sqlalchemy.orm import relationship
 from flask_jwt_extended import create_access_token
 from datetime import timedelta
@@ -259,6 +259,7 @@ class User(db.Model, UserMixin):
 
     facebook = db.Column(db.String(255))
     instagram = db.Column(db.String(255))
+
     document = relationship("Document", back_populates='users')
     edit_time = db.Column(DateTime, onupdate=time_now)
     create_time = db.Column(DateTime, default=time_now)
@@ -306,10 +307,9 @@ class Document(db.Model):
     __tablename__ = "document"
     id = db.Column(Integer, primary_key=True)
     name = db.Column(String(255))
-    resource = db.Column(db.LargeBinary)
+
     users_id = db.Column(Integer, ForeignKey('users.id'))
     users = relationship("User", back_populates='document')
-
     edit_time = db.Column(DateTime, onupdate=time_now)
     create_time = db.Column(DateTime, default=time_now)
 

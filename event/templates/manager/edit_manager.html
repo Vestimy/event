@@ -38,12 +38,15 @@
                         {% if item.birthday %}
                         <span class="icofont-birthday-cake">{{ item.birthday }}</span>
                         {% endif %}
-
+                        {% if current_user.has_role('admin') or item.id == current_user.id %}
+                        {% for document in documents %}
+                            <a href="{{ url_for('document_profile', filename=document.name) }}">{{ document.name.rsplit('.', 1)[0] }}</a>
+                        {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
-        <title>Heevents/llo from Flask</title>
 
     </div>
 </div>

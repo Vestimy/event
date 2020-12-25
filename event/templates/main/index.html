@@ -46,7 +46,7 @@
 
     // your event source
     {
-      url: '/get_calendar',
+      url: '/api/event_calendar',
       method: 'POST',
       extraParams: {
         custom_param1: 'something',
@@ -78,7 +78,7 @@
           function load_events(){
             $.ajax({
                 type: "POST",
-                url: "/events/event_month",
+                url: "/api/event_calendar",
                 success: function(response) {
                     var json = jQuery.parseJSON(response)
                     obj = Object.keys(json)
