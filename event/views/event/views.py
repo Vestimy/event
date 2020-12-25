@@ -81,6 +81,7 @@ def get_item_event(id):
 
 
 @events.route('/events/add', methods=['GET', 'POST'])
+@roles_accepted('admin ', 'manager')
 def add_event():
     form = EventForm()
     if request.method == "POST":
@@ -126,7 +127,6 @@ def add_event():
 
 
 @events.route('/events/edit/<int:id>', methods=['GET', 'POST'])
-# @roles_required('admin')
 @roles_accepted('admin', 'manager')
 def edit_event(id):
     event = Event.query.filter(Event.id == id).first()
