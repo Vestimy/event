@@ -14,12 +14,11 @@
         function load_subcategory(){
             $.ajax({
                 type: "POST",
-                url: "/events/get_city_all",
+                url: "/api/arena_choices",
                 data: $('form').serialize(),
                 success: function(response) {
                     var json = jQuery.parseJSON(response)
                     obj = Object.keys(json)
-
                     $("#arena_id")
                         .find('option')
                         .remove()

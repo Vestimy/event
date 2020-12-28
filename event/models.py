@@ -1,6 +1,6 @@
 # from .db_setings import db, session, Base
 from event import db
-from sqlalchemy import String, Integer, ForeignKey, DateTime, Date, Time, DATE, Binary, BINARY
+from sqlalchemy import String, Integer, ForeignKey, DateTime, Date, Time, DATE, Binary, BINARY, BigInteger
 from sqlalchemy.orm import relationship
 from flask_jwt_extended import create_access_token
 from datetime import timedelta
@@ -18,7 +18,6 @@ class Event(db.Model):
     __tablename__ = 'event'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
     artist_id = db.Column(Integer, ForeignKey('artist.id'))
     artist = relationship("Artist", back_populates="event")
     typeevent_id = db.Column(Integer, ForeignKey('typeevent.id'))
@@ -26,8 +25,8 @@ class Event(db.Model):
     date_event = db.Column(Date)
     time_event = db.Column(Time)
     description = db.Column(db.String(500))
-    city_id = db.Column(Integer, ForeignKey('city.id'))
-    city = relationship('City', back_populates='event')
+    # city_id = db.Column(Integer, ForeignKey('city.id'))
+    # city = relationship('City', back_populates='event')
     arena_id = db.Column(Integer, ForeignKey('arena.id'))
     arena = relationship('Arena', back_populates='event')
     user_id = db.Column(Integer, ForeignKey('users.id'))
@@ -102,16 +101,43 @@ class Artist(db.Model):
         return self.last_name
 
 
+class Country(db.Model):
+    __tablename__ = 'country'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(String(128), nullable=False)
+    region = relationship('Region', back_populates='country')
+
+    def __repr__(self):
+        return self.name
+
+
+class Region(db.Model):
+    __tablename__ = 'region'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(String(128), nullable=False)
+
+    country_id = db.Column(Integer, ForeignKey('country.id'))
+    country = relationship('Country', back_populates='region')
+    city = relationship('City', back_populates='region')
+
+    def __repr__(self):
+        return self.name
+
+
 class City(db.Model):
     __tablename__ = 'city'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False, unique=True)
-    event = relationship("Event", back_populates='city')
-    arena = relationship("Arena", back_populates="city")
+    name = db.Column(db.String(255), nullable=False)
+    region_id = db.Column(Integer, ForeignKey('region.id'))
+    region = relationship('Region', back_populates='city')
 
-    edit_city = db.Column(db.DateTime, onupdate=time_now)
-    created_city = db.Column(db.DateTime, default=time_now)
+    # event = relationship("Event", back_populates='city')
+    # arena = relationship("Arena", back_populates="city")
+    #
+    # edit_city = db.Column(db.DateTime, onupdate=time_now)
+    # created_city = db.Column(db.DateTime, default=time_now)
 
     def __repr__(self):
         return self.name
@@ -123,8 +149,8 @@ class Arena(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False, unique=True)
     description = db.Column(db.String(500))
-    city_id = db.Column(Integer, ForeignKey('city.id'))
-    city = relationship("City", back_populates="arena")
+    # city_id = db.Column(Integer, ForeignKey('city.id'))
+    # city = relationship("City", back_populates="arena")
     typehall_id = db.Column(Integer, ForeignKey('typehall.id'))
     typehall = relationship("TypeHall", back_populates="arena")
     address = db.Column(db.String(255))
@@ -249,7 +275,8 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(255), nullable=False)
     active = db.Column(db.Boolean)
     roles = relationship('Role', secondary=association, back_populates='users', lazy=True)
-
+    lead_roles_id = db.Column(Integer, ForeignKey('roles.id'))
+    lead_roles = relationship("Role", back_populates='users_lead')
     birthday = db.Column(Date)
     phone = db.Column(db.String(20))
     address = db.Column(db.String(255))
@@ -293,9 +320,10 @@ class Role(db.Model, RoleMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250), nullable=False)
+    title = db.Column(db.String(250))
     description = db.Column(db.String(255), nullable=False)
     users = relationship('User', secondary=association, back_populates='roles', lazy=True)
-
+    users_lead = relationship("User", back_populates='lead_roles')
     edit_time = db.Column(DateTime, onupdate=time_now)
     create_time = db.Column(DateTime, default=time_now)
 

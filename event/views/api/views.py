@@ -25,8 +25,11 @@ def api_event_calendar():
 
 
 @api.route('/api/arena_choices', methods=('GET', 'POST'))
+@login_required
 def api_arena_choices():
     city_id = request.form['city_id']
+    print(city_id)
+    print(request.form)
     item_list = Arena.query.filter_by(city_id=city_id).all()
     result_list = dict()
     for item in item_list:

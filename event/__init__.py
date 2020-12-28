@@ -10,7 +10,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_login import LoginManager
 
 from flask_security import SQLAlchemySessionUserDatastore, Security
-from flask_security import current_user, user_registered, login_required
+from flask_security import current_user, user_registered, login_required,user_confirmed
 from flask_mail import Mail
 from flask_datepicker import datepicker
 from flask_bootstrap import Bootstrap
@@ -47,25 +47,26 @@ def create_app():
         user_datastore.add_role_to_user(user, default_role)
         db.session.commit()
 
+
     from .views.main.views import main
     from .views.event.views import events
     from .views.arena.views import arenas
-    from .views.city.views import citys
+    # from .views.city.views import citys
     from .views.artist.views import artists
     from .views.manager.views import managers
     from .views.login.views import logins
     from .views.tour.views import tours
-    from .views.administrator.views import administrator
+    # from .views.administrator.views import administrator
     from .views.api.views import api
 
     app.register_blueprint(main)
     app.register_blueprint(events)
     app.register_blueprint(arenas)
-    app.register_blueprint(citys)
+    # app.register_blueprint(citys)
     app.register_blueprint(artists)
     app.register_blueprint(managers)
     app.register_blueprint(tours)
-    app.register_blueprint(administrator)
+    # app.register_blueprint(administrator)
     app.register_blueprint(api)
     # app.register_blueprint(logins)
 
@@ -93,17 +94,21 @@ def create_app():
         return send_from_directory(Config.UPLOAD_DOCUMENTS_PROFILES,
                                    filename)
 
-    @app.route('/photo_arena/<filename>')
+    @app.route('/img_arena/<img>')
     @login_required
-    def photo_arena(filename):
+    def img_arena(img):
         return send_from_directory(Config.UPLOAD_PHOTO_ARENA,
-                                   filename)
+                                   img)
 
     @app.route('/photo_artist/<filename>')
     def photo_artist(filename):
         return send_from_directory(Config.UPLOAD_PHOTO_ARTIST,
                                    filename)
 
+    @app.route('/inspina/<path:filename>')
+    def inspina(filename):
+        return send_from_directory(Config.UPLOAD_ADMIN,
+                                   filename)
 
     return app
 
@@ -141,7 +146,6 @@ class HomeAdminView(AdminMixIn, AdminIndexView):
 admin.add_view(AdminView(Tour, db.session))
 admin.add_view(AdminView(Event, db.session))
 admin.add_view(AdminView(Artist, db.session))
-admin.add_view(AdminView(City, db.session))
 admin.add_view(AdminView(Arena, db.session))
 admin.add_view(AdminView(Manager, db.session))
 admin.add_view(AdminView(ImgArena, db.session))
@@ -151,6 +155,13 @@ admin.add_view(AdminView(Equipment, db.session))
 admin.add_view(AdminView(ManagerPhoto, db.session))
 admin.add_view(AdminView(TypeHall, db.session))
 admin.add_view(AdminView(TypeEvent, db.session))
+
+
+admin.add_view(AdminView(Country, db.session))
+admin.add_view(AdminView(Region, db.session))
+admin.add_view(AdminView(City, db.session))
+
+
 
 admin.add_view(AdminView(User, db.session))
 admin.add_view(AdminView(Role, db.session))

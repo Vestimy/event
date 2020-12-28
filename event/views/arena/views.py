@@ -11,7 +11,7 @@ arenas = Blueprint('arenas', __name__)
 
 @arenas.route('/arena', methods=['GET'])
 @login_required
-def get_list_arena():
+def index():
     arena = Arena.query.order_by('name').all()
     typehall = TypeHall.query.order_by('name').all()
     id = None
@@ -24,19 +24,19 @@ def get_list_arena():
             )
         if isinstance(id, int):
             arena = Arena.query.filter(Arena.typehall_id == id).order_by('name').all()
-    return render_template('arena/get_list_arena.html', menu='arenas', id=id, typehall=typehall, arena=arena)
+    return render_template('arena.html', menu='arenas', id=id, typehall=typehall, arena=arena)
 
 
 @arenas.route('/arena/<int:id>', methods=['GET'])
 @login_required
-def get_item_arena(id):
+def arena_detail(id):
     try:
         arena = Arena.query.get(id)
     except Exception as e:
         logger.warning(
             f"{current_user.last_name} - Ошибка при загрузке всех площадок: {e}"
         )
-    return render_template('arena/item_arena.html', menu='arenas', item=arena)
+    return render_template('arena_detail.html', menu='arenas', arena=arena)
 
 
 @arenas.route('/arena/add', methods=['GET', 'POST'])

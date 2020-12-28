@@ -60,8 +60,9 @@ def get_event():
             logger.warning(
                 f'arenas -  action failed with errors: {e}'
             )
+            return redirect(request.url)
         if isinstance(id, int):
-            event = Event.query.filter(Event.typeevent_id == id).order_by('name').all()
+            event = Event.query.filter(Event.typeevent_id == id).order_by(Event.date_event.desc()).all()
     return render_template('event/get_event.html', id=id, menu='events', events=event, type_event=type_event)
 
 
@@ -83,32 +84,32 @@ def get_item_event(id):
 @events.route('/events/add', methods=['GET', 'POST'])
 @roles_accepted('admin ', 'manager')
 def add_event():
-    form = EventForm()
+    event = Event()
+    form = EventForm(request.form, obj=event)
     if request.method == "POST":
         try:
-            name = request.form['name']
-            artist_id = request.form['artist_id']
-            date_event = request.form['date_event']
-            time_event = request.form['time_event']
-            typeevent_id = request.form['typeevent_id']
-            description = request.form['description']
-            city_id = request.form['city_id']
-
-            arena_id = request.form['arena_id']
-            user_id = request.form['user_id']
-            print(date_event)
-
-            event = Event(name=name,
-                          artist_id=artist_id,
-                          date_event=date_event,
-                          time_event=time_event,
-                          typeevent_id=typeevent_id,
-                          description=description,
-                          city_id=city_id,
-                          arena_id=arena_id,
-                          user_id=user_id
-                          )
-            print(request.form)
+            form.populate_obj(event)
+            # artist_id = request.form['artist_id']
+            # date_event = request.form['date_event']
+            # time_event = request.form['time_event']
+            # typeevent_id = request.form['typeevent_id']
+            # description = request.form['description']
+            # city_id = request.form['city_id']
+            #
+            # arena_id = request.form['arena_id']
+            # user_id = request.form['user_id']
+            # print(date_event)
+            #
+            # event = Event(artist_id=artist_id,
+            #               date_event=date_event,
+            #               time_event=time_event,
+            #               typeevent_id=typeevent_id,
+            #               description=description,
+            #               city_id=city_id,
+            #               arena_id=arena_id,
+            #               user_id=user_id
+            #               )
+            # print(request.form)
 
             db.session.add(event)
             db.session.commit()
@@ -123,7 +124,7 @@ def add_event():
     # form..choices = [(g.id, g.name) for g in City.query.order_by('name')]
     # form.managers.choices = [(g.id, g.name) for g in Manager.query.order_by('name')]
     # form.arenas.choices = [(g.id, g.title) for g in Arena.query.order_by('title')]
-    return render_template('event/add_event.html',menu='events', form=form)
+    return render_template('event/edit_event.html', menu='events', form=form)
 
 
 @events.route('/events/edit/<int:id>', methods=['GET', 'POST'])
@@ -145,13 +146,14 @@ def edit_event(id):
 
             return redirect(url_for('events.get_item_event', menu='events', id=event.id))
 
-    # form.artist_id.choices = [(g.id, g.name) for g in Artist.query.order_by('name')]
-    # form.city_id.choices = [(g.id, g.name) for g in City.query.order_by('name')]
-    # form.arena_id.choices = [(g.id, g.name) for g in Arena.query.order_by('name')]
-    # form.manager_id.choices = [(g.id, g.name) for g in Manager.query.order_by('name')]
+        # form.artist_id.choices = [(g.id, g.name) for g in Artist.query.order_by('name')]
+        # form.city_id.choices = [(g.id, g.name) for g in City.query.order_by('name')]
+        # form.arena_id.choices = [(g.id, g.name) for g in Arena.query.order_by('name')]
+        # form.manager_id.choices = [(g.id, g.name) for g in Manager.query.order_by('name')]
 
         return render_template('event/edit_event.html', menu='events', form=form, item=event)
     return redirect(url_for("events.get_event"))
+
 
 @events.route('/events/delete/<int:id>', methods=['GET'])
 @roles_accepted('admin', 'manager')
@@ -215,6 +217,5 @@ def send_mail():
     msg.html = "<b>testing</b>"
     mail.send(msg)
     return redirect(url_for('events.get_event'))
-
 
 # ListView.register(videos, docs, '/main', 'listview')

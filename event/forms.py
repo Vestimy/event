@@ -30,7 +30,7 @@ class TourForm(Form):
 
 
 class EventForm(Form):
-    name = StringField("Имя: ")
+    # name = StringField("Имя: ")
     artist_id = SelectField("Артист")
     date_event = DateField('Дата', format='%Y-%m-%d')
     typeevent_id = SelectField("Тип")
@@ -78,12 +78,30 @@ class CityForm(Form):
 
     def __init__(self, *args, **kwargs):
         super(CityForm, self).__init__(*args, **kwargs)
-        self.arena.choices = [(g.id, g.name) for g in Arena.query.order_by('name') if not g.city_id]
+        # self.arena.choices = [(g.id, g.name) for g in Arena.query.order_by('name') if not g.city_id]
 
     def validate_name(self, field):
         city = City.query.filter(City.name == field.data).first()
         if city:
             raise ValidationError(u'Такой город уже существует')
+
+class CitysForm(Form):
+    name = SelectField('Город', [InputRequired()])
+    arena = SelectMultipleField('Арена', validate_choice=False)
+    submit = SubmitField('Сохранить')
+
+    def __init__(self, *args, **kwargs):
+        super(CitysForm, self).__init__(*args, **kwargs)
+        # self.arena.choices = [(g.id, g.name) for g in Arena.query.order_by('name') if not g.city_id]
+        # self.name.choices = [(g.id, g.name) for g in City.query.order_by('name')]
+        q = Region.query.filter(Region.country_id == 1).order_by('name').all()
+        print(q)
+        self.name.choices = [(i.id, i.name) for g in q for i in g.city]
+
+    # def validate_name(self, field):
+    #     city = City.query.filter(City.name == field.data).first()
+    #     if city:
+    #         raise ValidationError(u'Такой город уже существует')
 
 
 class ArenaForm(Form):

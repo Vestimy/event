@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>INSPINIA | Contacts</title>
+
+    {% include 'base/style.html' %}
+
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    {% include 'base/nav.html' %}
+
+    <div id="page-wrapper" class="gray-bg">
+        {% include "base/nav_top.html" %}
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-9">
+                <h2>Contacts</h2>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="index.html">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        App Views
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <strong>Contacts</strong>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                {% for manager in managers %}
+                <div class="col-lg-4">
+                    <div class="contact-box">
+                        <a class="row" href="{{ url_for('main.profile', id=manager.id)}}">
+                            <div class="col-4">
+                                <div class="text-center">
+                                    {% if manager.photo %}
+                                    <img alt="image" class="rounded-circle my-style-2 m-t-xs img-fluid"
+                                         src="{{ url_for('photo_profile', filename=manager.photo) }}">
+                                    {% else %}
+                                    <img alt="image" class="rounded-circle my-style-2 m-t-xs img-fluid"
+                                         src="{{ url_for('photo_profile', filename='profile-default.jpeg') }}">
+                                    {% endif %}
+                                    <div class="m-t-xs font-bold">{{ manager.lead_roles.title }}</div>
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <h3><strong>{{ manager.last_name }} {{ manager.first_name }}</strong></h3>
+                                <p><i class="fa fa-map-marker"></i> Riviera State 32/106</p>
+                                <address>
+                                    <strong>Twitter, Inc.</strong><br>
+                                    795 Folsom Ave, Suite 600<br>
+                                    San Francisco, CA 94107<br>
+                                    <abbr title="Phone">P:</abbr> {% if manager.phone %}{{manager.phone}}{% endif %}
+                                </address>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="footer">
+            <div class="float-right">
+                10GB of <strong>250GB</strong> Free.
+            </div>
+            <div>
+                <strong>Copyright</strong> Example Company &copy; 2014-2018
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Mainly scripts -->
+<script src="{{ url_for('inspina', filename='js/jquery-3.1.1.min.js')}}"></script>
+<script src="{{ url_for('inspina', filename='js/popper.min.js')}}"></script>
+<script src="{{ url_for('inspina', filename='js/bootstrap.js')}}"></script>
+<script src="{{ url_for('inspina', filename='js/plugins/metisMenu/jquery.metisMenu.js')}}"></script>
+<script src="{{ url_for('inspina', filename='js/plugins/slimscroll/jquery.slimscroll.min.js')}}"></script>
+
+<!-- Custom and plugin javascript -->
+<script src="{{ url_for('inspina', filename='js/inspinia.js')}}"></script>
+<script src="{{ url_for('inspina', filename='js/plugins/pace/pace.min.js')}}"></script>
+
+
+</body>
+
+</html>

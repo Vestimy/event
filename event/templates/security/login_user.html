@@ -1,53 +1,81 @@
-{% extends "base.html" %}
-{% block content %}
+<!DOCTYPE html>
+<html>
 
-<div class="container aos-init aos-animate" data-aos="fade-up">
-    <div class="row justify-content-evenly aos-init aos-animate">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TM | Войти</title>
+
+    <link href="{{ url_for('inspina', filename='css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{ url_for('inspina', filename='font-awesome/css/font-awesome.css')}}" rel="stylesheet">
+
+    <link href="{{ url_for('inspina', filename='css/animate.css')}}" rel="stylesheet">
+    <link href="{{ url_for('inspina', filename='css/style.css')}}" rel="stylesheet">
+
+</head>
+<body class="gray-bg">
+<div class="middle-box text-center loginscreen animated fadeInDown">
+    <div>
+        <div>
+            <h1 class="logo-name">TM+</h1>
+
+        </div>
+        <h3>Добро пожаловать в TM+</h3>
+
+        <p>Login in. To see it in action.</p>
         {% from "security/_macros.html" import render_field_with_errors, render_field %}
         {% include "security/_messages.html" %}
 
         <!--<h1>{{ _('Login') }}</h1>-->
-        <form class="login-form" action="{{ url_for_security('login') }}" method="POST" name="login_user_form"
-              data-aos="fade-up">
+        <form class="m-t" role="form" action="{{ url_for_security('login') }}" method="POST" name="login_user_form"
+        >
 
 
             {{ login_user_form.hidden_tag() }}
             <!--    <img class="mb-4" src="{{ url_for('static', filename='/assets/brand/bootstrap-solid.svg') }}" alt="" width="72" height="72">-->
-            <div class="login-wrap">
-                <p class="login-img"><i class="icon_lock_alt"></i></p>
-                {% if login_user_form.email.errors %}
-                {% for error in login_user_form.email.errors %}
-                <p class="alert-danger">{{ error }}</p>
-                {% endfor %}
-                {% endif %}
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="icon_profile"></i></span>
-                    {{ login_user_form.email(class='form-control')}}
-                </div>
 
-                <div class="input-group">
-                    <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-                    {{ login_user_form.password(class='form-control') }}
-                </div>
-                {% if login_user_form.password.errors %}
-                {% for error in login_user_form.password.errors %}
-                <p class="alert-danger">{{ error }}</p>
-                {% endfor %}
-                {% endif %}
-                <label class="checkbox">
-                    {{ login_user_form.remember.label }}
-                    {{ login_user_form.remember }}
-                    <span class="pull-right"> <a href="#"> Forgot Password?</a></span>
-                </label>
+            {% if login_user_form.email.errors %}
+            {% for error in login_user_form.email.errors %}
 
-                {{ render_field(login_user_form.next) }}
-                {{ render_field(login_user_form.submit, class="btn btn-primary btn-lg btn-block") }}
-                <a href="{{ url_for('security.register') }}" class="btn btn-info btn-lg btn-block"
-                   type="submit">Signup</a>
+            {% endfor %}
+            {% endif %}
+            <div class="form-group">
+                {{ login_user_form.email(class='form-control')}}
             </div>
+            <div class="form-group">
+                {{ login_user_form.password(class='form-control') }}
+            </div>
+            {% if login_user_form.password.errors %}
+            {% for error in login_user_form.password.errors %}
+            <p class="alert-danger">{{ error }}</p>
+            {% endfor %}
+            {% endif %}
+
+            {{ login_user_form.remember.label }}
+            {{ login_user_form.remember }}
+
+
+            {{ render_field(login_user_form.next) }}
+            {{ render_field(login_user_form.submit, class="btn btn-primary btn-lg btn-block") }}
+            <a href="#"><small>Forgot password?</small></a>
+
+
+            <p class="text-muted text-center"><small>Do not have an account?</small></p>
+            <a class="btn btn-sm btn-white btn-block" href="{{ url_for('security.register') }}">Create an account</a>
+
+
         </form>
         <!--{% include "security/_menu.html" %}-->
+        <p class="m-t"><small>Inspinia we app framework base on Bootstrap 3 &copy; 2014</small></p>
     </div>
-
 </div>
-{% endblock %}
+<!-- Mainly scripts -->
+<script src="{{ url_for('inspina', filename='js/jquery-3.1.1.min.js')}}"></script>
+<script src="{{ url_for('inspina', filename='js/popper.min.js')}}"></script>
+<script src="{{ url_for('inspina', filename='js/bootstrap.js')}}"></script>
+
+</body>
+
+</html>

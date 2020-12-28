@@ -11,6 +11,7 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     UPLOAD_FOLDER = 'uploads'
     UPLOAD_PHOTO_PROFILES = PATH_EVENTS + '/uploads/profiles'
+    UPLOAD_ADMIN = PATH_EVENTS + '/static/inspina'
     UPLOAD_DOCUMENTS_PROFILES = PATH_EVENTS + '/uploads/documents'
     UPLOAD_PHOTO_ARENA = PATH_EVENTS + '/uploads/arena'
     UPLOAD_PHOTO_ARTIST = PATH_EVENTS + '/uploads/artist'
@@ -33,5 +34,7 @@ class Config:
     SECURITY_REGISTERABLE = True
     SECURITY_REGISTER_URL = '/create_account'
     SECURITY_USER_IDENTITY_ATTRIBUTES = ['email', 'login']
+    SECURITY_POST_LOGIN_VIEW = '/index'
+    SECURITY_POST_LOGOUT_VIEW = '/login'
     SECURITY_SEND_REGISTER_EMAIL = False
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024

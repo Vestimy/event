@@ -12,8 +12,31 @@ administrator = Blueprint('administrator', __name__)
 @administrator.route('/administrator', methods=['GET'])
 @roles_required('super_admin')
 def index():
-    return render_template('arena/get_list_arena.html', menu='arenas', id=id, typehall=typehall, arena=arena)
+    return render_template('administrator/index.html')
 
+
+@administrator.route('/profile', methods=['GET'])
+@roles_required('super_admin')
+def profile():
+    return render_template('administrator/profile.html')
+#
+#
+# @administrator.route('/administrator', methods=['GET'])
+# @roles_required('super_admin')
+# def index():
+#     return render_template('administrator/index.html')
+#
+#
+# @administrator.route('/administrator', methods=['GET'])
+# @roles_required('super_admin')
+# def index():
+#     return render_template('administrator/index.html')
+#
+#
+# @administrator.route('/administrator', methods=['GET'])
+# @roles_required('super_admin')
+# def index():
+#     return render_template('administrator/index.html')
 
 
 @administrator.errorhandler(422)
