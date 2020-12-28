@@ -1,0 +1,54 @@
+{% extends "base/base.html" %}
+{% block title %}
+<title>FORMS | Basic Form</title>
+
+{% endblock %}
+
+
+{% block head_style %}
+<link href="{{ url_for('inspina', filename='css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css')}}"
+      rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+{% endblock %}
+
+
+{% block content %}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        {% for artist in artists %}
+        <div class="col-lg-4">
+            <div class="contact-box">
+                <a class="row" href="{{ url_for('artists.artist_profile', id=artist.id)}}">
+                    <div class="col-4">
+                        <div class="text-center">
+                            {% if artist.img %}
+                            <img alt="image" class="m-t-xs img-fluid"
+                                 src="{{ url_for('photo_artist', filename=artist.img) }}">
+                            {% else %}
+                            <img alt="image" class="m-t-xs img-fluid"
+                                 src="{{ url_for('photo_profile', filename='profile-default.jpeg') }}">
+                            {% endif %}
+                            <div class="m-t-xs font-bold">EWFWEF</div>
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <h3><strong>{{ artist.last_name }} {{ artist.first_name }}</strong></h3>
+                        <p><i class="fa fa-map-marker"></i> Riviera State 32/106</p>
+                        <address>
+                            <strong>Twitter, Inc.</strong><br>
+                            795 Folsom Ave, Suite 600<br>
+                            San Francisco, CA 94107<br>
+                            <abbr title="Phone">P:</abbr> {% if artist.phone %}{{artist.phone}}{% endif %}
+                        </address>
+                    </div>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock %}
+

@@ -115,6 +115,7 @@ def create_app():
 
 from .models import *
 from .models_equipment import *
+from .model.menu import *
 
 
 class AdminMixIn:
@@ -155,6 +156,7 @@ admin.add_view(AdminView(Equipment, db.session))
 admin.add_view(AdminView(ManagerPhoto, db.session))
 admin.add_view(AdminView(TypeHall, db.session))
 admin.add_view(AdminView(TypeEvent, db.session))
+admin.add_view(AdminView(Menu, db.session))
 
 
 admin.add_view(AdminView(Country, db.session))

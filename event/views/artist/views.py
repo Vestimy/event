@@ -9,18 +9,18 @@ from werkzeug.utils import secure_filename
 artists = Blueprint('artists', __name__)
 
 
-@artists.route('/artist/', methods=['get', 'post'])
+@artists.route('/artists/', methods=['get', 'post'])
 @login_required
-def get_artist():
+def index():
     artist = Artist.query.order_by(Artist.last_name).all()
-    return render_template('artist/get_artist.html', menu='artists', artist=artist)
+    return render_template('artists.html', menu='artists', artists=artist)
 
 
 @artists.route('/artist/<int:id>', methods=['GET'])
 @login_required
-def get_item_artist(id):
+def artist_profile(id):
     artist = Artist.query.get(id)
-    return render_template('artist/item_artist.html', menu='artists', item=artist)
+    return render_template('artist_profile.html', menu='artists', artist=artist)
 
 
 @artists.route('/artist/add', methods=['GET', 'POST'])

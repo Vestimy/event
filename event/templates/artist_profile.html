@@ -14,17 +14,17 @@
                 </div>
                 <div>
                     <div class="ibox-content no-padding border-left-right">
-                        {% if user.photo %}
+                        {% if artist.img %}
                         <img alt="image" class="img-fluid"
-                             src="{{ url_for('photo_profile', filename=user.photo)}}">
+                             src="{{ url_for('photo_artist', filename=artist.img)}}">
                         {% else %}
                         <img alt="image" class="img-fluid"
                              src="{{ url_for('photo_profile', filename='profile-default.jpeg')}}">
                         {% endif %}
                     </div>
                     <div class="ibox-content profile-content">
-                        <h4><strong>{{ user.last_name }} {{ user.first_name}}</strong></h4>
-                        <p><i class="fa fa-map-marker"></i> {{ user.address }}</p>
+                        <h4><strong>{{ artist.last_name }} {{ artist.first_name}}</strong></h4>
+                        <p><i class="fa fa-map-marker"></i> {{ artist.address }}</p>
                         <h5>
                             About me
                         </h5>
@@ -250,6 +250,17 @@
 
 {% endblock %}
 {% block script %}
+<!-- Mainly scripts -->
+<script src="{{ url_for('inspina', filename='js/jquery-3.1.1.min.js')}}"></script>
+<script src="{{ url_for('inspina', filename='js/popper.min.js')}}"></script>
+<script src="{{ url_for('inspina', filename='js/bootstrap.js')}}"></script>
+<script src="{{ url_for('inspina', filename='js/plugins/metisMenu/jquery.metisMenu.js')}}"></script>
+<script src="{{ url_for('inspina', filename='js/plugins/slimscroll/jquery.slimscroll.min.js')}}"></script>
+
+<!-- Custom and plugin javascript -->
+<script src="{{ url_for('inspina', filename='js/inspinia.js')}}"></script>
+<script src="{{ url_for('inspina', filename='js/plugins/pace/pace.min.js')}}"></script>
+
 <!-- Peity -->
 <script src="{{ url_for('inspina', filename='js/plugins/peity/jquery.peity.min.js')}}"></script>
 

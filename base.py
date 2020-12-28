@@ -9,8 +9,9 @@ migrate = Migrate(app, db)
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
-from event.models import *
+from event.model import *
 from event.models_equipment import *
+from event.model.menu import *
 
 if __name__ == '__main__':
     manager.run()

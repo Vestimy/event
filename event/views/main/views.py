@@ -19,6 +19,7 @@ main = Blueprint('main', __name__)
 
 
 @main.route('/', methods=['GET'])
+@login_required
 def mains():
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
@@ -26,7 +27,7 @@ def mains():
 @main.route('/index', methods=['GET'])
 @login_required
 def index():
-    return render_template('index.html', menu='main')
+    return render_template('index.html', menu='index')
 
 
 @main.route('/profile/', methods=['GET'])
@@ -41,7 +42,7 @@ def profile_all():
 @main.route('/profile/<int:id>', methods=['GET'])
 def profile(id):
     user = User.query.get(id)
-    return render_template('profile.html', user=user)
+    return render_template('profile.html', menu="team", user=user)
 
 
 @main.route('/managers', methods=['GET'])
@@ -50,19 +51,19 @@ def managers():
         managers = User.query.filter(User.roles.any(Role.name.in_(['manager']))).order_by(User.last_name).all()
     except Exception as e:
         logger.warning(
-            f'managers - reads action failed with errors: {e}'
+            f'{current_user.last_name} - reads action failed with errors: {e}'
         )
-    return render_template('contacts.html', managers=managers)
+    return render_template('team.html', menu="managers", managers=managers)
 
-@main.route('/contacts', methods=['GET'])
-def contacts():
+@main.route('/team', methods=['GET'])
+def team():
     try:
         managers = User.query.filter(User.roles.any(Role.name.in_(['users']))).order_by(User.last_name).all()
     except Exception as e:
         logger.warning(
             f'managers - reads action failed with errors: {e}'
         )
-    return render_template('contacts.html', managers=managers)
+    return render_template('team.html', menu="team", managers=managers)
 
 
 @main.route('/city', methods=['GET', 'POST'])
