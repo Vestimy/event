@@ -24,6 +24,7 @@ def mains():
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
 
+
 @main.route('/index', methods=['GET'])
 @login_required
 def index():
@@ -40,9 +41,21 @@ def profile_all():
 
 
 @main.route('/profile/<int:id>', methods=['GET'])
-def profile(id):
+def profile(id, page=1):
+    per_page = 10
     user = User.query.get(id)
-    return render_template('profile.html', menu="team", user=user)
+    page = request.args.get('page', type=int, default=1)
+    events = Event.query.filter(Event.user_id == user.id).order_by(Event.date_event.desc()).paginate(page, per_page,
+                                                                                                     error_out=False)
+    # all_events = Event.query.join(event_staff_users).filter(event_staff_users == user.id).all()
+    # all_events = Event.query.filter(Event.users_staff.any(User.id.in_([user.id]))).all()
+    # chat.query.join(user.chats).filter(user.id == 1).all()
+    # User.query.filter(User.roles.any(Role.name.in_(["manager"]))
+    # print(all_events)
+    sum_event = len(user.event_staff)
+    admin_event = len(user.event)
+    return render_template('profile.html', menu="team", user=user, events=events, sum_event=sum_event,
+                           admin_event=admin_event)
 
 
 @main.route('/managers', methods=['GET'])
@@ -54,6 +67,7 @@ def managers():
             f'{current_user.last_name} - reads action failed with errors: {e}'
         )
     return render_template('team.html', menu="managers", managers=managers)
+
 
 @main.route('/team', methods=['GET'])
 def team():

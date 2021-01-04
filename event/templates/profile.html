@@ -36,16 +36,18 @@
                         <div class="row m-t-lg">
                             <div class="col-md-4">
                                 <span class="bar">5,3,9,6,5,9,7,3,5,2</span>
-                                <h5><strong>169</strong> Posts</h5>
+                                <h5><strong>{{ sum_event }}</strong> Event </h5>
                             </div>
-                            <div class="col-md-4">
-                                <span class="line">5,3,9,6,5,9,7,3,5,2</span>
-                                <h5><strong>28</strong> Following</h5>
-                            </div>
+<!--                            <div class="col-md-4">-->
+<!--                                <span class="line">5,3,9,6,5,9,7,3,5,2</span>-->
+<!--                                <h5><strong>28</strong> Following</h5>-->
+<!--                            </div>-->
+                            {% if 'manager' in user.roles %}
                             <div class="col-md-4">
                                 <span class="bar">5,3,2,-1,-3,-2,2,3,5,2</span>
-                                <h5><strong>240</strong> Followers</h5>
+                                <h5><strong>{{ admin_event }}</strong> Администартор </h5>
                             </div>
+                            {% endif %}
                         </div>
                         <div class="user-button">
                             <div class="row">
@@ -66,6 +68,134 @@
             </div>
         </div>
         <div class="col-md-8">
+            <div class="row">
+                <div class="{% if 'manager' in user.roles %}col-lg-6 {% else %} col-lg-12 {% endif %}">
+                    <div class="ibox ">
+                        <div class="ibox-title">
+
+                            <h5>Концерты</h5>
+
+                            <div class="ibox-tools">
+                                Инструменты
+                            </div>
+
+                            <div class="ibox-content">
+                                {% for event in events.items %}
+                                <strong><a href="{{url_for('events.get_event', id=event.id)}}">
+                                    {% if event.artist.last_name %}{{ event.artist.first_name }} {{ event.artist.first_name }} {{ event.date_event }}
+                                    {% else %}
+                                    {{ event.artist.alias }}
+                                    {% endif %}
+                                </a></strong><br>
+                                {% endfor %}
+                            </div>
+                            <div class="btn-group">
+
+                                {% if events.has_prev %}
+
+                                <a href="{{ url_for('main.profile', id=user.id, page=events.prev_num) }}">
+                                    <button type="button" class="btn btn-white"><i class="fa fa-chevron-left"></i>
+
+
+                                    </button>
+                                </a>
+                                {% else %}
+                                <a href="{{ url_for('main.profile', id=user.id, page=events.prev_num) }}">
+                                    <button type="button" class="btn btn-white disabled"><i
+                                            class="fa fa-chevron-left"></i></button>
+                                </a>
+                                {% endif %}
+                                {% for page in events.iter_pages() %}
+                                <a href="{{ url_for('main.profile', id=user.id, page=page)}}">
+                                    <button class="btn btn-white {% if page==events.page%} active {% endif %}">
+                                        {{page}}
+                                    </button>
+                                </a>
+                                {% endfor %}
+                                <!--                                <button class="btn btn-white">1</button>-->
+                                <!--                                <button class="btn btn-white  active">2</button>-->
+                                <!--                                <button class="btn btn-white">3</button>-->
+                                <!--                                <button class="btn btn-white">4</button>-->
+                                {% if events.has_next %}
+                                <a href="{{ url_for('main.profile', id=user.id, page=events.next_num) }}">
+                                    <button type="button" class="btn btn-white"><i class="fa fa-chevron-right"></i>
+                                    </button>
+                                </a>
+                                {% else %}
+                                <a href="{{ url_for('main.profile', id=user.id, page=events.next_num) }}">
+                                    <button type="button " class="btn btn-white disabled"><i
+                                            class="fa fa-chevron-right"></i></button>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if 'manager' in user.roles %}
+                <div class="col-lg-6">
+                    <div class="ibox ">
+                        <div class="ibox-title">
+
+                            <h5>Администратор мероприятий</h5>
+
+                            <div class="ibox-tools">
+                                Инструменты
+                            </div>
+
+                            <div class="ibox-content">
+                                {% for event in events.items %}
+                                <strong><a href="{{url_for('events.get_event', id=event.id)}}">
+                                    {% if event.artist.last_name %}{{ event.artist.first_name }} {{ event.artist.first_name }} {{ event.date_event }}
+                                    {% else %}
+                                    {{ event.artist.alias }}
+                                    {% endif %}
+                                </a></strong><br>
+                                {% endfor %}
+                            </div>
+                            <div class="btn-group">
+
+                                {% if events.has_prev %}
+
+                                <a href="{{ url_for('main.profile', id=user.id, page=events.prev_num) }}">
+                                    <button type="button" class="btn btn-white"><i class="fa fa-chevron-left"></i>
+
+
+                                    </button>
+                                </a>
+                                {% else %}
+                                <a href="{{ url_for('main.profile', id=user.id, page=events.prev_num) }}">
+                                    <button type="button" class="btn btn-white disabled"><i
+                                            class="fa fa-chevron-left"></i></button>
+                                </a>
+                                {% endif %}
+                                {% for page in events.iter_pages() %}
+                                <a href="{{ url_for('main.profile', id=user.id, page=page)}}">
+                                    <button class="btn btn-white {% if page==events.page%} active {% endif %}">
+                                        {{page}}
+                                    </button>
+                                </a>
+                                {% endfor %}
+                                <!--                                <button class="btn btn-white">1</button>-->
+                                <!--                                <button class="btn btn-white  active">2</button>-->
+                                <!--                                <button class="btn btn-white">3</button>-->
+                                <!--                                <button class="btn btn-white">4</button>-->
+                                {% if events.has_next %}
+                                <a href="{{ url_for('main.profile', id=user.id, page=events.next_num) }}">
+                                    <button type="button" class="btn btn-white"><i class="fa fa-chevron-right"></i>
+                                    </button>
+                                </a>
+                                {% else %}
+                                <a href="{{ url_for('main.profile', id=user.id, page=events.next_num) }}">
+                                    <button type="button " class="btn btn-white disabled"><i
+                                            class="fa fa-chevron-right"></i></button>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
             <div class="ibox ">
                 <div class="ibox-title">
                     <h5>Activites</h5>

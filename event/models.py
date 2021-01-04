@@ -14,6 +14,13 @@ def time_now():
     return datetime.now(timezone('Europe/Moscow'))
 
 
+event_staff_users = db.Table('event_staff_users',
+                             db.Model.metadata,
+                             db.Column('users_staff', db.Integer, ForeignKey('users.id')),
+                             db.Column('event_staff', db.Integer, ForeignKey('event.id'))
+                             )
+
+
 class Event(db.Model):
     __tablename__ = 'event'
 
@@ -31,6 +38,9 @@ class Event(db.Model):
     arena = relationship('Arena', back_populates='event')
     user_id = db.Column(Integer, ForeignKey('users.id'))
     user = relationship('User', back_populates='event')
+
+    users_staff = relationship('User', secondary=event_staff_users, back_populates='event_staff', lazy=True)
+
     tour_id = db.Column(Integer, ForeignKey('tour.id'))
     tour = relationship('Tour', back_populates='event')
     edit_event = db.Column(db.DateTime, onupdate=time_now)
@@ -71,16 +81,17 @@ class Artist(db.Model):
     __tablename__ = 'artist'
 
     id = db.Column(db.Integer, primary_key=True)
-    last_name = db.Column(db.String(255), unique=True)
-    first_name = db.Column(db.String(255))
-    administrator = db.Column(db.String(255))
-    phone_administrator = db.Column(db.String(255))
-    sound_engineer = db.Column(db.String(255))
-    phone_sound = db.Column(db.String(255))
-    monitor_engineer = db.Column(db.String(255))
-    phone_monitor = db.Column(db.String(255))
-    light = db.Column(db.String(255))
-    phone_light = db.Column(db.String(255))
+    last_name = db.Column(db.String(128))
+    first_name = db.Column(db.String(128))
+    administrator = db.Column(db.String(128))
+    alias = db.Column(String(128))
+    phone_administrator = db.Column(db.String(128))
+    sound_engineer = db.Column(db.String(128))
+    phone_sound = db.Column(db.String(128))
+    monitor_engineer = db.Column(db.String(128))
+    phone_monitor = db.Column(db.String(128))
+    light = db.Column(db.String(128))
+    phone_light = db.Column(db.String(128))
 
     img = db.Column(db.String(255))
 
@@ -97,8 +108,7 @@ class Artist(db.Model):
     #     if date is not None:
     #         return datetime.utcnow()
 
-    def __repr__(self):
-        return self.last_name
+
 
 
 class Country(db.Model):
@@ -134,7 +144,8 @@ class City(db.Model):
     region = relationship('Region', back_populates='city')
 
     # event = relationship("Event", back_populates='city')
-    # arena = relationship("Arena", back_populates="city")
+    arena = relationship("Arena", back_populates="city")
+
     #
     # edit_city = db.Column(db.DateTime, onupdate=time_now)
     # created_city = db.Column(db.DateTime, default=time_now)
@@ -149,8 +160,8 @@ class Arena(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False, unique=True)
     description = db.Column(db.String(500))
-    # city_id = db.Column(Integer, ForeignKey('city.id'))
-    # city = relationship("City", back_populates="arena")
+    city_id = db.Column(Integer, ForeignKey('city.id'))
+    city = relationship("City", back_populates="arena")
     typehall_id = db.Column(Integer, ForeignKey('typehall.id'))
     typehall = relationship("TypeHall", back_populates="arena")
     address = db.Column(db.String(255))
@@ -283,7 +294,7 @@ class User(db.Model, UserMixin):
     photo = db.Column(db.String(255))
 
     event = relationship('Event', back_populates='user')
-
+    event_staff = relationship('Event', secondary=event_staff_users, back_populates='users_staff', lazy=True)
     facebook = db.Column(db.String(255))
     instagram = db.Column(db.String(255))
 
