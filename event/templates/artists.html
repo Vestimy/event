@@ -29,17 +29,24 @@
                             <img alt="image" class="m-t-xs img-fluid"
                                  src="{{ url_for('photo_profile', filename='profile-default.jpeg') }}">
                             {% endif %}
-                            <div class="m-t-xs font-bold">EWFWEF</div>
+                            <div class="m-t-xs font-bold"></div>
                         </div>
                     </div>
                     <div class="col-8">
-                        <h3><strong>{{ artist.last_name }} {{ artist.first_name }}</strong></h3>
-                        <p><i class="fa fa-map-marker"></i> Riviera State 32/106</p>
+                        <h3><strong>{% if artist.last_name %}{{ artist.first_name }} {{ artist.last_name }}
+                            {% if artist.alias %} ({{ artist.alias }}) {% endif %}
+                            {% else %}
+                            {{ artist.alias }}
+                            {% endif %}
+                        </strong></h3>
+                        <p>
+<!--                            <i class="fa fa-map-marker"></i>-->
+                        {% if artist.administrator %}Администратор: <strong>{{ artist.administrator }}</strong>{% endif %}<br>
+                        </p>
                         <address>
-                            <strong>Twitter, Inc.</strong><br>
-                            795 Folsom Ave, Suite 600<br>
-                            San Francisco, CA 94107<br>
-                            <abbr title="Phone">P:</abbr> {% if artist.phone %}{{artist.phone}}{% endif %}
+                            {% if artist.sound_engineer %}FOH:  <strong>{{ artist.sound_engineer }}</strong>{% endif %}<br>
+                            {% if artist.monitor_engineer %} MON:   <strong>{{ artist.monitor_engineer }}</strong>{% endif %}<br>
+                            {% if artist.light %}light:  <strong>{{ artist.light }}</strong>{% endif %}<br>
                         </address>
                     </div>
                 </a>

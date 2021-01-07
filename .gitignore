@@ -24,3 +24,4 @@ migrationswwwwwwwwwww/
 log/api.log
 log/
 migrations/__pycache__/
+event/model/__pycache__/

@@ -48,12 +48,7 @@
                 <li><a href="contacts_2.html">Contacts v.2</a></li>
             </ul>
             </li>
-            <li {% if menu==
-            "managers" %} class="active" {% endif %}>
-            <a href="{{ url_for('main.managers') }}"><i class="fa fa-user-circle-o "></i> <span class="nav-label">Менеджеры</span>
-            </a>
 
-            </li>
             <li {% if menu==
             "team" %} class="active" {% endif %}>
             <a href="{{ url_for('main.team') }}"><i class="fa fa-users"></i> <span

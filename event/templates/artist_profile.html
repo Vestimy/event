@@ -10,7 +10,7 @@
         <div class="col-md-4">
             <div class="ibox ">
                 <div class="ibox-title">
-                    <h5>Профиль</h5>
+                    <h5>Артист</h5>
                 </div>
                 <div>
                     <div class="ibox-content no-padding border-left-right">
@@ -23,15 +23,18 @@
                         {% endif %}
                     </div>
                     <div class="ibox-content profile-content">
-                        <h4><strong>{{ artist.last_name }} {{ artist.first_name}}</strong></h4>
-                        <p><i class="fa fa-map-marker"></i> {{ artist.address }}</p>
+                        <h4><strong>{% if artist.last_name %} {{ artist.first_name}} {{ artist.last_name }}
+                            {% if artist.alias %} ({{ artist.alias }}){% endif %}
+                            {% else %}
+                            {{ artist.alias }}
+                            {% endif %}
+                        </strong></h4>
+                        <p></p>
                         <h5>
-                            About me
+                            Немного о артисте
                         </h5>
                         <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                            exercitat.
+                            {{ artist.description }}
                         </p>
                         <div class="row m-t-lg">
                             <div class="col-md-4">

@@ -10,7 +10,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_login import LoginManager
 
 from flask_security import SQLAlchemySessionUserDatastore, Security
-from flask_security import current_user, user_registered, login_required,user_confirmed
+from flask_security import current_user, user_registered, login_required, user_confirmed
 from flask_mail import Mail
 from flask_datepicker import datepicker
 from flask_bootstrap import Bootstrap
@@ -46,7 +46,6 @@ def create_app():
         default_role = user_datastore.find_role("users")
         user_datastore.add_role_to_user(user, default_role)
         db.session.commit()
-
 
     from .views.main.views import main
     from .views.event.views import events
@@ -88,6 +87,7 @@ def create_app():
     def photo_profile(filename):
         return send_from_directory(Config.UPLOAD_PHOTO_PROFILES,
                                    filename)
+
     @app.route('/document_profile/<filename>')
     @login_required
     def document_profile(filename):
@@ -114,8 +114,9 @@ def create_app():
 
 
 from .models import *
-from .models_equipment import *
+from .model.equipment import *
 from .model.menu import *
+from .model.city import *
 
 
 class AdminMixIn:
@@ -148,22 +149,15 @@ admin.add_view(AdminView(Tour, db.session))
 admin.add_view(AdminView(Event, db.session))
 admin.add_view(AdminView(Artist, db.session))
 admin.add_view(AdminView(Arena, db.session))
-admin.add_view(AdminView(Manager, db.session))
-admin.add_view(AdminView(ImgArena, db.session))
-admin.add_view(AdminView(PhotoArtist, db.session))
-admin.add_view(AdminView(EquipmentCategory, db.session))
-admin.add_view(AdminView(Equipment, db.session))
-admin.add_view(AdminView(ManagerPhoto, db.session))
 admin.add_view(AdminView(TypeHall, db.session))
 admin.add_view(AdminView(TypeEvent, db.session))
 admin.add_view(AdminView(Menu, db.session))
 
-
+admin.add_view(AdminView(EquipmentCategory, db.session))
+admin.add_view(AdminView(Equipment, db.session))
 admin.add_view(AdminView(Country, db.session))
 admin.add_view(AdminView(Region, db.session))
 admin.add_view(AdminView(City, db.session))
-
-
 
 admin.add_view(AdminView(User, db.session))
 admin.add_view(AdminView(Role, db.session))

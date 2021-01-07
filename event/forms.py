@@ -85,6 +85,7 @@ class CityForm(Form):
         if city:
             raise ValidationError(u'Такой город уже существует')
 
+
 class CitysForm(Form):
     name = SelectField('Город', [InputRequired()])
     arena = SelectMultipleField('Арена', validate_choice=False)
@@ -166,6 +167,44 @@ class ManagerForm(Form):
     photo = FileField("Фото")
     document_id = MultipleFileField("Документы")
     submit = SubmitField('Сохранить')
+
+
+# class EmailString(StringField):
+#     def pre_validate(self, form):
+#
+#         print(form.email.data)
+#         if User.query.filter(User.email == form.email.data).first():
+#             raise ValueError("EWFWEW")
+
+
+class UserForm(Form):
+    id = Integer
+    last_name = StringField('Фамилия')
+    first_name = StringField('Имя')
+    patronymic = StringField('Отчество')
+    login = StringField('Логин')
+    email = StringField('Почта')
+    phone = StringField('Телефон')
+    address = StringField('Адрес')
+    birthday = DateField('День рождения')
+    facebook = StringField('Facebook')
+    instagram = StringField('Instagram')
+    photo = FileField("Фото")
+    document_id = MultipleFileField("Документы")
+    submit = SubmitField('Сохранить')
+
+    def validate_login(self, field):
+        if User.query.filter(User.login == field.data).first():
+            raise ValidationError('Пользователь с таким логином уже существует')
+
+
+class ProfileImg(Form):
+    photo = FileField('Фотография')
+
+    submit = SubmitField('Сохранить')
+    # def validate_login(self, field):
+    #     if User.query.filter(User.login == field.data).first():
+    #         raise ValidationError('Пользователь с таким логином уже существует')
 
 
 # class RegisterForm(Form):
