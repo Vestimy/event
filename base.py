@@ -10,7 +10,7 @@ manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
 from event.model import *
-from event.models_equipment import *
+from event.model.equipment import *
 from event.model.menu import *
 from event.model.city import *
 

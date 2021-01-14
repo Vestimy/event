@@ -1,4 +1,4 @@
-import os
+import os, escape
 from flask import Blueprint, jsonify, request, render_template, redirect, json
 from event import logger, config, allowed_photo_profile
 from flask_security import login_required, roles_required, current_user, login_user
@@ -34,6 +34,15 @@ def api_arena_choices():
     result_list = dict()
     for item in item_list:
         result_list[item.id] = item.name
+    return json.dumps(result_list)
+
+
+@api.route('/api/city', methods=('GET', 'POST'))
+@login_required
+def city():
+    if request.args.get('search'):
+        search = request.args.get('search')
+        result_list = [{"id": i.id, "text": i.name} for i in City.query.filter(City.name.contains(search)).all()]
     return json.dumps(result_list)
 
 

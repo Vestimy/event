@@ -37,16 +37,16 @@
             </a>
 
             </li>
-            <li c{% if menu==
+            <li {% if menu==
             "arenas" %} class="active" {% endif %}>
             <a href="{{ url_for('arenas.index') }}"><i class="fa fa-address-card"></i> <span
                     class="nav-label">Площадки</span> <span class="float-right label label-primary">SPECIAL</span> </a>
-            <ul class="nav nav-second-level">
-                <li class="active"><a href="contacts.html">Contacts</a></li>
-                <li><a href="profile.html">Profile</a></li>
-                <li><a href="profile_2.html">Profile v.2</a></li>
-                <li><a href="contacts_2.html">Contacts v.2</a></li>
-            </ul>
+<!--            <ul class="nav nav-second-level">-->
+<!--                <li class="active"><a href="contacts.html">Contacts</a></li>-->
+<!--                <li><a href="profile.html">Profile</a></li>-->
+<!--                <li><a href="profile_2.html">Profile v.2</a></li>-->
+<!--                <li><a href="contacts_2.html">Contacts v.2</a></li>-->
+<!--            </ul>-->
             </li>
 
             <li {% if menu==

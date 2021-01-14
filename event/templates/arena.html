@@ -1,6 +1,6 @@
 {% extends "base/base.html" %}
 {% block title %}
-<title>TM+ | Площадки</title>
+<title>Площадки | TM+</title>
 
 {% endblock %}
 
@@ -21,24 +21,54 @@
         <div class="wrapper wrapper-content animated fadeInUp">
 
             <div class="ibox">
+
                 <div class="ibox-title">
-                    <h5>All projects assigned to this account</h5>
+                    {% if citys %}
+                    <h5>Площадки в городе {{ citys }}</h5>
+                    {% else %}
+                    <h5>Площадки</h5>
+                    {% endif %}
                     <div class="ibox-tools">
-                        <a href="" class="btn btn-primary btn-xs">Create new project</a>
+                        <a href="{{ url_for('arenas.add') }}" class="btn btn-primary btn-xs">Добавить</a>
                     </div>
                 </div>
                 <div class="ibox-content">
                     <div class="row m-b-sm m-t-sm">
-                        <div class="col-md-1">
-                            <button type="button" id="loading-example-btn" class="btn btn-white btn-sm"><i
-                                    class="fa fa-refresh"></i> Refresh
-                            </button>
+                        <!--                        <div class="col-md-1">-->
+                        <!--                            <button type="button" id="loading-example-btn" class="btn btn-white btn-sm"><i-->
+                        <!--                                    class="fa fa-refresh"></i> Refresh-->
+                        <!--                            </button>-->
+                        <!--                        </div>-->
+                        <div class="col-md-12">
+
+                            <form method="GET">
+                                <div class="input-group">
+                                    <input name="q" type="text" placeholder="Поиск по городу или названию"
+                                           class="form-control-sm form-control" value="{{ request.args.get('q','') }}">
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-sm btn-primary"> Go!</button>
+                                    </span>
+
+                                </div>
+                            </form>
                         </div>
-                        <div class="col-md-11">
-                            <div class="input-group"><input type="text" placeholder="Search"
-                                                            class="form-control-sm form-control"> <span
-                                    class="input-group-btn">
-                                        <button type="button" class="btn btn-sm btn-primary"> Go!</button> </span></div>
+                    </div>
+                    <div class="row m-b-sm m-t-sm">
+                        <!--                        <div class="col-md-1">-->
+                        <!--                            <button type="button" id="loading-example-btn" class="btn btn-white btn-sm"><i-->
+                        <!--                                    class="fa fa-refresh"></i> Refresh-->
+                        <!--                            </button>-->
+                        <!--                        </div>-->
+                        <div class="col-md-12">
+
+                            <div class="">
+                                {% for type in typehall %}
+                                <span class="input-group-btn">
+                                    <a href="{{ url_for('arenas.index', type=type.id)}}"><button type="submit" class="btn btn-sm btn-primary"> {{type.name}}</button></a>
+                                </span>
+
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
 
@@ -49,17 +79,18 @@
                             {% for i in arena %}
                             <tr>
                                 <td class="project-title">
-                                    <a href="project_detail.html">{{ i.name }}</a>
+                                    <a href="{{url_for('arenas.arena_detail', id=i.id)}}">{{ i.name }} {% if i.alias %}
+                                        ({{i.alias}}){%endif%}</a>
                                     <br/>
                                     {% if i.typehall %}
-                                    <small>{{ i.typehall }}</small>
+                                    <a href="{{ url_for('arenas.index', type=i.typehall.id) }}"><small>{{ i.typehall }}</small></a>
                                     {% endif %}
                                 </td>
                                 <td class="project-completion">
-                                    <small>{{i.city}}</small>
-                                    <div class="progress progress-mini">
-                                        <div style="width: 48%;" class="progress-bar"></div>
-                                    </div>
+                                    <a href="{{ url_for('arenas.index',  q=i.city) }}"> <small>{{i.city}}</small></a>
+<!--                                    <div class="progress progress-mini">-->
+<!--                                        <div style="width: 48%;." class="progress-bar"></div>-->
+<!--                                    </div>-->
                                 </td>
                                 <!--                                        <td class="project-people">-->
                                 <!--                                            <a href=""><img alt="image" class="rounded-circle" src="{{ url_for('inspina', filename='img/a3.jpg')}}"></a>-->
@@ -70,9 +101,10 @@
                                 <!--                                        </td>-->
                                 <td class="project-actions">
                                     <a href="{{url_for('arenas.arena_detail', id=i.id)}}"
-                                       class="btn btn-white btn-sm"><i class="fa fa-folder"></i> View
+                                       class="btn btn-white btn-sm"><i class="fa fa-folder"></i> Посмотреть
                                     </a>
-                                    <a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i> Edit
+                                    <a href="{{ url_for('arenas.edit', id=i.id) }}" class="btn btn-white btn-sm"><i
+                                            class="fa fa-pencil"></i> Редактировать
                                     </a>
                                 </td>
                             </tr>

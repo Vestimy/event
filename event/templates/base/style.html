@@ -1,4 +1,5 @@
 <meta charset="utf-8">
+<link rel="shortcut icon" href="{{url_for('inspina', filename='favicon/favicon.ico')}}" type="image/x-icon">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <link href="{{ url_for('inspina', filename='css/bootstrap.min.css')}}" rel="stylesheet">
@@ -9,6 +10,9 @@
 
 <!-- Gritter -->
 <link href="{{ url_for('inspina', filename='js/plugins/gritter/jquery.gritter.css')}}" rel="stylesheet">
+<link href="{{ url_for('inspina', filename='css/elegant-icons-style.css') }}" rel="stylesheet"/>
+
+<link href="{{ url_for('inspina', filename='css/icofont.min.css') }}" rel="stylesheet">
 
 <link href="{{ url_for('inspina', filename='css/animate.css')}}" rel="stylesheet">
 <link href="{{ url_for('inspina', filename='css/style.css')}}" rel="stylesheet">
@@ -21,5 +25,84 @@
     height: 106px;
 }
 
+
+.team {
+  background: #fff;
+}
+
+.team .member {
+  margin-bottom: 20px;
+  overflow: hidden;
+  border-radius: 5px;
+  background: #fff;
+  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+}
+
+.team .member .member-img {
+  position: relative;
+  overflow: hidden;
+}
+
+.team .member .social {
+  position: absolute;
+  left: 0;
+  bottom: 30px;
+  right: 0;
+  opacity: 0;
+  transition: ease-in-out 0.3s;
+  text-align: center;
+}
+
+.team .member .social a {
+  transition: color 0.3s;
+  color: #2a2c39;
+  margin: 0 3px;
+  padding-top: 7px;
+  border-radius: 50px;
+  width: 36px;
+  height: 36px;
+  background: rgba(239, 102, 3, 0.8);
+  display: inline-block;
+  transition: ease-in-out 0.3s;
+  color: #fff;
+}
+
+.team .member .social a:hover {
+  background: #fc8129;
+}
+
+.team .member .social i {
+  font-size: 18px;
+}
+
+.team .member .member-info {
+  padding: 25px 15px;
+}
+
+.team .member .member-info h4 {
+  font-weight: 700;
+  margin-bottom: 5px;
+  font-size: 18px;
+  color: #2a2c39;
+}
+
+.team .member .member-info span {
+  display: block;
+  font-size: 13px;
+  font-weight: 400;
+  color: #aaaaaa;
+}
+
+.team .member .member-info p {
+  font-style: italic;
+  font-size: 14px;
+  line-height: 26px;
+  color: #777777;
+}
+
+.team .member:hover .social {
+  opacity: 1;
+  bottom: 15px;
+}
 
 </style>

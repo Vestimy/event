@@ -27,6 +27,8 @@ class Region(db.Model):
         return self.name
 
 
+
+
 class City(db.Model):
     __tablename__ = 'city'
 

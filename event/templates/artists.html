@@ -1,6 +1,6 @@
 {% extends "base/base.html" %}
 {% block title %}
-<title>FORMS | Basic Form</title>
+<title>Артисты | TM+</title>
 
 {% endblock %}
 
@@ -15,6 +15,22 @@
 
 {% block content %}
 <div class="wrapper wrapper-content animated fadeInRight">
+    <!--    <div class="ibox-content">-->
+    <div class="row m-b-sm m-t-sm">
+        <div class="col-md-1">
+            <a href="{{ url_for('artists.add') }}">
+                <button type="button" id="loading-example-btn" class="btn btn-white btn-sm"><i
+                        class="fa  fa-plus"></i> Добавить
+                </button>
+            </a>
+        </div>
+        <div class="col-md-11">
+            <div class="input-group"><input type="text" placeholder="Search" class="form-control-sm form-control">
+                <span class="input-group-btn">
+                                        <button type="button" class="btn btn-sm btn-primary"> Go!</button> </span></div>
+        </div>
+    </div>
+    <!--    </div>-->
     <div class="row">
         {% for artist in artists %}
         <div class="col-lg-4">
@@ -40,13 +56,16 @@
                             {% endif %}
                         </strong></h3>
                         <p>
-<!--                            <i class="fa fa-map-marker"></i>-->
-                        {% if artist.administrator %}Администратор: <strong>{{ artist.administrator }}</strong>{% endif %}<br>
+                            <!--                            <i class="fa fa-map-marker"></i>-->
+                            {% if artist.administrator %}Администратор: <strong>{{ artist.administrator }}</strong>{%
+                            endif %}<br>
                         </p>
                         <address>
-                            {% if artist.sound_engineer %}FOH:  <strong>{{ artist.sound_engineer }}</strong>{% endif %}<br>
-                            {% if artist.monitor_engineer %} MON:   <strong>{{ artist.monitor_engineer }}</strong>{% endif %}<br>
-                            {% if artist.light %}light:  <strong>{{ artist.light }}</strong>{% endif %}<br>
+                            {% if artist.sound_engineer %}FOH: <strong>{{ artist.sound_engineer }}</strong>{% endif
+                            %}<br>
+                            {% if artist.monitor_engineer %} MON: <strong>{{ artist.monitor_engineer }}</strong>{% endif
+                            %}<br>
+                            {% if artist.light %}light: <strong>{{ artist.light }}</strong>{% endif %}<br>
                         </address>
                     </div>
                 </a>

@@ -16,19 +16,27 @@ def index():
     return render_template('artists.html', menu='artists', artists=artist)
 
 
-@artists.route('/artist/<int:id>', methods=['GET'])
+@artists.route('/artists/<int:id>', methods=['GET'])
 @login_required
 def artist_profile(id):
-    artist = Artist.query.get(id)
-    return render_template('artist_profile.html', menu='artists', artist=artist)
+    try:
+        artist = Artist.query.get(id)
+
+        events_artist = len(artist.event)
+    except Exception as e:
+        logger.warning(
+            f'Ошибка запроса артиста - {e}'
+        )
+        return redirect(url_for('artists.index'))
+    return render_template('artist_profile.html', menu='artists', artist=artist, events_artist=events_artist)
 
 
 @artists.route('/artist/add', methods=['GET', 'POST'])
 @login_required
-def add_artist():
+def add():
     artist = Artist()
     form = ArtistForm(request.form, obj=artist)
-    if request.method == 'POST' and form.validate():
+    if request.method == 'POST':
         if request.files['img']:
             file = request.files['img']
             if file.filename == '':
@@ -43,7 +51,7 @@ def add_artist():
                     db.session.commit()
                     artist.img = filename
                     db.session.commit()
-                return redirect(url_for('artists.get_artist'))
+                return redirect(url_for('artists.artist_profile', id=artist.id))
             except Exception as e:
                 db.session.rollback()
                 logger.warning(
@@ -59,15 +67,21 @@ def add_artist():
             logger.warning(
                 f'{e}'
             )
-            return redirect(url_for('artists.get_artist'))
-        return redirect(url_for('artists.get_artist'))
-    return render_template('artist/add_artist.html', menu='artists', form=form)
+            return redirect(url_for('artists.index'))
+        return redirect(url_for('artists.artist_profile', id=artist.id))
+    return render_template('add_artist.html', menu='artists', form=form)
 
 
 @artists.route('/artist/edit/<int:id>', methods=['get', 'post'])
 @login_required
-def edit_artist(id):
-    artist = Artist.query.get(id)
+def edit(id):
+    try:
+        artist = Artist.query.get(id)
+    except Exception as e:
+        logger.warning(
+            f'Ошибка запроса артиста - {e}'
+        )
+        return redirect(url_for('artist.index'))
     form = ArtistForm(request.form, obj=artist)
     if request.method == 'POST':
         if request.files['img']:

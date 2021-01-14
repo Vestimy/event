@@ -1,8 +1,10 @@
 from flask_wtf import FlaskForm
 from wtforms import Form, StringField, SelectMultipleField, MultipleFileField, SubmitField, TextAreaField, \
-    PasswordField, SelectField, DateField, DateTimeField, IntegerField, validators, TimeField, FileField
+    PasswordField, SelectField, DateField, DateTimeField, IntegerField, validators, TimeField, FileField, FloatField
 from wtforms.validators import DataRequired, Email, InputRequired, ValidationError
 from event.models import *
+from event.model.city import *
+from wtforms.widgets import HiddenInput
 
 
 class LoginForm(Form):
@@ -107,10 +109,13 @@ class CitysForm(Form):
 
 class ArenaForm(Form):
     name = StringField('Название')
+    alias = StringField('Сокращенное название')
     description = StringField('Описание')
     city_id = SelectField('Город', validate_choice=False)
     typehall_id = SelectField('Тип площадки', validate_choice=False)
     address = StringField('Адрес')
+    email = StringField('email')
+    url = StringField('Сайт')
     phone_admin = StringField('Тел. Администратора')
     number_of_seats = StringField('Количество мест')
     hall_size = StringField('Размеры зала')
@@ -125,7 +130,7 @@ class ArenaForm(Form):
 
     def __init__(self, *args, **kwargs):
         super(ArenaForm, self).__init__(*args, **kwargs)
-        self.city_id.choices = [(g.id, g.name) for g in City.query.order_by('name')]
+        # self.city_id.choices = [(g.id, g.name) for g in City.query.order_by('name')]
         self.typehall_id.choices = [(g.id, g.name) for g in TypeHall.query.order_by('name')]
 
     def validate_name(self, field):
@@ -137,13 +142,19 @@ class ArenaForm(Form):
 class ArtistForm(Form):
     last_name = StringField('Фамилия')
     first_name = StringField('Имя')
+    alias = StringField('Псевдоним')
+    description = TextAreaField('Описание')
     administrator = StringField('Администратор')
-    phone_administrator = StringField('Тел. Администратора')
+    email_admin = StringField('Почта')
+    phone_administrator = StringField('Тел. ')
     sound_engineer = StringField('Звукорежиссер')
+    email_sound = StringField('Почта')
     phone_sound = StringField('Тел.')
     monitor_engineer = StringField('Мон. Звукорежиссер')
+    email_monitor = StringField('Почта')
     phone_monitor = StringField('Тел.')
     light = StringField('Художник по свету')
+    email_light = StringField('Почта ')
     phone_light = StringField('Тел. ')
     img = FileField("Фото")
 
@@ -217,3 +228,9 @@ class ProfileImg(Form):
 class UploadForm(Form):
     file = FileField('Выбирите изображение')
     save = SubmitField('Сохранить')
+
+class TestForm(Form):
+    x = FloatField(widget=HiddenInput())
+    y = FloatField(widget=HiddenInput())
+    width = FloatField(widget=HiddenInput())
+    height = FloatField(widget=HiddenInput())
