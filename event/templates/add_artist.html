@@ -1,0 +1,224 @@
+{% extends "base/base.html" %}
+{% block title %}
+<title>FORMS | Basic Form</title>
+
+{% endblock %}
+
+
+{% block head_style %}
+<link href="{{ url_for('inspina', filename='css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css')}}"
+      rel="stylesheet">
+
+<link href="{{ url_for('inspina', filename='css/plugins/jasny/jasny-bootstrap.min.css')}}" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>Добавить артиста <small></small></h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="#" class="dropdown-item">Config option 1</a>
+                            </li>
+                            <li><a href="#" class="dropdown-item">Config option 2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <form method="POST" enctype=multipart/form-data>
+                        <div class="form-group row">
+                            {{ form.first_name.label(class='col-sm-2 col-form-label') }}
+                            <div class="col-sm-10">
+                                {{ form.first_name(class='form-control') }}
+                                <!--                                <span-->
+                                <!--                                        class="form-text m-b-none">A block of help text that breaks onto a new line and may extend beyond one line.-->
+                                <!--                                </span>-->
+                            </div>
+                        </div>
+
+                        <div class="form-group  row">
+                            {{ form.last_name.label(class='col-sm-2 col-from-label') }}
+                            <div class="col-sm-10">
+                                {{ form.last_name(class='form-control') }}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            {{ form.alias.label(class='col-sm-2 col-form-label') }}
+                            <div class="col-sm-10">
+                                {{ form.alias(class='form-control') }}
+                                <!--                                <span-->
+                                <!--                                        class="form-text m-b-none">A block of help text that breaks onto a new line and may extend beyond one line.-->
+                                <!--                                </span>-->
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group row">
+                            {{ form.description.label(class='col-sm-2 col-form-label') }}
+                            <div class="col-sm-10">
+                                {{ form.description(class='form-control') }}
+
+                            </div>
+
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group row">
+                            {{ form.administrator.label(class='col-sm-2 col-form-label') }}
+                            <div class="col-sm-4">
+                                {{ form.administrator(class='form-control') }}
+
+                            </div>
+
+                            {{ form.phone_administrator.label(class='col-sm-2 col-form-label') }}
+                            <div class="col-sm-4">
+                                {{ form.phone_administrator(class='form-control') }}
+
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group row">
+                            {{ form.sound_engineer.label(class='col-sm-2 col-form-label') }}
+                            <div class="col-sm-4">
+                                {{ form.sound_engineer(class='form-control') }}
+
+                            </div>
+
+                            {{ form.phone_sound.label(class='col-sm-2 col-form-label') }}
+                            <div class="col-sm-4">
+                                {{ form.phone_sound(class='form-control') }}
+
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            {{ form.monitor_engineer.label(class='col-sm-2 col-form-label') }}
+                            <div class="col-sm-4">
+                                {{ form.monitor_engineer(class='form-control') }}
+
+                            </div>
+
+                            {{ form.phone_monitor.label(class='col-sm-2 col-form-label') }}
+                            <div class="col-sm-4">
+                                {{ form.phone_monitor(class='form-control') }}
+
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            {{ form.light.label(class='col-sm-2 col-form-label') }}
+                            <div class="col-sm-4">
+                                {{ form.light(class='form-control') }}
+
+                            </div>
+
+                            {{ form.phone_light.label(class='col-sm-2 col-form-label') }}
+                            <div class="col-sm-4">
+                                {{ form.phone_light(class='form-control') }}
+
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group row">
+                            {{ form.img.label(class='col-sm-2 col-form-label') }}
+                            <div class="fileinput fileinput-new" data-provides="fileinput">
+                                <span class="btn btn-default btn-file"><span
+                                        class="fileinput-new">Выбирите файл</span><span
+                                        class="fileinput-exists">Change</span>{{ form.img(class='form-control') }}</span>
+                                <span class="fileinput-filename"></span>
+                                <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">&times;</a>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group row">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <a href="{{ url_for('artists.index') }}">
+                                    <button class="btn btn-white btn-sm" type="submit">
+                                        Отмена
+                                    </button>
+                                </a>
+                                {{ form.submit(class='btn btn-primary btn-sm') }}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+<!-- iCheck -->
+
+{% block script %}
+<script src="{{ url_for('inspina', filename='js/plugins/iCheck/icheck.min.js')}}"></script>
+<!-- Jasny -->
+<script src="{{ url_for('inspina', filename='js/plugins/jasny/jasny-bootstrap.min.js')}}"></script>
+
+<!-- DROPZONE -->
+<script src="{{ url_for('inspina', filename='js/plugins/dropzone/dropzone.js')}}"></script>
+
+<!-- CodeMirror -->
+<script src="{{ url_for('inspina', filename='js/plugins/codemirror/codemirror.js')}}"></script>
+<script src="{{ url_for('inspina', filename='js/plugins/codemirror/mode/xml/xml.js')}}"></script>
+<script>
+        Dropzone.options.dropzoneForm = {
+            paramName: "file", // The name that will be used to transfer the file
+            maxFilesize: 2, // MB
+            dictDefaultMessage: "<strong>Drop files here or click to upload. </strong></br> (This is just a demo dropzone. Selected files are not actually uploaded.)"
+        };
+
+        $(document).ready(function(){
+
+            var editor_one = CodeMirror.fromTextArea(document.getElementById("code1"), {
+                lineNumbers: true,
+                matchBrackets: true
+            });
+
+            var editor_two = CodeMirror.fromTextArea(document.getElementById("code2"), {
+                lineNumbers: true,
+                matchBrackets: true
+            });
+
+            var editor_two = CodeMirror.fromTextArea(document.getElementById("code3"), {
+                lineNumbers: true,
+                matchBrackets: true
+            });
+
+            var editor_two = CodeMirror.fromTextArea(document.getElementById("code4"), {
+                lineNumbers: true,
+                matchBrackets: true
+            });
+
+
+            $('.custom-file-input').on('change', function() {
+                let fileName = $(this).val().split('\\').pop();
+                $(this).next('.custom-file-label').addClass("selected").html(fileName);
+            });
+
+       });
+
+</script>
+
+{% endblock %}
