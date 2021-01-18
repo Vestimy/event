@@ -26,9 +26,12 @@
                     TM+
                 </div>
             </li>
-            <li {% if menu==
-            "index" %} class="active" {% endif %}>
+            <li {% if menu == 'index' %} class='active' {% endif %}>
             <a href="{{url_for('main.index')}}"><i class="fa fa-home"></i> <span class="nav-label">Главная</span> </a>
+
+            </li>
+            <li {% if menu == 'events' %} class='active' {% endif %}>
+            <a href="{{url_for('events.index')}}"><i class="fa fa-calendar-o"></i> <span class="nav-label">Мероприятия</span> </a>
 
             </li>
             <li {% if menu==

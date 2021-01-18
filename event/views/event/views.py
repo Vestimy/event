@@ -2,13 +2,7 @@ from flask import Blueprint, jsonify, request, json, render_template, redirect
 from event import logger, config
 from werkzeug.utils import secure_filename
 from event import logger, config
-# from event import logger, config, mail
-# from blog.schemas import VideoSchema, UserSchema, AuthSchema
-# from flask_apispec import use_kwargs, marshal_with
 from event.models import *
-# from flask_jwt_extended import jwt_required, get_jwt_identity
-# from blog.base_view import BaseView
-# from blog.utils import upload_file
 import os
 from flask import flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
@@ -42,8 +36,8 @@ def allowed_file(filename):
 
 # @jwt_required
 # @marshal_with(VideoSchema(many=True))
-@events.route('/events/', methods=['GET'])
-def get_event():
+@events.route('/event/', methods=['GET'])
+def index():
     try:
         event = Event.query.order_by(Event.date_event.desc())
         type_event = TypeEvent.query.order_by('name').all()
@@ -66,8 +60,8 @@ def get_event():
     return render_template('event/get_event.html', id=id, menu='events', events=event, type_event=type_event)
 
 
-@events.route('/events/<int:id>', methods=['GET'])
-def get_item_event(id):
+@events.route('/event/<int:id>', methods=['GET'])
+def event_detail(id):
     try:
         # user_id = get_jwt_identity()
         # events = Event.get_list()
@@ -83,7 +77,7 @@ def get_item_event(id):
 
 @events.route('/events/add', methods=['GET', 'POST'])
 @roles_accepted('admin ', 'manager')
-def add_event():
+def add():
     event = Event()
     form = EventForm(request.form, obj=event)
     if request.method == "POST":
@@ -129,7 +123,7 @@ def add_event():
 
 @events.route('/events/edit/<int:id>', methods=['GET', 'POST'])
 @roles_accepted('admin', 'manager')
-def edit_event(id):
+def edit(id):
     event = Event.query.filter(Event.id == id).first()
     form = EventForm(obj=event)
     print(current_user.id)
@@ -157,7 +151,7 @@ def edit_event(id):
 
 @events.route('/events/delete/<int:id>', methods=['GET'])
 @roles_accepted('admin', 'manager')
-def delete_event(id):
+def delete(id):
     event = Event.query.get(id)
     if current_user.id == event.user_id or "admin" in current_user.roles:
         db.session.delete(event)

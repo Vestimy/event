@@ -137,7 +137,7 @@
 
                         <div class="ibox-content">
                             {% for event in all_events.items %}
-                            <strong><a href="{{url_for('events.get_event', id=event.id)}}">
+                            <strong><a href="{{url_for('events.index', id=event.id)}}">
                                 {% if event.artist.last_name %}{{ event.date_event }} {{ event.artist.first_name }}
                                 {{ event.artist.last_name }}
                                 {% else %}
@@ -197,7 +197,7 @@
 
                         <div class="ibox-content">
                             {% for event in events.items %}
-                            <strong><a href="{{url_for('events.get_event', id=event.id)}}">
+                            <strong><a href="{{url_for('events.index', id=event.id)}}">
                                 {% if event.artist.last_name %}
                                 {{ event.date_event }} {{ event.artist.first_name }} {{
                                 event.artist.last_name }}

@@ -60,13 +60,16 @@ def index():
 def arena_detail(id):
     try:
         arena = Arena.query.get(id)
+        if not arena:
+            return redirect(request.root)
         if request.method == 'POST':
             file = request.files['file']
             print(file)
     except Exception as e:
         logger.warning(
-            f"{current_user.last_name} - Ошибка при загрузке всех площадок: {e}"
+            f"{current_user.last_name} - Ошибка при загрузке одной площадки: {e}"
         )
+        return redirect(url_for('main.index'))
     return render_template('arena_detail.html', menu='arenas', arena=arena)
 
 
