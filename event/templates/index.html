@@ -367,8 +367,10 @@
                                         <!--                                        3th-->
                                     </div>
                                     <div class="col-sm-4 text-right">
-                                        <div class="font-bold">{{ last_event.date_event.strftime('%d.%m.%Y') }} {{
+                                        <div class="font-bold">
+                                            {% if last_event.date_event %}{{ last_event.date_event.strftime('%d.%m.%Y') }} {{
                                             last_event.time_event.strftime('в %H:%M') }}
+                                            {% endif %}
                                         </div>
                                         <!--                                        $190,325 <i class="fa fa-level-up text-navy"></i>-->
                                     </div>
