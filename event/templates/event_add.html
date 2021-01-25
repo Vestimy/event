@@ -1,0 +1,595 @@
+{% extends "base/base.html" %}
+{% block title %}
+<title>Добавить Мероприятие | TM+</title>
+{% endblock %}
+{% block head_style %}
+
+<link href="{{ url_for('inspina', filename='css/plugins/iCheck/custom.css')}}" rel="stylesheet">
+
+<link href="{{ url_for('inspina', filename='css/plugins/chosen/bootstrap-chosen.css')}}" rel="stylesheet">
+
+<link href="{{ url_for('inspina', filename='css/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css')}}"
+      rel="stylesheet">
+
+<link href="{{ url_for('inspina', filename='css/plugins/colorpicker/bootstrap-colorpicker.min.css')}}" rel="stylesheet">
+
+<link href="{{ url_for('inspina', filename='css/plugins/cropper/cropper.min.css')}}" rel="stylesheet">
+
+<link href="{{ url_for('inspina', filename='css/plugins/switchery/switchery.css')}}" rel="stylesheet">
+
+<link href="{{ url_for('inspina', filename='css/plugins/jasny/jasny-bootstrap.min.css')}}" rel="stylesheet">
+
+<link href="{{ url_for('inspina', filename='css/plugins/nouslider/jquery.nouislider.css')}}" rel="stylesheet">
+
+<link href="{{ url_for('inspina', filename='css/plugins/datapicker/datepicker3.css')}}" rel="stylesheet">
+
+<link href="{{ url_for('inspina', filename='css/plugins/ionRangeSlider/ion.rangeSlider.css')}}" rel="stylesheet">
+<link href="{{ url_for('inspina', filename='css/plugins/ionRangeSlider/ion.rangeSlider.skinFlat.css')}}"
+      rel="stylesheet">
+
+<link href="{{ url_for('inspina', filename='css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css')}}"
+      rel="stylesheet">
+
+<link href="{{ url_for('inspina', filename='css/plugins/clockpicker/clockpicker.css')}}" rel="stylesheet">
+
+<link href="{{ url_for('inspina', filename='css/plugins/daterangepicker/daterangepicker-bs3.css')}}" rel="stylesheet">
+
+<link href="{{ url_for('inspina', filename='css/plugins/select2/select2.min.css')}}" rel="stylesheet">
+
+<link href="{{ url_for('inspina', filename='css/plugins/touchspin/jquery.bootstrap-touchspin.min.css')}}"
+      rel="stylesheet">
+
+<link href="{{ url_for('inspina', filename='css/plugins/dualListbox/bootstrap-duallistbox.min.css')}}" rel="stylesheet">
+
+<link href="{{ url_for('inspina', filename='css/animate.css')}}" rel="stylesheet">
+<link href="{{ url_for('inspina', filename='css/style.css')}}" rel="stylesheet">
+
+
+{% endblock %}
+{% block content %}
+
+
+<div class="wrapper wrapper-content animated fadeInRightBig">
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>Меороприятия</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="ibox-content">
+                <h3>
+                    Input Mask
+                </h3>
+                <p>
+                    Input masks allows a user to more easily enter data where you would like them to enter the data in a
+                    certain format.
+                </p>
+                <form method="post">
+                    <div class="form-group row">
+                        {{ form.artist_id.label(class="col-sm-2 col-form-label") }}
+                        <div class="col-sm-10">
+                            {{ form.artist_id(class="form-control") }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        {{ form.typeevent_id.label(class="col-sm-2 col-form-label") }}
+                        <div class="col-sm-10">
+                            {{ form.typeevent_id(class="form-control") }}
+                        </div>
+                    </div>
+                    <div class="form-group row " id="data_1">
+                        {{ form.date_event.label(class="col-sm-2 col-form-label") }}
+
+                        <div class="col-sm-10">
+                            <div class="input-group date">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>{{
+                                form.date_event(class="form-control") }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        {{ form.time_event.label(class="col-sm-2 col-form-label") }}
+                        <div class="col-sm-10">
+                            <div class="input-group clockpicker" data-autoclose="true">
+                            <span class="input-group-addon">
+                                <span class="fa fa-clock-o"></span>
+                            </span>
+                                {{ form.time_event(type="text", class="form-control", value="19:00") }}
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        {{ form.description.label(class="col-sm-2 col-form-label") }}
+                        <div class="col-sm-10">
+                            {{ form.description(class="form-control") }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        {{ form.city_id.label(class="col-sm-2 col-form-label") }}
+                        <div class="col-sm-10">
+                            {{ form.city_id(class="form-control") }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        {{ form.arena_id.label(class="col-sm-2 col-form-label") }}
+                        <div class="col-sm-10">
+                            {{ form.arena_id(class="form-control") }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        {{ form.user_id.label(class="col-sm-2 col-form-label") }}
+                        <div class="col-sm-10">
+                            {{ form.user_id(class="form-control") }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        {{ form.users_staffs.label(class="col-sm-2 col-form-label") }}
+                        <div class="col-sm-10">
+                            {{ form.users_staffs(class="form-control") }}
+                        </div>
+                    </div>
+                    {{ form.submit }}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+
+
+<!-- Chosen -->
+<script src="{{ url_for('inspina', filename='js/plugins/chosen/chosen.jquery.js')}}"></script>
+
+<!-- JSKnob -->
+<script src="{{ url_for('inspina', filename='js/plugins/jsKnob/jquery.knob.js')}}"></script>
+
+<!-- Input Mask-->
+<script src="{{ url_for('inspina', filename='js/plugins/jasny/jasny-bootstrap.min.js')}}"></script>
+
+<!-- Data picker -->
+<script src="{{ url_for('inspina', filename='js/plugins/datapicker/bootstrap-datepicker.js')}}"></script>
+
+<!-- NouSlider -->
+<script src="{{ url_for('inspina', filename='js/plugins/nouslider/jquery.nouislider.min.js')}}"></script>
+
+<!-- Switchery -->
+<script src="{{ url_for('inspina', filename='js/plugins/switchery/switchery.js')}}"></script>
+
+<!-- IonRangeSlider -->
+<script src="{{ url_for('inspina', filename='js/plugins/ionRangeSlider/ion.rangeSlider.min.js')}}"></script>
+
+<!-- iCheck -->
+<script src="{{ url_for('inspina', filename='js/plugins/iCheck/icheck.min.js')}}"></script>
+
+
+<!-- Color picker -->
+<script src="{{ url_for('inspina', filename='js/plugins/colorpicker/bootstrap-colorpicker.min.js')}}"></script>
+
+<!-- Clock picker -->
+<script src="{{ url_for('inspina', filename='js/plugins/clockpicker/clockpicker.js')}}"></script>
+
+<!-- Image cropper -->
+<script src="{{ url_for('inspina', filename='js/plugins/cropper/cropper.min.js')}}"></script>
+
+<!-- Date range use moment.js same as full calendar plugin -->
+<script src="{{ url_for('inspina', filename='js/plugins/fullcalendar/moment.min.js')}}"></script>
+
+<!-- Date range picker -->
+<script src="{{ url_for('inspina', filename='js/plugins/daterangepicker/daterangepicker.js')}}"></script>
+
+<!-- Select2 -->
+<script src="{{ url_for('inspina', filename='js/plugins/select2/select2.full.min.js')}}"></script>
+
+<!-- TouchSpin -->
+<script src="{{ url_for('inspina', filename='js/plugins/touchspin/jquery.bootstrap-touchspin.min.js')}}"></script>
+
+<!-- Tags Input -->
+<script src="{{ url_for('inspina', filename='js/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js')}}"></script>
+
+<!-- Dual Listbox -->
+<script src="{{ url_for('inspina', filename='js/plugins/dualListbox/jquery.bootstrap-duallistbox.js')}}"></script>
+
+<script>
+        $(document).ready(function(){
+
+            $('.tagsinput').tagsinput({
+                tagClass: 'label label-primary'
+            });
+
+            var $image = $(".image-crop > img")
+            $($image).cropper({
+                aspectRatio: 1 / 1,
+                preview: ".img-preview",
+                done: function(data) {
+                    // Output the result data for cropping image.
+                }
+            });
+
+            var $inputImage = $("#inputImage");
+            if (window.FileReader) {
+                $inputImage.change(function() {
+                    var fileReader = new FileReader(),
+                            files = this.files,
+                            file;
+
+                    if (!files.length) {
+                        return;
+                    }
+
+                    file = files[0];
+
+                    if (/^image\/\w+$/.test(file.type)) {
+                        fileReader.readAsDataURL(file);
+                        fileReader.onload = function () {
+                            $inputImage.val("");
+                            $image.cropper("reset", true).cropper("replace", this.result);
+                        };
+                    } else {
+                        showMessage("Please choose an image file.");
+                    }
+                });
+            } else {
+                $inputImage.addClass("hide");
+            }
+
+            $("#download").click(function() {
+                window.open($image.cropper("getDataURL"));
+            });
+
+            $("#zoomIn").click(function() {
+                $image.cropper("zoom", 0.1);
+            });
+
+            $("#zoomOut").click(function() {
+                $image.cropper("zoom", -0.1);
+            });
+
+            $("#rotateLeft").click(function() {
+                $image.cropper("rotate", 45);
+            });
+
+            $("#rotateRight").click(function() {
+                $image.cropper("rotate", -45);
+            });
+
+            $("#setDrag").click(function() {
+                $image.cropper("setDragMode", "crop");
+            });
+
+            var mem = $('#data_1 .input-group.date').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "yyyy-mm-dd"
+            });
+
+            var yearsAgo = new Date();
+            yearsAgo.setFullYear(yearsAgo.getFullYear() - 20);
+
+            $('#selector').datepicker('setDate', yearsAgo );
+
+
+            $('#data_2 .input-group.date').datepicker({
+                startView: 1,
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true,
+                format: "dd/mm/yyyy"
+            });
+
+            $('#data_3 .input-group.date').datepicker({
+                startView: 2,
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true
+            });
+
+            $('#data_4 .input-group.date').datepicker({
+                minViewMode: 1,
+                keyboardNavigation: false,
+                forceParse: false,
+                forceParse: false,
+                autoclose: true,
+                todayHighlight: true
+            });
+
+            $('#data_5 .input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true
+            });
+
+            var elem = document.querySelector('.js-switch');
+            var switchery = new Switchery(elem, { color: '#1AB394' });
+
+            var elem_2 = document.querySelector('.js-switch_2');
+            var switchery_2 = new Switchery(elem_2, { color: '#ED5565' });
+
+            var elem_3 = document.querySelector('.js-switch_3');
+            var switchery_3 = new Switchery(elem_3, { color: '#1AB394' });
+
+            var elem_4 = document.querySelector('.js-switch_4');
+            var switchery_4 = new Switchery(elem_4, { color: '#f8ac59' });
+                switchery_4.disable();
+
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green'
+            });
+
+            $('.demo1').colorpicker();
+
+            var divStyle = $('.back-change')[0].style;
+            $('#demo_apidemo').colorpicker({
+                color: divStyle.backgroundColor
+            }).on('changeColor', function(ev) {
+                        divStyle.backgroundColor = ev.color.toHex();
+                    });
+
+            $('.clockpicker').clockpicker();
+
+            $('input[name="daterange"]').daterangepicker();
+
+            $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+
+            $('#reportrange').daterangepicker({
+                format: 'MM/DD/YYYY',
+                startDate: moment().subtract(29, 'days'),
+                endDate: moment(),
+                minDate: '01/01/2012',
+                maxDate: '12/31/2015',
+                dateLimit: { days: 60 },
+                showDropdowns: true,
+                showWeekNumbers: true,
+                timePicker: false,
+                timePickerIncrement: 1,
+                timePicker12Hour: true,
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                },
+                opens: 'right',
+                drops: 'down',
+                buttonClasses: ['btn', 'btn-sm'],
+                applyClass: 'btn-primary',
+                cancelClass: 'btn-default',
+                separator: ' to ',
+                locale: {
+                    applyLabel: 'Submit',
+                    cancelLabel: 'Cancel',
+                    fromLabel: 'From',
+                    toLabel: 'To',
+                    customRangeLabel: 'Custom',
+                    daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+                    monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    firstDay: 1
+                }
+            }, function(start, end, label) {
+                console.log(start.toISOString(), end.toISOString(), label);
+                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            });
+
+            $(".select2_demo_1").select2();
+            $(".select2_demo_2").select2();
+            $(".select2_demo_3").select2({
+                placeholder: "Select a state",
+                allowClear: true
+            });
+
+
+            $(".touchspin1").TouchSpin({
+                buttondown_class: 'btn btn-white',
+                buttonup_class: 'btn btn-white'
+            });
+
+            $(".touchspin2").TouchSpin({
+                min: 0,
+                max: 100,
+                step: 0.1,
+                decimals: 2,
+                boostat: 5,
+                maxboostedstep: 10,
+                postfix: '%',
+                buttondown_class: 'btn btn-white',
+                buttonup_class: 'btn btn-white'
+            });
+
+            $(".touchspin3").TouchSpin({
+                verticalbuttons: true,
+                buttondown_class: 'btn btn-white',
+                buttonup_class: 'btn btn-white'
+            });
+
+            $('.dual_select').bootstrapDualListbox({
+                selectorMinimalHeight: 160
+            });
+
+
+        });
+
+        $('.chosen-select').chosen({width: "100%"});
+
+        $("#ionrange_1").ionRangeSlider({
+            min: 0,
+            max: 5000,
+            type: 'double',
+            prefix: "$",
+            maxPostfix: "+",
+            prettify: false,
+            hasGrid: true
+        });
+
+        $("#ionrange_2").ionRangeSlider({
+            min: 0,
+            max: 10,
+            type: 'single',
+            step: 0.1,
+            postfix: " carats",
+            prettify: false,
+            hasGrid: true
+        });
+
+        $("#ionrange_3").ionRangeSlider({
+            min: -50,
+            max: 50,
+            from: 0,
+            postfix: "°",
+            prettify: false,
+            hasGrid: true
+        });
+
+        $("#ionrange_4").ionRangeSlider({
+            values: [
+                "January", "February", "March",
+                "April", "May", "June",
+                "July", "August", "September",
+                "October", "November", "December"
+            ],
+            type: 'single',
+            hasGrid: true
+        });
+
+        $("#ionrange_5").ionRangeSlider({
+            min: 10000,
+            max: 100000,
+            step: 100,
+            postfix: " km",
+            from: 55000,
+            hideMinMax: true,
+            hideFromTo: false
+        });
+
+        $(".dial").knob();
+
+        var basic_slider = document.getElementById('basic_slider');
+
+        noUiSlider.create(basic_slider, {
+            start: 40,
+            behaviour: 'tap',
+            connect: 'upper',
+            range: {
+                'min':  20,
+                'max':  80
+            }
+        });
+
+        var range_slider = document.getElementById('range_slider');
+
+        noUiSlider.create(range_slider, {
+            start: [ 40, 60 ],
+            behaviour: 'drag',
+            connect: true,
+            range: {
+                'min':  20,
+                'max':  80
+            }
+        });
+
+        var drag_fixed = document.getElementById('drag-fixed');
+
+        noUiSlider.create(drag_fixed, {
+            start: [ 40, 60 ],
+            behaviour: 'drag-fixed',
+            connect: true,
+            range: {
+                'min':  20,
+                'max':  80
+            }
+        });
+
+
+
+</script>
+<script type="text/javascript">
+$('.clockpicker').clockpicker();
+
+</script>
+<script>
+    $(document).ready(function() {
+        $("#city_id").select2({
+            ajax: {
+                url: "{{ url_for('api.city') }}",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        search: params.term // search term
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+           }
+       });
+   });
+</script>
+<script type="text/javascript">
+            function choice_category(){
+            var tmp_id = parseInt ($("#city_id").val());
+            if(tmp_id == 0)
+            {
+                $("#arena_id").attr('disabled', 'disabled');
+            }
+            else
+            {
+                $("#arena_id").removeAttr('disabled');
+                load_subcategory();
+            }
+        }
+
+        function load_subcategory(){
+            $.ajax({
+                type: "POST",
+                url: "/api/arena_choices",
+                data: $('form').serialize(),
+                success: function(response) {
+                    var json = jQuery.parseJSON(response)
+                    obj = Object.keys(json)
+                    $("#arena_id")
+                        .find('option')
+                        .remove()
+                        .end()
+                        .append('<option value="">Не выбрано</option>')
+                        .val('0');
+
+                    var value, key;
+                    for(item in obj){
+                        value = json[obj[item]];
+                        key = obj[item];
+                    $("#arena_id").append($("<option></option>")
+                            .attr("value",key)
+                            .text(value));
+                    }
+
+                },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+        }
+
+        $(document).ready(function() {
+            choice_category();
+            $("#city_id").change(function() {
+                choice_category();
+            });
+
+            $("#arena_id").change(function() {
+            });
+        });
+
+</script>
+{% endblock %}

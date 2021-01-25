@@ -36,12 +36,13 @@ class EventForm(Form):
     artist_id = SelectField("Артист")
     date_event = DateField('Дата', format='%Y-%m-%d')
     typeevent_id = SelectField("Тип")
-    time_event = TimeField("Время мероприятия", format='%H:%M')
+    # time_event = TimeField("Время мероприятия", format='%H:%M')
+    time_event = StringField("Время мероприятия")
     description = StringField("Описание")
     city_id = SelectField("Город")
     arena_id = SelectField("Арена")
     user_id = SelectField("Менеджер")
-
+    users_staffs = SelectMultipleField('Staff')
     submit = SubmitField("Сохранить")
 
     def __init__(self, *args, **kwargs):
@@ -55,17 +56,19 @@ class EventForm(Form):
         self.user_id.choices = [(g.id, g) for g in User.query.filter(User.roles.any(Role.name.in_(["manager"])))]
         self.user_id.choices.insert(0, (None, u"Не выбран"))
 
-        self.artist_id.choices = [(g.id, f'{g.last_name} {g.first_name}') for g in Artist.query.order_by('last_name')]
+        self.artist_id.choices = [(g.id, f'{g.first_name} {g.last_name}') for g in Artist.query.order_by('last_name')]
         self.artist_id.choices.insert(0, (0, u"Не выбран"))
-        self.city_id.choices = \
-            [(g.id, u"%s" % g.name) for g in City.query.order_by('name')]
+        # self.city_id.choices = \
+            # [(g.id, u"%s" % g.name) for g in City.query.order_by('name')]
         #  выбранное поле по умолчанию
-        self.city_id.choices.insert(0, (None, u"Не выбрана"))
+        # self.city_id.choices.insert(0, (None, u"Не выбрана"))
+        self.city_id.choices = [(0, u"Не выбран")]
 
+        self.users_staffs.choices = [(g.id, g) for g in User.query.all()]
         # self.arena_id.choices = list()
         self.arena_id.choices = [(g.id, g.name) for g in Arena.query.order_by('name')]
         #  выбранное поле по умолчанию
-        self.arena_id.choices.insert(0, (0, u"Не выбрана"))
+        # self.arena_id.choices.insert(0, (None, u"Не выбрана"))
 
     def validate_name(self, field):
         event = Event.query.filter(City.name == field.data).first()

@@ -1,5 +1,5 @@
 import os
-from flask import Blueprint, jsonify, request, render_template, redirect
+from flask import Blueprint, jsonify, request, render_template, redirect, abort
 from event import logger, config, allowed_photo_profile
 from flask_security import login_required, roles_required, current_user, login_user
 from flask import flash, request, redirect, url_for
@@ -9,7 +9,7 @@ from werkzeug.utils import secure_filename
 arenas = Blueprint('arenas', __name__)
 
 
-@arenas.route('/arena', methods=['GET'])
+@arenas.route('/arena/', methods=['GET'])
 @login_required
 def index():
     id = None
@@ -101,12 +101,12 @@ def add():
                     db.session.commit()
                     arena.img = filename
                     db.session.commit()
-                    return redirect(url_for('arenas.get_list_arena'))
+                    return redirect(url_for('arenas.arena_detail', id=arena.id))
             except Exception as e:
                 logger.warning(
                     f"{filename}-Ошибка файла: {e}"
                 )
-                return 404
+                abort(404)
         form.populate_obj(arena)
         try:
             db.session.add(arena)
@@ -117,7 +117,7 @@ def add():
                 f'{current_user.id}-{current_user.last_name} - Ошибка при добавлении площадки: {e}'
             )
 
-        return redirect(url_for('arenas.get_list_arena'))
+        return redirect(url_for('arenas.arena_detail', id=arena.id))
 
     return render_template('add_arena.html', menu='arenas', form=form)
 

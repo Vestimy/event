@@ -1,0 +1,169 @@
+{% extends "base/base.html" %}
+{% block title %}
+<title>Мероприятия | TM+</title>
+
+{% endblock %}
+{% block head_style %}
+<link href="{{ url_for('inspina', filename='css/plugins/dataTables/datatables.min.css')}}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="wrapper wrapper-content animated fadeInUp">
+
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h5>Меороприятия</h5>
+                    <div class="ibox-tools">
+                        <a href="{{ url_for('events.add')}}" class="btn btn-primary btn-xs">Добавить</a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row m-b-sm m-t-sm">
+                        <!--                        <div class="col-md-1">-->
+                        <!--                            <button type="button" id="loading-example-btn" class="btn btn-white btn-sm"><i-->
+                        <!--                                    class="fa fa-refresh"></i> Refresh-->
+                        <!--                            </button>-->
+                        <!--                        </div>-->
+                        <div class="col-md-12">
+
+                            <form method="GET">
+                                <div class="input-group">
+                                    <input name="q" type="text" placeholder="Поиск по городу или названию"
+                                           class="form-control-sm form-control" value="{{ request.args.get('q','') }}">
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-sm btn-primary"> Go!</button>
+                                    </span>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!--                    <div class="row m-b-sm m-t-sm">-->
+                    <!--                        <div class="col-md-1">-->
+                    <!--                            <button type="button" id="loading-example-btn" class="btn btn-white btn-sm"><i-->
+                    <!--                                    class="fa fa-refresh"></i> Refresh-->
+                    <!--                            </button>-->
+                    <!--                        </div>-->
+                    <!--                        <div class="col-md-11">-->
+                    <!--                            <div class="input-group"><input type="text" placeholder="Search"-->
+                    <!--                                                            class="form-control-sm form-control"> <span-->
+                    <!--                                    class="input-group-btn">-->
+                    <!--                                        <button type="button" class="btn btn-sm btn-primary"> Go!</button> </span></div>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+
+                    <!--                    <div class="project-list">-->
+
+                    <!--                        <table class="table table-hover dataTables-example">-->
+
+                    <div class="row m-b-sm m-t-sm">
+                        <!--                        <div class="col-md-1">-->
+                        <!--                            <button type="button" id="loading-example-btn" class="btn btn-white btn-sm"><i-->
+                        <!--                                    class="fa fa-refresh"></i> Refresh-->
+                        <!--                            </button>-->
+                        <!--                        </div>-->
+                        <div class="col-md-12">
+
+                            <div class="">
+                                {% for type in type_event %}
+                                <span class="input-group-btn">
+                                    <a href="{{ url_for('events.index', type=type.id)}}"><button type="submit"
+                                                                                                 class="btn btn-sm btn-primary"> {{type.name}}</button></a>
+                                </span>
+
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-hover">
+                        <tbody>
+                        {% for event in events %}
+                        <tr>
+                            <td class="project-title">
+                                <a href="{{ url_for('events.detail', id=event.id)}}">
+                                    {% if event.artist.last_name %}
+                                    {{ event.artist.first_name }} {{
+                                    event.artist.last_name }}
+                                    {% else %}
+                                    {{ event.artist.alias }}
+                                    {% endif %}
+                                </a>
+                                <br/>
+                                {% if event.date_event %} <small>{{ event.date_event }} в {{
+                                event.time_event.strftime('%H:%M') }}</small>{% endif %}
+                            </td>
+                            <td class="project-completion">
+
+                                <a href="{{ url_for('arenas.arena_detail', id=event.arena.id) }}">{{ event.arena
+                                    }}</a>
+                                <!--                                    <div class="progress progress-mini">-->
+                                <!--                                        <div style="width: 48%;" class="progress-bar"></div>-->
+                                <!--                                    </div>-->
+                            </td>
+
+                            <td class="project-actions">
+                                <!--                                <a href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> View-->
+                                <!--                                </a>-->
+                                <a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i>
+                                    Edit
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block script %}
+
+<script src="{{ url_for('inspina', filename='js/plugins/dataTables/datatables.min.js')}}"></script>
+<script src="{{ url_for('inspina', filename='js/plugins/dataTables/dataTables.bootstrap4.min.js')}}"></script>
+<script>
+        $(document).ready(function(){
+            $('.dataTables-example').DataTable({
+                pageLength: 25,
+                responsive: true,
+                dom: '<"html5buttons"B>lTfgitp',
+                buttons: [
+                    { extend: 'copy'},
+                    {extend: 'csv'},
+                    {extend: 'excel', title: 'ExampleFile'},
+                    {extend: 'pdf', title: 'ExampleFile'},
+
+                    {extend: 'print',
+                     customize: function (win){
+                            $(win.document.body).addClass('white-bg');
+                            $(win.document.body).css('font-size', '10px');
+
+                            $(win.document.body).find('table')
+                                    .addClass('compact')
+                                    .css('font-size', 'inherit');
+                    }
+                    }
+                ]
+
+            });
+
+        });
+
+
+
+
+
+
+
+
+
+</script>
+
+
+{% endblock %}

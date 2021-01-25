@@ -28,7 +28,8 @@ def mains():
 @main.route('/index', methods=['GET'])
 @login_required
 def index():
-    return render_template('index.html', menu='index')
+    last_event = Event.query[-1]
+    return render_template('index.html', menu='index', last_event=last_event)
 
 
 @main.route('/profile/', methods=['GET'])

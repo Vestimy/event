@@ -43,7 +43,8 @@ def city():
     if request.args.get('search'):
         search = request.args.get('search')
         result_list = [{"id": i.id, "text": i.name} for i in City.query.filter(City.name.contains(search)).all()]
-    return json.dumps(result_list)
+        return json.dumps(result_list)
+    return json.dumps([{'id':0, "text": 'Не выбрано'}])
 
 
 @api.errorhandler(422)

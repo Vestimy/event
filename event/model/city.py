@@ -37,7 +37,7 @@ class City(db.Model):
     region_id = db.Column(Integer, ForeignKey('region.id'))
     region = relationship('Region', back_populates='city')
 
-    # event = relationship("Event", back_populates='city')
+    event = relationship("Event", back_populates='city')
     arena = relationship("Arena", back_populates="city")
 
     #

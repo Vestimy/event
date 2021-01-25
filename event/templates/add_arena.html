@@ -11,7 +11,6 @@
 
 <link href="{{ url_for('inspina', filename='css/plugins/jasny/jasny-bootstrap.min.css')}}" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 {% endblock %}
 
 
@@ -49,6 +48,15 @@
                             {{ form.name.label(class='col-sm-2 col-form-label') }}
                             <div class="col-sm-10">
                                 {{ form.name(class='form-control') }}
+                                <!--                                <span-->
+                                <!--                                        class="form-text m-b-none">A block of help text that breaks onto a new line and may extend beyond one line.-->
+                                <!--                                </span>-->
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            {{ form.alias.label(class='col-sm-2 col-form-label') }}
+                            <div class="col-sm-10">
+                                {{ form.alias(class='form-control') }}
                                 <!--                                <span-->
                                 <!--                                        class="form-text m-b-none">A block of help text that breaks onto a new line and may extend beyond one line.-->
                                 <!--                                </span>-->
@@ -176,28 +184,30 @@
                             </div>
                         </div>
                     </form>
-                </div>
+                </div>``
             </div>
         </div>
     </div>
+</div>
+{% endblock %}
 
-    {% endblock %}
 
+<!-- iCheck -->
 
-    <!-- iCheck -->
+{% block script %}
+<script src="{{ url_for('inspina', filename='js/plugins/iCheck/icheck.min.js')}}"></script>
+<!-- Jasny -->
+<script src="{{ url_for('inspina', filename='js/plugins/jasny/jasny-bootstrap.min.js')}}"></script>
 
-    {% block script %}
-    <script src="{{ url_for('inspina', filename='js/plugins/iCheck/icheck.min.js')}}"></script>
-    <!-- Jasny -->
-    <script src="{{ url_for('inspina', filename='js/plugins/jasny/jasny-bootstrap.min.js')}}"></script>
+<!-- DROPZONE -->
+<script src="{{ url_for('inspina', filename='js/plugins/dropzone/dropzone.js')}}"></script>
 
-    <!-- DROPZONE -->
-    <script src="{{ url_for('inspina', filename='js/plugins/dropzone/dropzone.js')}}"></script>
+<!-- CodeMirror -->
+<script src="{{ url_for('inspina', filename='js/plugins/codemirror/codemirror.js')}}"></script>
+<script src="{{ url_for('inspina', filename='js/plugins/codemirror/mode/xml/xml.js')}}"></script>
 
-    <!-- CodeMirror -->
-    <script src="{{ url_for('inspina', filename='js/plugins/codemirror/codemirror.js')}}"></script>
-    <script src="{{ url_for('inspina', filename='js/plugins/codemirror/mode/xml/xml.js')}}"></script>
-    <script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script>
         Dropzone.options.dropzoneForm = {
             paramName: "file", // The name that will be used to transfer the file
             maxFilesize: 2, // MB
@@ -236,12 +246,31 @@
 
 
 
-    </script>
-    <script>
-$(".js-example-basic-multiple-limit").select2({
-  maximumSelectionLength: 2
-});
 
 
-    </script>
-    {% endblock %}
+</script>
+<script>
+    $(document).ready(function() {
+        $("#city_id").select2({
+            ajax: {
+                url: "{{ url_for('api.city') }}",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        search: params.term // search term
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+           }
+       });
+   });
+
+
+</script>
+{% endblock %}

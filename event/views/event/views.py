@@ -36,32 +36,57 @@ def allowed_file(filename):
 
 # @jwt_required
 # @marshal_with(VideoSchema(many=True))
-@events.route('/event/', methods=['GET'])
+@events.route('/event', methods=['GET'])
 def index():
-    try:
-        event = Event.query.order_by(Event.date_event.desc())
-        type_event = TypeEvent.query.order_by('name').all()
-        id = None
-    except Exception as e:
-        logger.warning(
-            f'user: {current_user.last_name} Events - read action failed with errors: {e}'
-        )
-        return {'message': str(e)}, 400
-    if request.args.get('id'):
+    type_event = TypeEvent.query.order_by('name').all()
+    id = None
+    if request.args.get('q'):
+        event = Event.query.join(Arena).join(Artist).filter(
+            Arena.name.contains(
+                request.args.get('q')) | Event.date_event.contains(
+                request.args.get('q')) | Event.time_event.contains(
+                request.args.get('q')) | Arena.alias.contains(
+                request.args.get('q')) | Artist.last_name.contains(
+                request.args.get('q')) | Artist.alias.contains(
+                request.args.get('q')) | Artist.first_name.contains(
+                request.args.get('q'))).all()
+    else:
+
+        if request.args.get('id'):
+            event = Event.query.get(request.args.get('id'))
+            return render_template('event.html', id=id, menu='events', events=event, type_event=type_event)
         try:
-            id = int(request.args.get('id'))
+            event = Event.query.order_by(Event.date_event.desc())
+            if request.args.get('type'):
+                try:
+                    id = int(request.args.get('type'))
+                except Exception as e:
+                    logger.warning(
+                        f'arenas -  action failed with errors: {e}'
+                    )
+                if isinstance(id, int):
+                    event = Event.query.filter(Event.typeevent_id == id).order_by(Event.date_event.desc()).all()
+
         except Exception as e:
             logger.warning(
-                f'arenas -  action failed with errors: {e}'
+                f'user: {current_user.last_name} Events - read action failed with errors: {e}'
             )
-            return redirect(request.url)
-        if isinstance(id, int):
-            event = Event.query.filter(Event.typeevent_id == id).order_by(Event.date_event.desc()).all()
-    return render_template('event/get_event.html', id=id, menu='events', events=event, type_event=type_event)
+            return {'message': str(e)}, 400
+        if request.args.get('id'):
+            try:
+                id = int(request.args.get('id'))
+            except Exception as e:
+                logger.warning(
+                    f'arenas -  action failed with errors: {e}'
+                )
+                return redirect(request.url)
+            if isinstance(id, int):
+                event = Event.query.filter(Event.typeevent_id == id).order_by(Event.date_event.desc()).all()
+    return render_template('event.html', id=id, menu='events', events=event, type_event=type_event)
 
 
 @events.route('/event/<int:id>', methods=['GET'])
-def event_detail(id):
+def detail(id):
     try:
         # user_id = get_jwt_identity()
         # events = Event.get_list()
@@ -72,10 +97,10 @@ def event_detail(id):
         )
         return {'message': str(e)}, 400
     # return videos
-    return render_template('event/item_event.html', menu='events', item=event)
+    return render_template('event_detail.html', menu='events', event=event)
 
 
-@events.route('/events/add', methods=['GET', 'POST'])
+@events.route('/add_event/', methods=['GET', 'POST'])
 @roles_accepted('admin ', 'manager')
 def add():
     event = Event()
@@ -83,32 +108,17 @@ def add():
     if request.method == "POST":
         try:
             form.populate_obj(event)
-            # artist_id = request.form['artist_id']
-            # date_event = request.form['date_event']
-            # time_event = request.form['time_event']
-            # typeevent_id = request.form['typeevent_id']
-            # description = request.form['description']
-            # city_id = request.form['city_id']
-            #
-            # arena_id = request.form['arena_id']
-            # user_id = request.form['user_id']
-            # print(date_event)
-            #
-            # event = Event(artist_id=artist_id,
-            #               date_event=date_event,
-            #               time_event=time_event,
-            #               typeevent_id=typeevent_id,
-            #               description=description,
-            #               city_id=city_id,
-            #               arena_id=arena_id,
-            #               user_id=user_id
-            #               )
-            # print(request.form)
-
             db.session.add(event)
             db.session.commit()
+            if request.form.getlist('users_staffs'):
+                for i in request.form.getlist('users_staffs'):
+                    event.users_staff.append(User.query.get(i))
+                db.session.commit()
         except Exception as e:
             print(e)
+            logger.warning(
+                f'Ошибка при добавлении мерроприятия: {e}'
+            )
             db.session.rollback()
 
     # form.artist_id.choices = [(g.id, g.name) for g in Artist.query.order_by('name')]
@@ -118,7 +128,7 @@ def add():
     # form..choices = [(g.id, g.name) for g in City.query.order_by('name')]
     # form.managers.choices = [(g.id, g.name) for g in Manager.query.order_by('name')]
     # form.arenas.choices = [(g.id, g.title) for g in Arena.query.order_by('title')]
-    return render_template('event/edit_event.html', menu='events', form=form)
+    return render_template('event_add.html', menu='events', form=form)
 
 
 @events.route('/events/edit/<int:id>', methods=['GET', 'POST'])
