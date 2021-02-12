@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request, json, render_template, redirect
+from flask import Blueprint, jsonify, request, abort, json, render_template, redirect
 from event import logger, config
 from werkzeug.utils import secure_filename
 from event import logger, config
@@ -53,7 +53,7 @@ def index():
     else:
 
         if request.args.get('id'):
-            event = Event.query.get(request.args.get('id'))
+            event = Event.query.get_or_404(request.args.get('id'))
             return render_template('event.html', id=id, menu='events', events=event, type_event=type_event)
         try:
             event = Event.query.order_by(Event.date_event.desc())
@@ -87,16 +87,7 @@ def index():
 
 @events.route('/event/<int:id>', methods=['GET'])
 def detail(id):
-    try:
-        # user_id = get_jwt_identity()
-        # events = Event.get_list()
-        event = Event.query.get(id)
-    except Exception as e:
-        logger.warning(
-            f'user: {current_user.last_name} tutorials - read action failed with errors: {e}'
-        )
-        return {'message': str(e)}, 400
-    # return videos
+    event = Event.query.get_or_404(id)
     return render_template('event_detail.html', menu='events', event=event)
 
 

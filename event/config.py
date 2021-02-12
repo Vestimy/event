@@ -6,7 +6,7 @@ class Config:
     FILENAME = inspect.getframeinfo(inspect.currentframe()).filename
     PATH_EVENTS = os.path.dirname(os.path.abspath(FILENAME))
     # SQLALCHEMY_DATABASE_URI = 'sqlite:///../db.sqlite'
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:@localhost/mydb'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://vestimy:User1816!@localhost/mydb'
     # SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:user1816@touremanager.ru/mydb'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     UPLOAD_FOLDER = 'uploads'

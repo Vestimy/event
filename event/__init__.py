@@ -12,7 +12,6 @@ from flask_login import LoginManager
 from flask_security import SQLAlchemySessionUserDatastore, Security
 from flask_security import current_user, user_registered, login_required, user_confirmed
 from flask_mail import Mail
-from flask_datepicker import datepicker
 from flask_bootstrap import Bootstrap
 
 UPLOAD_FOLDER = '/home/vestimy/uploads'
@@ -172,6 +171,8 @@ def setup_logger():
 
     formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
     file_heandler = logging.FileHandler(Config.PATH + '/log/api.log')
+    # file_heandler = logging.FileHandler(dm.root_path + '/log/api.log')
+
     file_heandler.setFormatter(formatter)
     logger.addHandler(file_heandler)
 
