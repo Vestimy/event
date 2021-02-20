@@ -1,6 +1,6 @@
 # from .db_setings import db, session, Base
 from event import db
-from sqlalchemy import String, Integer, ForeignKey, DateTime, Date, Time, DATE, Binary, BINARY, BigInteger
+from sqlalchemy import String, Integer, ForeignKey, DateTime, Date, Time, JSON
 from sqlalchemy.orm import relationship
 from flask_jwt_extended import create_access_token
 from datetime import timedelta
@@ -165,6 +165,17 @@ class Tour(db.Model):
 
     def __repr__(self):
         return self.name
+
+
+class Weather(db.Model):
+    __tablename__ = 'weather'
+
+    id = db.Column(db.Integer, primary_key=True)
+    city = db.Column(db.String(128))
+    json = db.Column(JSON)
+
+    edit_weather = db.Column(db.DateTime, onupdate=time_now)
+    created_weather = db.Column(db.DateTime, default=time_now())
 
 
 class User(db.Model, UserMixin):

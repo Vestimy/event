@@ -62,20 +62,20 @@
                             </dl>
                             <dl class="row mb-0">
                                 <div class="col-sm-4 text-sm-right">
+                                    <dt>Погода</dt>
+                                </div>
+                                <div class="col-sm-8 text-sm-left">
+                                    <dd class="mb-1"><span class="text-navy">{% if weathers %}{{ weathers.main.temp}}{% endif %}</span></dd>
+                                </div>
+                            </dl>
+                            <dl class="row mb-0">
+                                <div class="col-sm-4 text-sm-right">
                                     <dt>Площадка:</dt>
                                 </div>
                                 <div class="col-sm-8 text-sm-left">
                                     <a href="{{ url_for('arenas.arena_detail', id=event.arena.id) }}">
                                         <dd class="mb-1"> {{ event.arena.name }}</dd>
                                     </a>
-                                </div>
-                            </dl>
-                            <dl class="row mb-0">
-                                <div class="col-sm-4 text-sm-right">
-                                    <dt>Client:</dt>
-                                </div>
-                                <div class="col-sm-8 text-sm-left">
-                                    <dd class="mb-1"><a href="#" class="text-navy"> Zender Company</a></dd>
                                 </div>
                             </dl>
                             <dl class="row mb-0">

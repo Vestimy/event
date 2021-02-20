@@ -1,5 +1,5 @@
-from flask import Blueprint, jsonify, request, abort, json, render_template, redirect
-from event import logger, config
+from flask import Blueprint, jsonify, request, abort, json, render_template
+from event import logger, config, weather
 from werkzeug.utils import secure_filename
 from event import logger, config
 from event.models import *
@@ -65,7 +65,8 @@ def index():
                         f'arenas -  action failed with errors: {e}'
                     )
                 if isinstance(id, int):
-                    event = Event.query.filter(Event.typeevent_id == id).order_by(Event.date_event.desc()).all()
+                    event = Event.query.filter(Event.typeevent_id == id).order_by(
+                        Event.date_event.desc()).all()
 
         except Exception as e:
             logger.warning(
@@ -81,14 +82,22 @@ def index():
                 )
                 return redirect(request.url)
             if isinstance(id, int):
-                event = Event.query.filter(Event.typeevent_id == id).order_by(Event.date_event.desc()).all()
+                event = Event.query.filter(Event.typeevent_id == id).order_by(
+                    Event.date_event.desc()).all()
     return render_template('event.html', id=id, menu='events', events=event, type_event=type_event)
 
 
 @events.route('/event/<int:id>', methods=['GET'])
 def detail(id):
+    data = None
     event = Event.query.get_or_404(id)
-    return render_template('event_detail.html', menu='events', event=event)
+    if event.city:
+        name = event.city.name
+        if '(' in name:
+            name = name.split('(')[0].strip()
+            print(name)
+        data = weather.get(q=name)
+    return render_template('event_detail.html', menu='events', event=event, weathers=data)
 
 
 @events.route('/add_event/', methods=['GET', 'POST'])
@@ -178,7 +187,8 @@ def upload_file():
             item = Rider(name=filename, url=filename)
             session.add(item)
             session.commit()
-            file.save(os.path.join('/home/vestimy/video_blog/blog/uploads', filename))
+            file.save(os.path.join(
+                '/home/vestimy/video_blog/blog/uploads', filename))
             return redirect(url_for('uploaded_file',
                                     filename=filename))
 
@@ -186,31 +196,36 @@ def upload_file():
         return render_template('upload.html', menu='events')
 
 
-@events.route('/contact/', methods=['get', 'post'])
-def contact():
-    form = ContactForm()
-    if form.validate_on_submit():
-        name = form.name.data
-        email = form.email.data
-        message = form.message.data
-        print(name)
-        print(email)
-        print(message)
-        # здесь логика базы данных
-        print("\nData received. Now redirecting ...")
-        return redirect(url_for('contact'))
+# @events.route('/contact/', methods=['get', 'post'])
+# def contact():
+#     form = ContactForm()
+#     if form.validate_on_submit():
+#         name = form.name.data
+#         email = form.email.data
+#         message = form.message.data
+#         print(name)
+#         print(email)
+#         print(message)
+#         # здесь логика базы данных
+#         print("\nData received. Now redirecting ...")
+#         return redirect(url_for('contact'))
 
-    return render_template('contact.html', menu='events', form=form)
+#     return render_template('contact.html', menu='events', form=form)
 
 
-@events.route('/events/mail', methods=['GET'])
-def send_mail():
-    msg = Message("Hello",
-                  sender="vestimyandrey@gmail.com",
-                  recipients=["dyadya_ko@mail.ru", "vestimyandrey@yandex.ru"])
-    msg.body = "testing"
-    msg.html = "<b>testing</b>"
-    mail.send(msg)
-    return redirect(url_for('events.get_event'))
+# @events.route('/test')
+# def test():
+#     data = weather.get(q='Москва')
+#     return data
+
+# @events.route('/events/mail', methods=['GET'])
+# def send_mail():
+#     msg = Message("Hello",
+#                   sender="vestimyandrey@gmail.com",
+#                   recipients=["dyadya_ko@mail.ru", "vestimyandrey@yandex.ru"])
+#     msg.body = "testing"
+#     msg.html = "<b>testing</b>"
+#     mail.send(msg)
+#     return redirect(url_for('events.get_event'))
 
 # ListView.register(videos, docs, '/main', 'listview')

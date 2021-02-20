@@ -1,7 +1,11 @@
-import os, inspect, sys
+import os
+import inspect
+import sys
+from pathlib import Path
 
 
 class Config:
+    BASE_DIR = Path(__file__).resolve().parent.parent
     PATH = sys.path[0]
     FILENAME = inspect.getframeinfo(inspect.currentframe()).filename
     PATH_EVENTS = os.path.dirname(os.path.abspath(FILENAME))
@@ -38,3 +42,4 @@ class Config:
     SECURITY_POST_LOGOUT_VIEW = '/login'
     SECURITY_SEND_REGISTER_EMAIL = False
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024
+    APPID = '7457f5e9ef9836778c2df4e92d173e3f'

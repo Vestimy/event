@@ -117,6 +117,8 @@ from .model.equipment import *
 from .model.menu import *
 from .model.city import *
 
+from openweather import OpenWeather
+weather = OpenWeather(appid=Config.APPID, db=db, model=Weather)
 
 class AdminMixIn:
     def is_accessible(self):
@@ -157,6 +159,7 @@ admin.add_view(AdminView(Equipment, db.session))
 admin.add_view(AdminView(Country, db.session))
 admin.add_view(AdminView(Region, db.session))
 admin.add_view(AdminView(City, db.session))
+admin.add_view(AdminView(Weather, db.session))
 
 admin.add_view(AdminView(User, db.session))
 admin.add_view(AdminView(Role, db.session))
