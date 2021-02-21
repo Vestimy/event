@@ -41,6 +41,7 @@ class Config:
     # MAIL_PASSWORD = 'ukjusrgneeolhmww'
     SECURITY_REGISTERABLE = True
     SECURITY_REGISTER_URL = '/create_account'
+    SECURITY_RECOVERABLE = True
     SECURITY_USER_IDENTITY_ATTRIBUTES = ['email', 'login']
     SECURITY_POST_LOGIN_VIEW = '/index'
     SECURITY_POST_LOGOUT_VIEW = '/login'
