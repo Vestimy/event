@@ -117,7 +117,7 @@ from .model.equipment import *
 from .model.menu import *
 from .model.city import *
 
-from openweather import OpenWeather
+from .openweather import OpenWeather
 
 weather = OpenWeather(appid=Config.APPID, db=db, model=Weather)
 
