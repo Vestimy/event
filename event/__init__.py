@@ -118,7 +118,9 @@ from .model.menu import *
 from .model.city import *
 
 from openweather import OpenWeather
+
 weather = OpenWeather(appid=Config.APPID, db=db, model=Weather)
+
 
 class AdminMixIn:
     def is_accessible(self):
@@ -173,8 +175,8 @@ def setup_logger():
     logger.setLevel(logging.DEBUG)
 
     formatter = logging.Formatter('%(asctime)s:%(name)s:%(levelname)s:%(message)s')
-    file_heandler = logging.FileHandler(Config.PATH + '/log/api.log')
-    # file_heandler = logging.FileHandler(dm.root_path + '/log/api.log')
+    error_log = Config.LOG_DIR.joinpath('error.log')
+    file_heandler = logging.FileHandler(error_log)
 
     file_heandler.setFormatter(formatter)
     logger.addHandler(file_heandler)

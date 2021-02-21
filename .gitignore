@@ -21,8 +21,6 @@ migrations/versions/__pycache__/
 event/views/administrator/__pycache__/
 event/views/api/__pycache__/
 migrationswwwwwwwwwww/
-log/api.log
-log/
 migrations/__pycache__/
 event/model/__pycache__/
 .idea/
