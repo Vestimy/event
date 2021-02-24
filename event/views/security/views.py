@@ -7,8 +7,6 @@ from flask_security.utils import hash_password
 from werkzeug.exceptions import RequestTimeout
 from event import logger, config, allowed_photo_profile, allowed_document_profile, load_user
 
-from event import mail
-from flask_mail import Message
 from flask_login import logout_user, login_user, login_required, current_user
 from flask import flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
@@ -63,10 +61,7 @@ def register():
             db.session.add(user)
             db.session.commit()
         
-        msg = Message("Hello, ",
-                  sender="support@touremanager.ru",
-                  recipients=[user.email])
-        mail.send(msg)
+        send_msg(user.email, user.login)
         return redirect(url_for('security.login'))
     return render_template('security/register_user.html', register_user_form=register_user_form)
 

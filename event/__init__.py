@@ -212,4 +212,3 @@ def send_msg(email, login):
     msg.body = "testing"
     msg.html = "<b>testing</b>"
     mail.send(msg)
-    return True
