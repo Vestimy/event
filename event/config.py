@@ -30,8 +30,6 @@ class Config:
     SECRET_KEY = '26edec8e275e43cab5777cb9050906f9'
     ADMIN_PASSWD_HASH = '7ULJ61PMMGBJ1KWQB64P7D'
     STATIC_URL_PATH = '/static'
-    SECURITY_PASSWORD_SALT = 'salt'
-    SECURITY_PASSWORD_HASH = 'bcrypt'
     #############MAIL#######################
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 465
@@ -39,15 +37,7 @@ class Config:
     MAIL_USE_TLS = False
     MAIL_USERNAME = 'vestimyandrey@gmail.com'
     MAIL_PASSWORD = 'yzumcatxtiwatzvp'
-    SECURITY_REGISTERABLE = True
-    SECURITY_REGISTER_URL = '/create_account'
-    SECURITY_RECOVERABLE = True
-    SECURITY_USER_IDENTITY_ATTRIBUTES = ['email', 'login']
-    SECURITY_POST_LOGIN_VIEW = '/index'
-    SECURITY_POST_LOGOUT_VIEW = '/login'
-    SECURITY_SEND_REGISTER_EMAIL = True
-    SECURITY_CHANGEABLE = True
-    SECURITY_RECOVERABLE = True
+    
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024
     #############WEATHER#####################
     APPID = '7457f5e9ef9836778c2df4e92d173e3f'

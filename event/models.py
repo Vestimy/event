@@ -1,4 +1,5 @@
 # from .db_setings import db, session, Base
+import re
 from event import db
 from sqlalchemy import String, Integer, ForeignKey, DateTime, Date, Time, JSON
 from sqlalchemy.orm import relationship
@@ -8,6 +9,9 @@ from passlib.hash import bcrypt
 from datetime import datetime
 from pytz import timezone
 from flask_security import UserMixin, RoleMixin
+from event.config import Config
+from werkzeug.security import generate_password_hash
+
 
 
 def time_now():
@@ -209,6 +213,7 @@ class User(db.Model, UserMixin):
     document = relationship("Document", back_populates='users')
     edit_time = db.Column(DateTime, onupdate=time_now)
     create_time = db.Column(DateTime, default=time_now)
+ 
 
     def __repr__(self):
         return f"{self.last_name} {self.first_name}"
@@ -220,6 +225,29 @@ class User(db.Model, UserMixin):
             expires_delta=expire_delta
         )
         return token
+
+    @classmethod
+    def get_email(cls, email):
+        return cls.query.filter(cls.email == email).one()
+
+    @classmethod
+    def update_password(cls, email, password):
+        user = cls.query.filter(cls.email == email).one()
+        password = generate_password_hash(password)
+        print(user.password)
+        print(password)
+        user.password = password
+        db.session.commit()
+        user1 = cls.query.filter(cls.login == 'admin').one()
+        print(user.password)
+        print(generate_password_hash('admin'))
+        return user
+
+    @classmethod
+    def is_pwd(cls, user, password):
+        if not bcrypt.verify(password, user.password):
+            raise Exception('No user with this password')
+        return user
 
     @classmethod
     def authentificate(cls, email, password):

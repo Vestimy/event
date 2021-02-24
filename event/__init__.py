@@ -11,7 +11,7 @@ from flask_login import LoginManager
 
 from flask_security import SQLAlchemySessionUserDatastore, Security
 from flask_security import current_user, user_registered, login_required, user_confirmed
-from flask_mail import Mail
+from flask_mail import Mail, Message
 from flask_bootstrap import Bootstrap
 
 UPLOAD_FOLDER = '/home/vestimy/uploads'
@@ -19,12 +19,14 @@ ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 db = SQLAlchemy()
 jwt = JWTManager()
-login = LoginManager()
+login_manager = LoginManager()
 admin = Admin(name='admins')
 security = Security()
-#mail = Mail()
+mail = Mail()
 bootstrap = Bootstrap()
 
+login_manager.login_view = 'security.login'
+login_manager.login_message = u"Пожалуйста, авторизируйтесь."
 from .forms_security import ExtendedRegisterForm
 
 
@@ -33,11 +35,11 @@ def create_app():
     app.config.from_object(Config)
     db.init_app(app)
     admin.init_app(app, url='/admin', index_view=HomeAdminView(name='Главная'))
-    login.init_app(app)
+    login_manager.init_app(app)
     app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
-    #mail.init_app(app)
+    mail.init_app(app)
     # security.init_app(app, user_datastore, register_form=ExtendedRegisterForm)
-    security.init_app(app, user_datastore, register_form=ExtendedRegisterForm)
+    #security.init_app(app, user_datastore, register_form=ExtendedRegisterForm)
     bootstrap.init_app(app)
 
     @user_registered.connect_via(app)
@@ -56,6 +58,7 @@ def create_app():
     from .views.tour.views import tours
     # from .views.administrator.views import administrator
     from .views.api.views import api
+    from .views.security.views import security
 
     app.register_blueprint(main)
     app.register_blueprint(events)
@@ -66,6 +69,7 @@ def create_app():
     app.register_blueprint(tours)
     # app.register_blueprint(administrator)
     app.register_blueprint(api)
+    app.register_blueprint(security)
     # app.register_blueprint(logins)
 
     jwt.init_app(app)
@@ -195,3 +199,14 @@ def allowed_photo_profile(filename):
 def allowed_document_profile(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in Config.ALLOWED_DOCUMENT
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
+
+
+def send_msg(email, login):
+    msg = Message(f"Hello, {login}",
+                sender="support@touremanager.ru",
+                recipients=[email])
+    mail.send(msg)

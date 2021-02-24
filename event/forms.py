@@ -1,6 +1,7 @@
+import email
 from flask_wtf import FlaskForm
 from wtforms import Form, StringField, SelectMultipleField, MultipleFileField, SubmitField, TextAreaField, \
-    PasswordField, SelectField, DateField, DateTimeField, IntegerField, validators, TimeField, FileField, FloatField
+    PasswordField, SelectField, DateField, DateTimeField, IntegerField, validators, TimeField, FileField, FloatField, BooleanField
 from wtforms.validators import DataRequired, Email, InputRequired, ValidationError
 from event.models import *
 from event.model.city import *
@@ -237,3 +238,50 @@ class TestForm(Form):
     y = FloatField(widget=HiddenInput())
     width = FloatField(widget=HiddenInput())
     height = FloatField(widget=HiddenInput())
+
+class LoginForm(Form):
+    email = StringField('Email или Логин', [validators.Length(min=6, max=35)])
+    password = PasswordField('Пароль', [
+        validators.Required(),
+    ])
+    remember = BooleanField('Remember me', default=False)
+    submit = SubmitField('Войти')
+
+
+    def validate_on_submit(self):
+        pass
+
+class ForgotPasswordForm(Form):
+    email =  StringField('Email или Логин', [validators.Length(min=6, max=35)])
+    submit = SubmitField('Восстановить')
+
+class RegisterUserForm(Form):
+
+    email = StringField('Email', [validators.Length(min=6, max=35)])
+    login = StringField(' Логин', [validators.Length(min=6, max=35)])
+    password = PasswordField('Пароль', [
+        validators.Required(),
+    ])
+    password_confirm = PasswordField('Пароль', [
+        validators.Required(),
+    ])
+    last_name = StringField('Фамилия')
+    first_name = StringField('Имя')
+    patronymic = StringField('Отчество')
+    
+    birthday = DateField('День рождения')
+    phone = StringField('Телефон')
+    address = StringField('Адрес')
+
+    remember = BooleanField('Remember me', default=False)
+    submit = SubmitField('Регистрация')
+
+
+    def validate_email(self, feald):
+        user = User.query.filter(User.email == feald.data).first()
+        if user:
+            raise ValidationError('Email занят')
+
+    def validate_login(self, feald):
+        if User.query.filter(User.login == feald.data).first():
+            raise ValidationError('Логин занят')

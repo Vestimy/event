@@ -22,20 +22,17 @@
             <h1 class="logo-name">TM+</h1>
 
         </div>
-        <h3>Добро пожаловать в TM+</h3>
+        <h3>Добро пожаловать.</h3>
 
-        <!--<p>Login in. To see it in action.</p>-->
+        <p>Войдите в систему. <br>Чтобы увидеть это в действии.</p>
         {% from "security/_macros.html" import render_field_with_errors, render_field %}
         {% include "security/_messages.html" %}
 
-        <!--<h1>{{ _('Login') }}</h1>-->
-        <form class="m-t" role="form" action="{{ url_for_security('login') }}" method="POST" name="login_user_form"
+        
+        <form class="m-t" role="form" action="" method="POST" name="login_user_form"
         >
 
-
-            {{ login_user_form.hidden_tag() }}
-            <!--    <img class="mb-4" src="{{ url_for('static', filename='/assets/brand/bootstrap-solid.svg') }}" alt="" width="72" height="72">-->
-
+           
             {% if login_user_form.email.errors %}
             {% for error in login_user_form.email.errors %}
 
@@ -57,9 +54,9 @@
             {{ login_user_form.remember }}
 
 
-            {{ render_field(login_user_form.next) }}
+           
             {{ render_field(login_user_form.submit, class="btn btn-primary btn-lg btn-block") }}
-            <a href="#"><small>Забали пароль?</small></a>
+            <a href="{{ url_for('security.reset') }}"><small>Забали пароль?</small></a>
 
 
             <p class="text-muted text-center"><small>Еще не регистрировались?</small></p>
@@ -67,7 +64,6 @@
 
 
         </form>
-        <!--{% include "security/_menu.html" %}-->
         <p class="m-t"><small>TM+ - touremanager.ru &copy; 2021</small></p>
     </div>
 </div>
