@@ -5,7 +5,7 @@ from flask import Blueprint, jsonify, request, render_template, redirect, abort
 from flask.wrappers import Response
 from flask_security.utils import hash_password
 from werkzeug.exceptions import RequestTimeout
-from event import logger, config, allowed_photo_profile, allowed_document_profile, load_user, send_confirm
+from event import logger, config, allowed_photo_profile, allowed_document_profile, load_user, send_confirm, send_forgot
 
 from flask_login import logout_user, login_user, login_required, current_user
 from flask import flash, request, redirect, url_for
@@ -70,6 +70,10 @@ def register():
 @security.route('/reset', methods=['GET', 'POST'])
 def reset():
     form = ForgotPasswordForm(request.form)
+    if request.method == 'POST' and form.validate():
+        user = User.query.filter(User.email == request.form.email.get('email')).first()
+        html = render_template('email_templates/action.html', user=user)
+        send_forgot(request.form.get('email', html))
     return render_template('security/forgot_password.html', forgot_password_form=form)
 
 @security.after_request

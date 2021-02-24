@@ -220,3 +220,11 @@ def send_confirm(email, html):
     #msg.body = html
     msg.html = html
     mail.send(msg)
+
+def send_forgot(email, html):
+    msg = Message("Востановить пароль",
+                sender="support@touremanager.ru",
+                recipients=[email])
+    #msg.body = html
+    msg.html = html
+    mail.send(msg)

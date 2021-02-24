@@ -252,8 +252,14 @@ class LoginForm(Form):
         pass
 
 class ForgotPasswordForm(Form):
-    email =  StringField('Email или Логин', [validators.Length(min=6, max=35)])
+    email =  StringField('Email', [validators.Length(min=6, max=35)])
     submit = SubmitField('Восстановить')
+
+    def validate_email(self, feald):
+        user = User.query.filter(User.email == feald.data).first()
+        if user is None:
+            raise ValidationError('Такой email не зарегистрирован')
+
 
 class RegisterUserForm(Form):
 
