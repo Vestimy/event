@@ -213,7 +213,7 @@ def send_msg(email, login):
     msg.html = "<b>sssssssssssstesting</b>"
     mail.send(msg)
 
-def send_confirm(email, html)
+def send_confirm(email, html):
     msg = Message("Восстановление пароля",
                 sender="support@touremanager.ru",
                 recipients=[email])
