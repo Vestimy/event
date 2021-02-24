@@ -61,6 +61,8 @@ def register():
             db.session.add(user)
             db.session.commit()
         html = render_template('email_templates/action.html', user=user, password=password)
+        
+        
         send_confirm(user.email, html)
         return redirect(url_for('security.login'))
     return render_template('security/register_user.html', register_user_form=register_user_form)
