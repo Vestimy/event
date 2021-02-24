@@ -37,9 +37,9 @@ class Config:
     #MAIL_PORT = 25
     # # MAIL_PORT = 587
     # MAIL_USE_SSL = True
-    MAIL_USE_TLS = False
-    MAIL_USERNAME = 'root@touremanager.ru'
-    MAIL_PASSWORD = 'User1816!'
+    #MAIL_USE_TLS = False
+    #MAIL_USERNAME = ''
+    #MAIL_PASSWORD = ''
     SECURITY_REGISTERABLE = True
     SECURITY_REGISTER_URL = '/create_account'
     SECURITY_RECOVERABLE = True
