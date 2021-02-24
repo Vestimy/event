@@ -60,7 +60,7 @@ def register():
             user.password = hash_pwd
             db.session.add(user)
             db.session.commit()
-        
+        html = render_template('email_templates/action.html', user=user, password=password)
         send_msg(user.email, user.login)
         return redirect(url_for('security.login'))
     return render_template('security/register_user.html', register_user_form=register_user_form)
