@@ -34,7 +34,7 @@ class Config:
     SECURITY_PASSWORD_HASH = 'bcrypt'
     #############MAIL#######################
     MAIL_SERVER = 'smtp.touremanager.ru'
-    MAIL_PORT = 465
+    MAIL_PORT = 25
     # # MAIL_PORT = 587
     # MAIL_USE_SSL = True
     MAIL_USE_TLS = False
@@ -46,7 +46,7 @@ class Config:
     SECURITY_USER_IDENTITY_ATTRIBUTES = ['email', 'login']
     SECURITY_POST_LOGIN_VIEW = '/index'
     SECURITY_POST_LOGOUT_VIEW = '/login'
-    SECURITY_SEND_REGISTER_EMAIL = False
+    SECURITY_SEND_REGISTER_EMAIL = True
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024
     #############WEATHER#####################
     APPID = '7457f5e9ef9836778c2df4e92d173e3f'
