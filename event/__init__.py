@@ -214,9 +214,9 @@ def send_msg(email, login):
     mail.send(msg)
 
 def send_confirm(email, html):
-    msg = Message("Восстановление пароля",
+    msg = Message("Подтверждение email",
                 sender="support@touremanager.ru",
                 recipients=[email])
-    #msg.body = "aaaaaaatesting"
-    msg.html = html
+    msg.body = html
+    #msg.html = html
     mail.send(msg)
