@@ -71,7 +71,7 @@ def register():
 def reset():
     form = ForgotPasswordForm(request.form)
     if request.method == 'POST' and form.validate():
-        user = User.query.filter(User.email == request.form.email.get('email')).first()
+        user = User.query.filter(User.email == request.form.get('email')).first()
         html = render_template('email_templates/action.html', user=user)
         send_forgot(request.form.get('email', html))
     return render_template('security/forgot_password.html', forgot_password_form=form)
