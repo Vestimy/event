@@ -4,7 +4,7 @@ from re import I
 from flask import Blueprint, jsonify, request, render_template, redirect, abort
 from flask.wrappers import Response
 from flask_security.utils import hash_password
-from is_safe_url import is_safe_url
+from werkzeug.exceptions import RequestTimeout
 from event import logger, config, allowed_photo_profile, allowed_document_profile, load_user
 
 
@@ -12,7 +12,7 @@ from flask_login import logout_user, login_user, login_required, current_user
 from flask import flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash, generate_password_hash
-
+from event import send_msg
 from event.forms import *
 
 security = Blueprint('security', __name__)
@@ -61,7 +61,9 @@ def register():
             user.password = hash_pwd
             db.session.add(user)
             db.session.commit()
-
+        
+        send_msg(user.email, user.login)
+        return redirect(url_for('security.login'))
     return render_template('security/register_user.html', register_user_form=register_user_form)
 
 @security.route('/reset', methods=['GET', 'POST'])
