@@ -33,10 +33,9 @@ class Config:
     SECURITY_PASSWORD_SALT = 'salt'
     SECURITY_PASSWORD_HASH = 'bcrypt'
     #############MAIL#######################
-    MAIL_SERVER = 'smtp.touremanager.ru'
-    #MAIL_PORT = 25
-    # # MAIL_PORT = 587
-    # MAIL_USE_SSL = True
+    #MAIL_SERVER = 'smtp.gmail.com'
+    #MAIL_PORT = 465
+    #MAIL_USE_SSL = True
     #MAIL_USE_TLS = False
     #MAIL_USERNAME = ''
     #MAIL_PASSWORD = ''
