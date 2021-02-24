@@ -209,4 +209,7 @@ def send_msg(email, login):
     msg = Message(f"Hello, {login}",
                 sender="support@touremanager.ru",
                 recipients=[email])
+    msg.body = "testing"
+    msg.html = "<b>testing</b>"
     mail.send(msg)
+    return True
