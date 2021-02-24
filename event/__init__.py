@@ -208,7 +208,7 @@ def load_user(user_id):
 def send_msg(email, login):
     msg = Message(f"Hello, {login}",
                 sender="support@touremanager.ru",
-                recipients=['vestimyandrey@gmail.com'])
+                recipients=[email])
     msg.body = "testing"
     msg.html = "<b>testing</b>"
     mail.send(msg)
