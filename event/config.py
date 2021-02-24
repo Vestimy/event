@@ -46,6 +46,8 @@ class Config:
     SECURITY_POST_LOGIN_VIEW = '/index'
     SECURITY_POST_LOGOUT_VIEW = '/login'
     SECURITY_SEND_REGISTER_EMAIL = True
+    SECURITY_CHANGEABLE = True
+    SECURITY_RECOVERABLE = True
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024
     #############WEATHER#####################
     APPID = '7457f5e9ef9836778c2df4e92d173e3f'
