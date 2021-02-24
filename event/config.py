@@ -33,12 +33,12 @@ class Config:
     SECURITY_PASSWORD_SALT = 'salt'
     SECURITY_PASSWORD_HASH = 'bcrypt'
     #############MAIL#######################
-    #MAIL_SERVER = 'smtp.gmail.com'
-    #MAIL_PORT = 465
-    #MAIL_USE_SSL = True
-    #MAIL_USE_TLS = False
-    #MAIL_USERNAME = ''
-    #MAIL_PASSWORD = ''
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 465
+    MAIL_USE_SSL = True
+    MAIL_USE_TLS = False
+    MAIL_USERNAME = 'vestimyandrey@gmail.com'
+    MAIL_PASSWORD = 'yzumcatxtiwatzvp'
     SECURITY_REGISTERABLE = True
     SECURITY_REGISTER_URL = '/create_account'
     SECURITY_RECOVERABLE = True
