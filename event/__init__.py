@@ -22,7 +22,7 @@ jwt = JWTManager()
 login = LoginManager()
 admin = Admin(name='admins')
 security = Security()
-mail = Mail()
+#mail = Mail()
 bootstrap = Bootstrap()
 
 from .forms_security import ExtendedRegisterForm
@@ -35,7 +35,7 @@ def create_app():
     admin.init_app(app, url='/admin', index_view=HomeAdminView(name='Главная'))
     login.init_app(app)
     app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
-    mail.init_app(app)
+    #mail.init_app(app)
     # security.init_app(app, user_datastore, register_form=ExtendedRegisterForm)
     security.init_app(app, user_datastore, register_form=ExtendedRegisterForm)
     bootstrap.init_app(app)
