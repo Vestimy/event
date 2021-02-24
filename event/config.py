@@ -31,12 +31,12 @@ class Config:
     ADMIN_PASSWD_HASH = '7ULJ61PMMGBJ1KWQB64P7D'
     STATIC_URL_PATH = '/static'
     #############MAIL#######################
-    MAIL_SERVER = 'smtp.gmail.com'
-    MAIL_PORT = 465
-    MAIL_USE_SSL = True
-    MAIL_USE_TLS = False
-    MAIL_USERNAME = 'vestimyandrey@gmail.com'
-    MAIL_PASSWORD = 'yzumcatxtiwatzvp'
+    #MAIL_SERVER = 'smtp.gmail.com'
+    #MAIL_PORT = 465
+    #MAIL_USE_SSL = True
+    #MAIL_USE_TLS = False
+    #MAIL_USERNAME = 'vestimyandrey@gmail.com'
+    #MAIL_PASSWORD = 'yzumcatxtiwatzvp'
     
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024
     #############WEATHER#####################
