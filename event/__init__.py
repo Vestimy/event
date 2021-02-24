@@ -217,6 +217,6 @@ def send_confirm(email, html):
     msg = Message("Подтверждение email",
                 sender="support@touremanager.ru",
                 recipients=[email])
-    msg.body = html
-    #msg.html = html
+    #msg.body = html
+    msg.html = html
     mail.send(msg)
