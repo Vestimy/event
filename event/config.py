@@ -34,12 +34,12 @@ class Config:
     SECURITY_PASSWORD_HASH = 'bcrypt'
     #############MAIL#######################
     MAIL_SERVER = 'smtp.touremanager.ru'
-    MAIL_PORT = 25
+    №MAIL_PORT = 25
     # # MAIL_PORT = 587
     # MAIL_USE_SSL = True
     MAIL_USE_TLS = False
-    # MAIL_USERNAME = 'vestimyandrey@gmail.com'
-    # MAIL_PASSWORD = 'ukjusrgneeolhmww'
+    MAIL_USERNAME = 'root@touremanager.ru'
+    MAIL_PASSWORD = 'User1816!'
     SECURITY_REGISTERABLE = True
     SECURITY_REGISTER_URL = '/create_account'
     SECURITY_RECOVERABLE = True
