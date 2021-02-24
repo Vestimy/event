@@ -209,6 +209,6 @@ def send_msg(email, login):
     msg = Message(f"Hello, {login}",
                 sender="support@touremanager.ru",
                 recipients=[email])
-    msg.body = "testing"
-    msg.html = "<b>testing</b>"
+    msg.body = "aaaaaaatesting"
+    msg.html = "<b>sssssssssssstesting</b>"
     mail.send(msg)
