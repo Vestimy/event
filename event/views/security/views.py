@@ -5,7 +5,7 @@ from flask import Blueprint, jsonify, request, render_template, redirect, abort
 from flask.wrappers import Response
 from flask_security.utils import hash_password
 from werkzeug.exceptions import RequestTimeout
-from event import logger, config, allowed_photo_profile, allowed_document_profile, load_user
+from event import logger, config, allowed_photo_profile, allowed_document_profile, load_user, send_confirm
 
 from flask_login import logout_user, login_user, login_required, current_user
 from flask import flash, request, redirect, url_for
@@ -61,7 +61,7 @@ def register():
             db.session.add(user)
             db.session.commit()
         html = render_template('email_templates/action.html', user=user, password=password)
-        send_msg(user.email, user.login)
+        send_confirm(user.email, html)
         return redirect(url_for('security.login'))
     return render_template('security/register_user.html', register_user_form=register_user_form)
 
