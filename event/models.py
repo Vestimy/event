@@ -13,7 +13,6 @@ from event.config import Config
 from werkzeug.security import generate_password_hash
 
 
-
 def time_now():
     return datetime.now(timezone('Europe/Moscow'))
 
@@ -189,9 +188,9 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(250), nullable=True)
     patronymic = db.Column(db.String(250), nullable=True)
 
-    email = db.Column(db.String(255), nullable=False, unique=True)
-    login = db.Column(db.String(255), nullable=False, unique=True)
-    password = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(120), nullable=False, unique=True)
+    login = db.Column(db.String(80), nullable=False, unique=True)
+    password = db.Column(db.String(128), nullable=False)
 
     active = db.Column(db.Boolean)
 
@@ -210,10 +209,11 @@ class User(db.Model, UserMixin):
     event = relationship('Event', back_populates='user')
     event_staff = relationship('Event', secondary=event_staff_users, back_populates='users_staff', lazy=True)
 
+    rentalcompany_creator = relationship('RentalCompany', back_populates='creator')
+
     document = relationship("Document", back_populates='users')
     edit_time = db.Column(DateTime, onupdate=time_now)
     create_time = db.Column(DateTime, default=time_now)
- 
 
     def __repr__(self):
         return f"{self.last_name} {self.first_name}"
@@ -228,26 +228,8 @@ class User(db.Model, UserMixin):
 
     @classmethod
     def get_email(cls, email):
-        return cls.query.filter(cls.email == email).one()
+        return cls.query.filter(cls.email == email).first()
 
-    @classmethod
-    def update_password(cls, email, password):
-        user = cls.query.filter(cls.email == email).one()
-        password = generate_password_hash(password)
-        print(user.password)
-        print(password)
-        user.password = password
-        db.session.commit()
-        user1 = cls.query.filter(cls.login == 'admin').one()
-        print(user.password)
-        print(generate_password_hash('admin'))
-        return user
-
-    @classmethod
-    def is_pwd(cls, user, password):
-        if not bcrypt.verify(password, user.password):
-            raise Exception('No user with this password')
-        return user
 
     @classmethod
     def authentificate(cls, email, password):
@@ -294,8 +276,14 @@ class CompanyType(db.Model):
     name = db.Column(String(255))
     description = db.Column(db.String(255))
 
+    rentalcompany = relationship('RentalCompany', back_populates='companytype')
+
     edit = db.Column(DateTime, onupdate=time_now)
     create = db.Column(DateTime, default=time_now)
+
+    def __repr__(self):
+        return self.name
+
 
 class RentalCompany(db.Model):
     __tablename__ = 'rentalcompany'
@@ -311,6 +299,12 @@ class RentalCompany(db.Model):
     facebook = db.Column(String(128))
 
     staff = db.Column(db.String(255))
+
+    companytype_id = db.Column(Integer, ForeignKey('companytype.id'))
+    companytype = relationship('CompanyType', back_populates='rentalcompany')
+
+    creator_id = db.Column(Integer, ForeignKey('users.id'))
+    creator = relationship('User', back_populates='rentalcompany_creator')
 
     edit = db.Column(DateTime, onupdate=time_now)
     create = db.Column(DateTime, default=time_now)

@@ -16,6 +16,7 @@ from event.forms import *
 
 security = Blueprint('security', __name__)
 
+
 @security.route('/logout')
 @login_required
 def logout():
@@ -29,15 +30,24 @@ def login():
     email = request.form.get('email')
     password = request.form.get('password')
     if request.method == 'POST' and login_user_form.validate():
-        user = User.get_email(email)
-        if check_password_hash(user.password, password):
-            login_user(user)
-            next_page = request.args.get('next')
-            if next_page is None:
-                return redirect(url_for('main.index'))
-            return redirect(next_page)
+        if User.get_email(email):
+            user = User.get_email(email)
+        elif User.query.filter(User.login == email).first():
+            user = User.query.filter(User.login == email).first()
         else:
-            flash('Неверый логин или пароль')
+            user = None
+
+        if user:
+            if check_password_hash(user.password, password):
+                login_user(user)
+                next_page = request.args.get('next')
+                if next_page is None:
+                    return redirect(url_for('main.index'))
+                return redirect(next_page)
+            else:
+                flash('Неверый логин или пароль')
+        else:
+            flash('Пользователь не существует')
     return render_template('security/login_user.html', login_user_form=login_user_form)
 
 
@@ -50,7 +60,7 @@ def register():
     password_confirm = request.form.get('password_confirm')
 
     if request.method == 'POST' and register_user_form.validate():
-        if not (login or password or password2):
+        if not (login or password or password_confirm):
             flash('Заполните все поля')
         elif password != password_confirm:
             flash('Пароли не совпадают')
@@ -60,12 +70,11 @@ def register():
             user.password = hash_pwd
             db.session.add(user)
             db.session.commit()
-        html = render_template('email_templates/action.html', user=user, password=password)
-        
-        
-        send_confirm(user.email, html)
+            html = render_template('email_templates/action.html', user=user, password=password)
+            send_confirm(user.email, html)
         return redirect(url_for('security.login'))
     return render_template('security/register_user.html', register_user_form=register_user_form)
+
 
 @security.route('/reset', methods=['GET', 'POST'])
 def reset():
@@ -76,9 +85,10 @@ def reset():
         send_forgot(request.form.get('email'), html)
     return render_template('security/forgot_password.html', forgot_password_form=form)
 
+
 @security.after_request
 def redirect_to_signin(response):
     if response.status_code == 401:
-        return redirect(url_for('security.login')+'?2next='+request.url)
+        return redirect(url_for('security.login') + '?2next=' + request.url)
 
     return response
