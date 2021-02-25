@@ -7,6 +7,8 @@ from flask import flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
 
 from event.forms import *
+from event import admin_required
+
 
 managers = Blueprint('managers', __name__)
 

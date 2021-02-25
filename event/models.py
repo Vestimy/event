@@ -285,3 +285,32 @@ class Document(db.Model):
 
     def __repr__(self):
         return self.name
+
+
+class CompanyType(db.Model):
+    __tablename__ = 'companytype'
+
+    id = db.Column(Integer, primary_key=True)
+    name = db.Column(String(255))
+    description = db.Column(db.String(255))
+
+    edit = db.Column(DateTime, onupdate=time_now)
+    create = db.Column(DateTime, default=time_now)
+
+class RentalCompany(db.Model):
+    __tablename__ = 'rentalcompany'
+
+    id = db.Column(Integer, primary_key=True)
+    name = db.Column(String(128))
+
+    email = db.Column(String(128))
+    phone = db.Column(String(128))
+
+    instagram = db.Column(String(128))
+    vk = db.Column(String(128))
+    facebook = db.Column(String(128))
+
+    staff = db.Column(db.String(255))
+
+    edit = db.Column(DateTime, onupdate=time_now)
+    create = db.Column(DateTime, default=time_now)

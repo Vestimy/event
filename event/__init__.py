@@ -1,5 +1,6 @@
 import logging
 import os, inspect, sys
+from sqlalchemy.util.langhelpers import portable_instancemethod
 from werkzeug.utils import secure_filename
 from flask import Flask, jsonify, flash, request, redirect, url_for, render_template, send_from_directory, json
 from flask_sqlalchemy import SQLAlchemy
@@ -8,7 +9,7 @@ from flask_jwt_extended import JWTManager
 from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from flask_login import LoginManager
-
+from functools import wraps
 from flask_security import SQLAlchemySessionUserDatastore, Security
 from flask_security import current_user, user_registered, login_required, user_confirmed
 from flask_mail import Mail, Message
@@ -128,7 +129,11 @@ weather = OpenWeather(appid=Config.APPID, db=db, model=Weather)
 
 class AdminMixIn:
     def is_accessible(self):
-        return current_user.has_role('admin')
+        if current_user.is_anonymous:
+            return False
+        else:
+            return 'admin' in current_user.roles
+
 
     def inaccessible_callback(self, name, **kwargs):
         return redirect(url_for('security.login', next=request.url))
@@ -167,9 +172,12 @@ admin.add_view(AdminView(Region, db.session))
 admin.add_view(AdminView(City, db.session))
 admin.add_view(AdminView(Weather, db.session))
 
+admin.add_view(AdminView(Document, db.session))
+admin.add_view(AdminView(CompanyType, db.session))
+admin.add_view(AdminView(RentalCompany, db.session))
+
 admin.add_view(AdminView(User, db.session))
 admin.add_view(AdminView(Role, db.session))
-admin.add_view(AdminView(Document, db.session))
 
 user_datastore = SQLAlchemySessionUserDatastore(db.session, User, Role)
 
@@ -228,3 +236,21 @@ def send_forgot(email, html):
     #msg.body = html
     msg.html = html
     mail.send(msg)
+
+
+
+def admin_required(func):
+    """
+    Modified login_required decorator to restrict access to admin group.
+    """
+
+    @wraps(func)
+    def decorated_view(*args, **kwargs):
+        if not current_user.is_anonymous:
+            if not 'admin' in current_user.roles:        # zero means admin, one and up are other groups
+                flash("You don't have permission to access this resource.", "warning")
+                return redirect(url_for("main.index"))
+        return func(*args, **kwargs)
+    return decorated_view
+
+

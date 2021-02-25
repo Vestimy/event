@@ -5,12 +5,13 @@ from flask_security import login_required, roles_required, current_user, login_u
 from flask import flash, request, redirect, url_for
 from event.forms import *
 from werkzeug.utils import secure_filename
-
+from event import admin_required
 arenas = Blueprint('arenas', __name__)
 
 
 @arenas.route('/arena/', methods=['GET'])
 @login_required
+@admin_required
 def index():
     id = None
     citys = None
@@ -27,7 +28,8 @@ def index():
                     f'arenas -  action failed with errors: {e}'
                 )
             if isinstance(id, int):
-                arena = Arena.query.filter(Arena.typehall_id == id).order_by('name').all()
+                arena = Arena.query.filter(
+                    Arena.typehall_id == id).order_by('name').all()
         if request.args.get('city'):
             try:
                 city = int(request.args.get('city'))
@@ -37,7 +39,8 @@ def index():
                     f'arenas -  action failed with errors: {e}'
                 )
             if isinstance(city, int):
-                arena = Arena.query.filter(Arena.city_id == city).order_by('name').all()
+                arena = Arena.query.filter(
+                    Arena.city_id == city).order_by('name').all()
                 city_query = City.query.filter(City.id == city).one()
                 citys = city_query.name
         if request.args.get('region'):
@@ -80,7 +83,6 @@ def test():
     return render_template('test.html', form=form)
 
 
-
 @arenas.route('/arena/add', methods=['GET', 'POST'])
 @login_required
 def add():
@@ -95,7 +97,8 @@ def add():
             try:
                 if file and allowed_photo_profile(file.filename):
                     filename = secure_filename(file.filename)
-                    file.save(os.path.join(config.Config.UPLOAD_PHOTO_ARENA, filename))
+                    file.save(os.path.join(
+                        config.Config.UPLOAD_PHOTO_ARENA, filename))
                     form.populate_obj(arena)
                     db.session.add(arena)
                     db.session.commit()
