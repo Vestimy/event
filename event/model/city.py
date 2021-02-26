@@ -33,13 +33,14 @@ class City(db.Model):
     __tablename__ = 'city'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
     region_id = db.Column(Integer, ForeignKey('region.id'))
     region = relationship('Region', back_populates='city')
 
+
     event = relationship("Event", back_populates='city')
     arena = relationship("Arena", back_populates="city")
-
+    rentalcompany = relationship("RentalCompany", back_populates="city")
     #
     # edit_city = db.Column(db.DateTime, onupdate=time_now)
     # created_city = db.Column(db.DateTime, default=time_now)

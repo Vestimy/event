@@ -1,7 +1,5 @@
-# from .db_setings import db, session, Base
-import re
 from event import db
-from sqlalchemy import String, Integer, ForeignKey, DateTime, Date, Time, JSON
+from sqlalchemy import Column, String, Integer, ForeignKey, DateTime, Date, Time, JSON
 from sqlalchemy.orm import relationship
 from flask_jwt_extended import create_access_token
 from datetime import timedelta
@@ -9,8 +7,6 @@ from passlib.hash import bcrypt
 from datetime import datetime
 from pytz import timezone
 from flask_security import UserMixin, RoleMixin
-from event.config import Config
-from werkzeug.security import generate_password_hash
 
 
 def time_now():
@@ -22,6 +18,13 @@ event_staff_users = db.Table('event_staff_users',
                              db.Column('users_staff', db.Integer, ForeignKey('users.id')),
                              db.Column('event_staff', db.Integer, ForeignKey('event.id'))
                              )
+
+staff_company = db.Table('staff_company',
+                         db.Model.metadata,
+                         db.Column('rentalcompany_id', db.Integer, ForeignKey('rentalcompany.id')),
+                         db.Column('users_id', db.Integer, ForeignKey('users.id'))
+                         )
+
 association = db.Table('association',
                        db.Model.metadata,
                        db.Column('users_id', db.Integer, db.ForeignKey('users.id')),
@@ -80,33 +83,24 @@ class Artist(db.Model):
     __tablename__ = 'artist'
 
     id = db.Column(db.Integer, primary_key=True)
-
     last_name = db.Column(db.String(128))
     first_name = db.Column(db.String(128))
     alias = db.Column(String(128))
-
     description = db.Column(db.String(500))
-
     administrator = db.Column(db.String(128))
     email_admin = db.Column(db.String(128))
     phone_administrator = db.Column(db.String(128))
-
     sound_engineer = db.Column(db.String(128))
     email_sound = db.Column(db.String(128))
     phone_sound = db.Column(db.String(128))
-
     monitor_engineer = db.Column(db.String(128))
     email_monitor = db.Column(db.String(128))
     phone_monitor = db.Column(db.String(128))
-
     light = db.Column(db.String(128))
     email_light = db.Column(db.String(128))
     phone_light = db.Column(db.String(128))
-
     img = db.Column(db.String(255))
-
     event = relationship("Event", back_populates="artist")
-
     edit_artist = db.Column(db.DateTime, onupdate=time_now)
     created_artist = db.Column(db.DateTime, default=time_now)
 
@@ -135,7 +129,6 @@ class Arena(db.Model):
     phone_light = db.Column(db.String(20))
     img = db.Column(String(255))
     event = relationship('Event', back_populates='arena')
-
     edit_arena = db.Column(db.DateTime, onupdate=time_now)
     created_arena = db.Column(db.DateTime, default=time_now)
 
@@ -149,7 +142,6 @@ class TypeHall(db.Model):
     name = db.Column(db.String(255), nullable=False)
     description = db.Column(db.String(500))
     arena = relationship("Arena", back_populates="typehall")
-
     edit_time = db.Column(DateTime, onupdate=time_now)
     create_time = db.Column(DateTime, default=time_now)
 
@@ -162,7 +154,6 @@ class Tour(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False, unique=True)
     event = relationship('Event', back_populates='tour')
-
     edit_tour = db.Column(db.DateTime, onupdate=time_now)
     created_tour = db.Column(db.DateTime, default=time_now())
 
@@ -176,7 +167,6 @@ class Weather(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     city = db.Column(db.String(128))
     json = db.Column(JSON)
-
     edit_weather = db.Column(db.DateTime, onupdate=time_now)
     created_weather = db.Column(db.DateTime, default=time_now())
 
@@ -187,30 +177,23 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.String(250), nullable=True)
     first_name = db.Column(db.String(250), nullable=True)
     patronymic = db.Column(db.String(250), nullable=True)
-
     email = db.Column(db.String(120), nullable=False, unique=True)
     login = db.Column(db.String(80), nullable=False, unique=True)
     password = db.Column(db.String(128), nullable=False)
-
     active = db.Column(db.Boolean)
-
     facebook = db.Column(db.String(128))
     instagram = db.Column(db.String(128))
-
     birthday = db.Column(Date)
     phone = db.Column(db.String(20))
     address = db.Column(db.String(255))
     photo = db.Column(db.String(255))
-
     roles = relationship('Role', secondary=association, back_populates='users', lazy=True)
     lead_roles_id = db.Column(Integer, ForeignKey('roles.id'))
     lead_roles = relationship("Role", back_populates='users_lead')
-
     event = relationship('Event', back_populates='user')
     event_staff = relationship('Event', secondary=event_staff_users, back_populates='users_staff', lazy=True)
-
     rentalcompany_creator = relationship('RentalCompany', back_populates='creator')
-
+    rentalcompany = relationship('RentalCompany', secondary=staff_company, back_populates='staff', lazy=True)
     document = relationship("Document", back_populates='users')
     edit_time = db.Column(DateTime, onupdate=time_now)
     create_time = db.Column(DateTime, default=time_now)
@@ -229,7 +212,6 @@ class User(db.Model, UserMixin):
     @classmethod
     def get_email(cls, email):
         return cls.query.filter(cls.email == email).first()
-
 
     @classmethod
     def authentificate(cls, email, password):
@@ -257,9 +239,9 @@ class Role(db.Model, RoleMixin):
 
 class Document(db.Model):
     __tablename__ = "document"
+
     id = db.Column(Integer, primary_key=True)
     name = db.Column(String(255))
-
     users_id = db.Column(Integer, ForeignKey('users.id'))
     users = relationship("User", back_populates='document')
     edit_time = db.Column(DateTime, onupdate=time_now)
@@ -275,9 +257,7 @@ class CompanyType(db.Model):
     id = db.Column(Integer, primary_key=True)
     name = db.Column(String(255))
     description = db.Column(db.String(255))
-
     rentalcompany = relationship('RentalCompany', back_populates='companytype')
-
     edit = db.Column(DateTime, onupdate=time_now)
     create = db.Column(DateTime, default=time_now)
 
@@ -290,21 +270,19 @@ class RentalCompany(db.Model):
 
     id = db.Column(Integer, primary_key=True)
     name = db.Column(String(128))
-
     email = db.Column(String(128))
     phone = db.Column(String(128))
-
+    address = db.Column(String(128))
     instagram = db.Column(String(128))
     vk = db.Column(String(128))
     facebook = db.Column(String(128))
-
-    staff = db.Column(db.String(255))
-
+    logo = db.Column(String(128))
+    staff = relationship('User', secondary=staff_company, back_populates='rentalcompany', lazy=True)
+    city_id = db.Column(Integer, ForeignKey('city.id'))
+    city = relationship('City', back_populates='rentalcompany')
     companytype_id = db.Column(Integer, ForeignKey('companytype.id'))
     companytype = relationship('CompanyType', back_populates='rentalcompany')
-
     creator_id = db.Column(Integer, ForeignKey('users.id'))
     creator = relationship('User', back_populates='rentalcompany_creator')
-
     edit = db.Column(DateTime, onupdate=time_now)
     create = db.Column(DateTime, default=time_now)

@@ -1,11 +1,7 @@
 import logging
-import os, inspect, sys
-from sqlalchemy.util.langhelpers import portable_instancemethod
-from werkzeug.utils import secure_filename
 from flask import Flask, jsonify, flash, request, redirect, url_for, render_template, send_from_directory, json
 from flask_sqlalchemy import SQLAlchemy
 from .config import Config
-from flask_jwt_extended import JWTManager
 from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from flask_login import LoginManager
@@ -19,7 +15,6 @@ UPLOAD_FOLDER = '/home/vestimy/uploads'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 db = SQLAlchemy()
-jwt = JWTManager()
 login_manager = LoginManager()
 admin = Admin(name='admins')
 security = Security()
@@ -39,41 +34,26 @@ def create_app():
     login_manager.init_app(app)
     app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
     mail.init_app(app)
-    # security.init_app(app, user_datastore, register_form=ExtendedRegisterForm)
-    #security.init_app(app, user_datastore, register_form=ExtendedRegisterForm)
     bootstrap.init_app(app)
-
-    @user_registered.connect_via(app)
-    def user_registered_sighandler(app, user, confirm_token):
-        default_role = user_datastore.find_role("users")
-        user_datastore.add_role_to_user(user, default_role)
-        db.session.commit()
 
     from .views.main.views import main
     from .views.event.views import events
     from .views.arena.views import arenas
-    # from .views.city.views import citys
     from .views.artist.views import artists
     from .views.manager.views import managers
     from .views.login.views import logins
     from .views.tour.views import tours
-    # from .views.administrator.views import administrator
     from .views.api.views import api
     from .views.security.views import security
 
     app.register_blueprint(main)
     app.register_blueprint(events)
     app.register_blueprint(arenas)
-    # app.register_blueprint(citys)
     app.register_blueprint(artists)
     app.register_blueprint(managers)
     app.register_blueprint(tours)
-    # app.register_blueprint(administrator)
     app.register_blueprint(api)
     app.register_blueprint(security)
-    # app.register_blueprint(logins)
-
-    jwt.init_app(app)
 
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -134,27 +114,16 @@ class AdminMixIn:
         else:
             return 'admin' in current_user.roles
 
-
     def inaccessible_callback(self, name, **kwargs):
         return redirect(url_for('security.login', next=request.url))
 
 
 class AdminView(AdminMixIn, ModelView):
     pass
-    # def is_accessible(self):
-    #     return current_user.has_role('admin')
-    #
-    # def inaccessible_callback(self, name, **kwargs):
-    #     return redirect(url_for('security.login', next=request.url))
 
 
 class HomeAdminView(AdminMixIn, AdminIndexView):
     pass
-    # def is_accessible(self):
-    #     return current_user.has_role('admin')
-    #
-    # def inaccessible_callback(self, name, **kwargs):
-    #     return redirect(url_for('security.login', next=request.url))
 
 
 admin.add_view(AdminView(Tour, db.session))
@@ -208,6 +177,7 @@ def allowed_document_profile(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in Config.ALLOWED_DOCUMENT
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
@@ -215,28 +185,29 @@ def load_user(user_id):
 
 def send_msg(email, login):
     msg = Message(f"Hello, {login}",
-                sender="support@touremanager.ru",
-                recipients=[email])
+                  sender="support@touremanager.ru",
+                  recipients=[email])
     msg.body = "aaaaaaatesting"
     msg.html = "<b>sssssssssssstesting</b>"
     mail.send(msg)
 
+
 def send_confirm(email, html):
     msg = Message("Подтверждение email",
-                sender="support@touremanager.ru",
-                recipients=[email])
-    #msg.body = html
+                  sender="support@touremanager.ru",
+                  recipients=[email])
+    # msg.body = html
     msg.html = html
     mail.send(msg)
+
 
 def send_forgot(email, html):
     msg = Message("Востановить пароль",
-                sender="support@touremanager.ru",
-                recipients=[email])
-    #msg.body = html
+                  sender="support@touremanager.ru",
+                  recipients=[email])
+    # msg.body = html
     msg.html = html
     mail.send(msg)
-
 
 
 def admin_required(func):
@@ -247,10 +218,9 @@ def admin_required(func):
     @wraps(func)
     def decorated_view(*args, **kwargs):
         if not current_user.is_anonymous:
-            if not 'admin' in current_user.roles:        # zero means admin, one and up are other groups
+            if not 'admin' in current_user.roles:  # zero means admin, one and up are other groups
                 flash("You don't have permission to access this resource.", "warning")
                 return redirect(url_for("main.index"))
         return func(*args, **kwargs)
+
     return decorated_view
-
-

@@ -1,12 +1,6 @@
-from logging import log
-import os
-from re import I
-from flask import Blueprint, jsonify, request, render_template, redirect, abort
-from flask.wrappers import Response
-from flask_security.utils import hash_password
-from werkzeug.exceptions import RequestTimeout
-from event import logger, config, allowed_photo_profile, allowed_document_profile, load_user, send_confirm, send_forgot
-
+from flask import Blueprint, request, render_template, redirect, abort
+from event import logger, config, allowed_photo_profile, allowed_document_profile, load_user
+from event import send_confirm, send_forgot
 from flask_login import logout_user, login_user, login_required, current_user
 from flask import flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
@@ -36,7 +30,6 @@ def login():
             user = User.query.filter(User.login == email).first()
         else:
             user = None
-
         if user:
             if check_password_hash(user.password, password):
                 login_user(user)
@@ -86,9 +79,13 @@ def reset():
     return render_template('security/forgot_password.html', forgot_password_form=form)
 
 
+@security.route('/tests', methods=['GET', 'POST'])
+def tests():
+    return render_template('register_test.html')
+
+
 @security.after_request
 def redirect_to_signin(response):
     if response.status_code == 401:
         return redirect(url_for('security.login') + '?2next=' + request.url)
-
     return response
