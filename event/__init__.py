@@ -198,6 +198,7 @@ def send_confirm(email, html):
                   recipients=[email])
     # msg.body = html
     msg.html = html
+    print(msg.html)
     mail.send(msg)
 
 

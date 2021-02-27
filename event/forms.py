@@ -263,23 +263,23 @@ class ForgotPasswordForm(Form):
 
 
 class RegisterUserForm(Form):
-    email = StringField('Email', [validators.Length(min=6, max=35)])
+    email = StringField('Email', [validators.Length(min=4, max=35)])
     login = StringField(' Логин')
     password = PasswordField('Пароль', [
-        validators.Required(), 
+        validators.Required(), validators.Length(min=6, max=35, message="Пароль меньше 6 символов")
     ])
     password_confirm = PasswordField('Пароль', [
         validators.Required(),
+        validators.Length(min=6, max=35, message="Пароль меньше 6 символов")
     ])
     last_name = StringField('Фамилия')
     first_name = StringField('Имя')
-    patronymic = StringField('Отчество')
+    # patronymic = StringField('Отчество')
     
     birthday = DateField('День рождения')
     phone = StringField('Телефон')
     address = StringField('Адрес')
 
-    remember = BooleanField('Запомнить меня', default=False)
     submit = SubmitField('Регистрация')
 
 
@@ -291,9 +291,3 @@ class RegisterUserForm(Form):
     def validate_login(self, feald):
         if User.query.filter(User.login == feald.data).first():
             raise ValidationError('Логин занят')
-
-    def validate_password(self, feald):
-        if feald.data != self.password_confirm.data:
-            raise ValidationError('Пароли не совпадают')
-        elif len(feald.data) < 6:
-            raise ValidationError('Пароль меньше 6 символов')

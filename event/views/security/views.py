@@ -48,7 +48,6 @@ def login():
 def register():
     user = User()
     register_user_form = RegisterUserForm(request.form, obj=user)
-    email = request.form.get('email')
     password = request.form.get('password')
     password_confirm = request.form.get('password_confirm')
 
