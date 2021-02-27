@@ -68,11 +68,11 @@ def register():
             db.session.add(user)
 
             id = conf_id()
-            confirmation = Confirmation(user.email, id)
+            confirmation = Confirmation(email=user.email, conf_id=id)
             db.session.add(confirmation)
             db.session.commit()
 
-            html = render_template('email_templates/action.html', user=user,id=id, password=password)
+            html = render_template('email_templates/action.html', user=user, id=id, password=password)
             send_confirm(user.email, html)
         return redirect(url_for('security.login'))
     return render_template('security/register_user.html', register_user_form=register_user_form)
