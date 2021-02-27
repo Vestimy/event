@@ -286,3 +286,11 @@ class RentalCompany(db.Model):
     creator = relationship('User', back_populates='rentalcompany_creator')
     edit = db.Column(DateTime, onupdate=time_now)
     create = db.Column(DateTime, default=time_now)
+
+
+class Confirmation(db.Model):
+    __tablename__ = 'confirmation'
+
+    id = db.Column(Integer, primary_key=True)
+    email = db.Column(String(128))
+    conf_id = db.Column(String(128))

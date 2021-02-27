@@ -7,8 +7,13 @@ from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash, generate_password_hash
 from event import send_msg
 from event.forms import *
+import uuid
 
 security = Blueprint('security', __name__)
+
+
+def conf_id():
+    return str(uuid.uuid4())
 
 
 @security.route('/logout')
@@ -61,8 +66,13 @@ def register():
             hash_pwd = generate_password_hash(password)
             user.password = hash_pwd
             db.session.add(user)
+
+            id = conf_id()
+            confirmation = Confirmation(user.email, id)
+            db.session.add(confirmation)
             db.session.commit()
-            html = render_template('email_templates/action.html', user=user, password=password)
+
+            html = render_template('email_templates/action.html', user=user,id=id, password=password)
             send_confirm(user.email, html)
         return redirect(url_for('security.login'))
     return render_template('security/register_user.html', register_user_form=register_user_form)
