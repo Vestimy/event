@@ -85,8 +85,9 @@ def tests():
 
 @security.route('/confirmation', methods=['GET'])
 def confirmation():
+    # print(request.host_url + url_for('security.confirmation', email='vestimyandrey@gmail.com', id='21421421421412'))
     email = request.args.get('email')
-    id = request.arts.get('id')
+    id = request.args.get('id')
     return render_template('security/confirmation.html')
 
 
