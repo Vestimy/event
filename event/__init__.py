@@ -147,6 +147,7 @@ admin.add_view(AdminView(RentalCompany, db.session))
 
 admin.add_view(AdminView(User, db.session))
 admin.add_view(AdminView(Role, db.session))
+admin.add_view(AdminView(Confirmation, db.session))
 
 user_datastore = SQLAlchemySessionUserDatastore(db.session, User, Role)
 
