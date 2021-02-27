@@ -83,6 +83,13 @@ def tests():
     return render_template('register_test.html')
 
 
+@security.route('/confirmation', methods=['GET'])
+def confirmation():
+    email = request.args.get('email')
+    id = request.arts.get('id')
+    return render_template('security/confirmation.html')
+
+
 @security.after_request
 def redirect_to_signin(response):
     if response.status_code == 401:
