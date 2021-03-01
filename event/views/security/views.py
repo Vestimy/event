@@ -25,6 +25,8 @@ def logout():
 
 @security.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
     login_user_form = LoginForm(request.form)
     email = request.form.get('email')
     password = request.form.get('password')
@@ -51,6 +53,8 @@ def login():
 
 @security.route('/register', methods=['GET', 'POST'])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.index'))
     user = User()
     register_user_form = RegisterUserForm(request.form, obj=user)
     password = request.form.get('password')
@@ -93,15 +97,28 @@ def tests():
     return render_template('register_test.html')
 
 
-@security.route('/confirmation', methods=['GET'])
+@security.route('/confirmation', methods=['GET', 'POST'])
 def confirmation():
+    company = RentalCompany()
+    form = RentalCompanyForm(request.form, obj=company)
     email = request.args.get('email')
     id = request.args.get('id')
     if email and id:
         conf_id = Confirmation.query.filter(Confirmation.conf_id == id).first()
         if conf_id and conf_id.email == email:
-            print('Its ok')
-    return render_template('security/confirmation.html')
+            user = User.query.filter(User.email == conf_id.email).first()
+            if request.method == 'POST':
+                form.populate_obj(company)
+                db.session.add(company)
+                company.creator_id = user.id
+                db.session.commit()
+                if company:
+                    db.session.delete(conf_id)
+                    user.active = True
+                    db.session.commit()
+                return redirect(url_for('security.login'))
+            return render_template('security/confirmation.html', form=form)
+    return abort(404)
 
 
 @security.after_request

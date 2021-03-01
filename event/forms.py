@@ -2,7 +2,8 @@ import email
 from flask_wtf import FlaskForm
 from sqlalchemy.orm import eagerload
 from wtforms import Form, StringField, SelectMultipleField, MultipleFileField, SubmitField, TextAreaField, \
-    PasswordField, SelectField, DateField, DateTimeField, IntegerField, validators, TimeField, FileField, FloatField, BooleanField
+    PasswordField, SelectField, DateField, DateTimeField, IntegerField, validators, TimeField, FileField, FloatField, \
+    BooleanField
 from wtforms.validators import DataRequired, Email, InputRequired, ValidationError
 from event.models import *
 from event.model.city import *
@@ -61,7 +62,7 @@ class EventForm(Form):
         self.artist_id.choices = [(g.id, f'{g.first_name} {g.last_name}') for g in Artist.query.order_by('last_name')]
         self.artist_id.choices.insert(0, (0, u"Не выбран"))
         # self.city_id.choices = \
-            # [(g.id, u"%s" % g.name) for g in City.query.order_by('name')]
+        # [(g.id, u"%s" % g.name) for g in City.query.order_by('name')]
         #  выбранное поле по умолчанию
         # self.city_id.choices.insert(0, (None, u"Не выбрана"))
         self.city_id.choices = [(0, u"Не выбран")]
@@ -234,11 +235,13 @@ class UploadForm(Form):
     file = FileField('Выбирите изображение')
     save = SubmitField('Сохранить')
 
+
 class TestForm(Form):
     x = FloatField(widget=HiddenInput())
     y = FloatField(widget=HiddenInput())
     width = FloatField(widget=HiddenInput())
     height = FloatField(widget=HiddenInput())
+
 
 class LoginForm(Form):
     email = StringField('Email или Логин', [validators.Length(min=6, max=35)])
@@ -248,12 +251,12 @@ class LoginForm(Form):
     remember = BooleanField('Remember me', default=False)
     submit = SubmitField('Войти')
 
-
     def validate_on_submit(self):
         pass
 
+
 class ForgotPasswordForm(Form):
-    email =  StringField('Email', [validators.Length(min=6, max=35)])
+    email = StringField('Email', [validators.Length(min=6, max=35)])
     submit = SubmitField('Восстановить')
 
     def validate_email(self, feald):
@@ -275,13 +278,12 @@ class RegisterUserForm(Form):
     last_name = StringField('Фамилия')
     first_name = StringField('Имя')
     # patronymic = StringField('Отчество')
-    
+
     birthday = DateField('День рождения')
     phone = StringField('Телефон')
     address = StringField('Адрес')
 
     submit = SubmitField('Регистрация')
-
 
     def validate_email(self, feald):
         user = User.query.filter(User.email == feald.data).first()
@@ -291,3 +293,28 @@ class RegisterUserForm(Form):
     def validate_login(self, feald):
         if User.query.filter(User.login == feald.data).first():
             raise ValidationError('Логин занят')
+
+
+class RentalCompanyForm(Form):
+    name = StringField('Название', [validators.Length(min=4, max=35)])
+    email = StringField(' Email')
+
+    phone = StringField('Телефон')
+    address = StringField('Адрес')
+    # patronymic = StringField('Отчество')
+
+    instagram = StringField('Инстраграм')
+    vk = StringField('Телефон')
+    facebook = StringField('Адрес')
+
+    city_id = SelectField('Город')
+    companytype_id = SelectField('Компания')
+
+    submit = SubmitField('Сохранить')
+
+    def validate_name(self, feald):
+        company = RentalCompany.query.filter(RentalCompany.name == feald.data).first()
+        if company:
+            raise ValidationError('Email занят')
+
+

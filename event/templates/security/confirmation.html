@@ -26,6 +26,9 @@
             text-align: center;
 
         }
+
+
+
     </style>
 
 </head>
@@ -43,7 +46,58 @@
                 </div>
                 <h3>Регистрация</h3>
                 <p>Создайте учетную запись, чтобы увидеть это в действии.</p>
-<!--                -->
+                <form class="m-t" role="form" action="" method="POST">
+
+                    <div class="form-group">
+                        {{ render_field_with_errors(form.companytype_id, type="text", class="form-control",
+                        placeholder="Тип") }}
+                    </div>
+                    <div class="form-group">
+                        {{ render_field_with_errors(form.name,type="text", class="form-control",
+                        placeholder="Название", required="") }}
+                    </div>
+                    <div class="form-group">
+                        {{ render_field_with_errors(form.email,class='form-control',type="email",
+                        class="form-control", placeholder="Email", required="") }}
+                    </div>
+
+
+                    <div class="form-group">
+                        {{ render_field_with_errors(form.phone, type="text", class="form-control",
+                        placeholder="Телефон") }}
+                    </div>
+                    <div class="form-group">
+                        {{ render_field_with_errors(form.city_id, type="text", class="form-control",
+                        placeholder="Город") }}
+                    </div>
+                    <div class="form-group">
+                        {{ render_field_with_errors(form.address, type="text", class="form-control",
+                        placeholder="Адрес") }}
+                    </div>
+                    <div class="form-group">
+                        {{ render_field_with_errors(form.instagram, type="text", class="form-control",
+                        placeholder="Инстаграм") }}
+                    </div>
+                    <div class="form-group">
+                        {{ render_field_with_errors(form.vk, type="text", class="form-control",
+                        placeholder="VK") }}
+                    </div>
+                    <div class="form-group">
+                        {{ render_field_with_errors(form.facebook, type="text", class="form-control",
+                        placeholder="Facebook") }}
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="checkbox i-checks"><label> <input type="checkbox"><i></i> Agree the terms and
+                            policy
+                        </label></div>
+                    </div>
+                    {{ render_field(form.submit, class="btn btn-primary block full-width m-b") }}
+
+                    <p class="text-muted text-center"><small>Уже есть аккаунт?</small></p>
+                    <a class="btn btn-sm btn-white btn-block" href="{{ url_for('security.login') }}">Войти</a>
+                </form>
                 <p class="m-t"><small>TM+ - touremanager.ru &copy; 2021</small></p>
             </div>
         </div>
@@ -62,6 +116,9 @@
                 radioClass: 'iradio_square-green',
             });
         });
+
+
+
 
 
 

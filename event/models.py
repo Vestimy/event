@@ -199,7 +199,7 @@ class User(db.Model, UserMixin):
     create_time = db.Column(DateTime, default=time_now)
 
     def __repr__(self):
-        return f"{self.last_name} {self.first_name}"
+        return self.login
 
     def get_token(self, expire_time=24):
         expire_delta = timedelta(expire_time)
