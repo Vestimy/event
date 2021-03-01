@@ -312,7 +312,8 @@ class RentalCompanyForm(Form):
 
     submit = SubmitField('Сохранить')
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
+        super(RentalCompanyForm, self).__init__(*args, **kwargs)
         self.companytype_id.choices = [(i.id, i.name) for i in CompanyType.query.all()]
 
     def validate_name(self, feald):
