@@ -41,7 +41,7 @@
                                 </tr>
                                 <tr>
                                     <td class="content-block aligncenter">
-                                        <a href="{{ request.host_url + url_for('security.confirmation', email=user.email, id=id) }}" class="btn-primary">Подтвердить</a>
+                                        <a href="{{ request.host + url_for('security.confirmation', email=user.email, id=id) }}" class="btn-primary">Подтвердить</a>
                                     </td>
                                 </tr>
                               </table>

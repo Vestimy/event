@@ -95,9 +95,12 @@ def tests():
 
 @security.route('/confirmation', methods=['GET'])
 def confirmation():
-    # print(request.host_url + url_for('security.confirmation', email='vestimyandrey@gmail.com', id='21421421421412'))
     email = request.args.get('email')
     id = request.args.get('id')
+    if email and id:
+        conf_id = Confirmation.query.filter(Confirmation.conf_id == id).first()
+        if conf_id and conf_id.email == email:
+            print('Its ok')
     return render_template('security/confirmation.html')
 
 
