@@ -37,17 +37,20 @@ def login():
             user = User.query.filter(User.login == email).first()
         else:
             user = None
-        if user:
-            if check_password_hash(user.password, password):
-                login_user(user)
-                next_page = request.args.get('next')
-                if next_page is None:
-                    return redirect(url_for('main.index'))
-                return redirect(next_page)
+        if user.active:
+            if user:
+                if check_password_hash(user.password, password):
+                    login_user(user)
+                    next_page = request.args.get('next')
+                    if next_page is None:
+                        return redirect(url_for('main.index'))
+                    return redirect(next_page)
+                else:
+                    flash('Неверый логин или пароль')
             else:
-                flash('Неверый логин или пароль')
+                flash('Пользователь не существует')
         else:
-            flash('Пользователь не существует')
+            flash('Пользователь не активирван')
     return render_template('security/login_user.html', login_user_form=login_user_form)
 
 
