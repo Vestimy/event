@@ -144,7 +144,7 @@ admin.add_view(AdminView(Weather, db.session))
 
 admin.add_view(AdminView(Document, db.session))
 admin.add_view(AdminView(CompanyType, db.session))
-admin.add_view(AdminView(RentalCompany, db.session))
+admin.add_view(AdminView(Company, db.session))
 
 admin.add_view(AdminView(User, db.session))
 admin.add_view(AdminView(Role, db.session))
@@ -204,6 +204,15 @@ def send_confirm(email, html):
     mail.send(msg)
 
 
+def send_invite(email, html):
+    msg = Message("Приглашение",
+                  sender="support@touremanager.ru",
+                  recipients=[email])
+    # msg.body = html
+    msg.html = html
+    mail.send(msg)
+
+
 def send_forgot(email, html):
     msg = Message("Востановить пароль",
                   sender="support@touremanager.ru",
@@ -214,6 +223,21 @@ def send_forgot(email, html):
 
 
 def admin_required(func):
+    """
+    Modified login_required decorator to restrict access to admin group.
+    """
+
+    @wraps(func)
+    def decorated_view(*args, **kwargs):
+        if not current_user.is_anonymous:
+            if not 'admin' in current_user.roles:  # zero means admin, one and up are other groups
+                flash("You don't have permission to access this resource.", "warning")
+                return redirect(url_for("main.index"))
+        return func(*args, **kwargs)
+
+    return decorated_view
+
+def admin_company(func):
     """
     Modified login_required decorator to restrict access to admin group.
     """

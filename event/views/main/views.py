@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request, json, render_template, redirect
-from event import logger, config, generate_id
+from event import logger, config, generate_id,send_invite
 from werkzeug.utils import secure_filename
 from event import logger, config, allowed_photo_profile
 # from blog.schemas import VideoSchema, UserSchema, AuthSchema
@@ -135,7 +135,7 @@ def managers():
 @main.route('/team', methods=['GET'])
 @login_required
 def team():
-    id = current_user.rentalcompany[0].id
+    id = current_user.company[0].id
     if request.args.get('m') == "managers":
         try:
             managers = User.query.filter(User.roles.any(Role.name.in_(['manager']))).order_by(User.last_name).all()
@@ -153,8 +153,8 @@ def team():
             )
         return render_template('team.html', menu="team", managers=managers)
     try:
-        managers = User.query.filter(User.roles.any(Role.name.in_(['user']))).order_by(User.last_name).all()
-        managers = User.query.filter(User.rentalcompany.any(RentalCompany.id.in_([id]))).order_by(User.last_name).all()
+        # managers = User.query.filter(User.roles.any(Role.name.in_(['user']))).order_by(User.last_name).all()
+        managers = User.query.filter(User.company.any(Company.id.in_([id]))).order_by(User.last_name).all()
     except Exception as e:
         logger.warning(
             f'managers - reads action failed with errors: {e}'
@@ -164,15 +164,21 @@ def team():
 
 @main.route('/invite', methods=['GET', 'POST'])
 def invite():
+    if request.args.get('delete'):
+        db.session.delete(Invite.query.get(request.args.get('delete')))
+        db.session.commit()
+        return redirect(url_for('main.invite'))
     invite = Invite.query.all()
     inv = Invite()
     form = InviteForm(request.form, obj=inv)
+
     if request.method == 'POST' and form.validate():
         invite_id = generate_id()
         form.populate_obj(inv)
         inv.invite_id = invite_id
         db.session.add(inv)
         db.session.commit()
+
         return redirect(url_for('main.index'))
 
     return render_template('invite.html', invite=invite, form=form)

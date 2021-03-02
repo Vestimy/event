@@ -22,11 +22,6 @@
                 </div>
                 <div class="ibox-content">
                     <div class="row m-b-sm m-t-sm">
-                        <!--                        <div class="col-md-1">-->
-                        <!--                            <button type="button" id="loading-example-btn" class="btn btn-white btn-sm"><i-->
-                        <!--                                    class="fa fa-refresh"></i> Refresh-->
-                        <!--                            </button>-->
-                        <!--                        </div>-->
                         <div class="col-md-12">
 
                             <form method="GET">
@@ -41,32 +36,8 @@
                             </form>
                         </div>
                     </div>
-                    <!--                    <div class="row m-b-sm m-t-sm">-->
-                    <!--                        <div class="col-md-1">-->
-                    <!--                            <button type="button" id="loading-example-btn" class="btn btn-white btn-sm"><i-->
-                    <!--                                    class="fa fa-refresh"></i> Refresh-->
-                    <!--                            </button>-->
-                    <!--                        </div>-->
-                    <!--                        <div class="col-md-11">-->
-                    <!--                            <div class="input-group"><input type="text" placeholder="Search"-->
-                    <!--                                                            class="form-control-sm form-control"> <span-->
-                    <!--                                    class="input-group-btn">-->
-                    <!--                                        <button type="button" class="btn btn-sm btn-primary"> Go!</button> </span></div>-->
-                    <!--                        </div>-->
-                    <!--                    </div>-->
-
-                    <!--                    <div class="project-list">-->
-
-                    <!--                        <table class="table table-hover dataTables-example">-->
-
                     <div class="row m-b-sm m-t-sm">
-                        <!--                        <div class="col-md-1">-->
-                        <!--                            <button type="button" id="loading-example-btn" class="btn btn-white btn-sm"><i-->
-                        <!--                                    class="fa fa-refresh"></i> Refresh-->
-                        <!--                            </button>-->
-                        <!--                        </div>-->
                         <div class="col-md-12">
-
                             <div class="">
                                 {% for type in type_event %}
                                 <span class="input-group-btn">
@@ -99,14 +70,9 @@
 
                                 <a href="{{ url_for('arenas.arena_detail', id=event.arena.id) }}">{{ event.arena
                                     }}</a>
-                                <!--                                    <div class="progress progress-mini">-->
-                                <!--                                        <div style="width: 48%;" class="progress-bar"></div>-->
-                                <!--                                    </div>-->
                             </td>
 
                             <td class="project-actions">
-                                <!--                                <a href="#" class="btn btn-white btn-sm"><i class="fa fa-folder"></i> View-->
-                                <!--                                </a>-->
                                 <a href="#" class="btn btn-white btn-sm"><i class="fa fa-pencil"></i>
                                     Edit
                                 </a>

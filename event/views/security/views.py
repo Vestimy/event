@@ -97,8 +97,8 @@ def tests():
 
 @security.route('/confirmation', methods=['GET', 'POST'])
 def confirmation():
-    company = RentalCompany()
-    form = RentalCompanyForm(request.form, obj=company)
+    company = Company()
+    form = CompanyForm(request.form, obj=company)
     email = request.args.get('email')
     id = request.args.get('id')
     if email and id:

@@ -21,7 +21,7 @@ event_staff_users = db.Table('event_staff_users',
 
 staff_company = db.Table('staff_company',
                          db.Model.metadata,
-                         db.Column('rentalcompany_id', db.Integer, ForeignKey('rentalcompany.id')),
+                         db.Column('company_id', db.Integer, ForeignKey('company.id')),
                          db.Column('users_id', db.Integer, ForeignKey('users.id'))
                          )
 
@@ -187,14 +187,24 @@ class User(db.Model, UserMixin):
     phone = db.Column(db.String(20))
     address = db.Column(db.String(255))
     photo = db.Column(db.String(255))
+
     roles = relationship('Role', secondary=association, back_populates='users', lazy=True)
+    document = relationship("Document", back_populates='users')
+
+    genereal_company = db.Column(Integer)
+
+
     lead_roles_id = db.Column(Integer, ForeignKey('roles.id'))
     lead_roles = relationship("Role", back_populates='users_lead')
+
+
     event = relationship('Event', back_populates='user')
     event_staff = relationship('Event', secondary=event_staff_users, back_populates='users_staff', lazy=True)
-    rentalcompany_creator = relationship('RentalCompany', back_populates='creator')
-    rentalcompany = relationship('RentalCompany', secondary=staff_company, back_populates='staff', lazy=True)
-    document = relationship("Document", back_populates='users')
+    creator = relationship('Company', back_populates='creator')
+    company = relationship('Company', secondary=staff_company, back_populates='staff', lazy=True)
+
+
+
     edit_time = db.Column(DateTime, onupdate=time_now)
     create_time = db.Column(DateTime, default=time_now)
 
@@ -257,7 +267,7 @@ class CompanyType(db.Model):
     id = db.Column(Integer, primary_key=True)
     name = db.Column(String(255))
     description = db.Column(db.String(255))
-    rentalcompany = relationship('RentalCompany', back_populates='companytype')
+    company = relationship('Company', back_populates='companytype')
     edit = db.Column(DateTime, onupdate=time_now)
     create = db.Column(DateTime, default=time_now)
 
@@ -265,8 +275,8 @@ class CompanyType(db.Model):
         return self.name
 
 
-class RentalCompany(db.Model):
-    __tablename__ = 'rentalcompany'
+class Company(db.Model):
+    __tablename__ = 'company'
 
     id = db.Column(Integer, primary_key=True)
     name = db.Column(String(128))
@@ -277,13 +287,13 @@ class RentalCompany(db.Model):
     vk = db.Column(String(128))
     facebook = db.Column(String(128))
     logo = db.Column(String(128))
-    staff = relationship('User', secondary=staff_company, back_populates='rentalcompany', lazy=True)
+    staff = relationship('User', secondary=staff_company, back_populates='company', lazy=True)
     city_id = db.Column(Integer, ForeignKey('city.id'))
-    city = relationship('City', back_populates='rentalcompany')
+    city = relationship('City', back_populates='company')
     companytype_id = db.Column(Integer, ForeignKey('companytype.id'))
-    companytype = relationship('CompanyType', back_populates='rentalcompany')
+    companytype = relationship('CompanyType', back_populates='company')
     creator_id = db.Column(Integer, ForeignKey('users.id'))
-    creator = relationship('User', back_populates='rentalcompany_creator')
+    creator = relationship('User', back_populates='creator')
     edit = db.Column(DateTime, onupdate=time_now)
     create = db.Column(DateTime, default=time_now)
 

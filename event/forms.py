@@ -295,7 +295,7 @@ class RegisterUserForm(Form):
             raise ValidationError('Логин занят')
 
 
-class RentalCompanyForm(Form):
+class CompanyForm(Form):
     name = StringField('Название', [validators.Length(min=4, max=35)])
     email = StringField(' Email')
 
