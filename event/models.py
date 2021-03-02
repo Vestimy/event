@@ -301,7 +301,8 @@ class Company(db.Model):
     edit = db.Column(DateTime, onupdate=time_now)
     create = db.Column(DateTime, default=time_now)
 
-
+    def __repr__(self):
+        return self.name
 class Settings(db.Model):
     __tablename__ = 'settings'
     id = db.Column(Integer, primary_key=True)
