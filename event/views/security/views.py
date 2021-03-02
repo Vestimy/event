@@ -61,7 +61,33 @@ def register():
     id = request.args.get('id')
     email = request.args.get('email')
     if id and email:
-        return render_template('security/register_user.html', register_user_form=register_user_form)
+        register_user_form = RegisterInviteForm(request.form, obj=user)
+        invite = Invite.query.filter(Invite.invite_id == id).first()
+        if request.method == 'POST' and request.form.get(
+                'submit_invite') and invite and invite.email == email:
+            if register_user_form.validate():
+                if not (login or password or password_confirm):
+                    flash('Заполните все поля')
+                elif password != password_confirm:
+                    flash('Пароли не совпадают')
+                else:
+                    register_user_form.populate_obj(user)
+                    hash_pwd = generate_password_hash(password)
+                    user.password = hash_pwd
+                    user.email = invite.email
+                    user.active = True
+                    db.session.add(user)
+
+                    user.company.append(Company.query.get(invite.company_id))
+                    settings = Settings(company_default_ip=invite.company_id)
+                    settings.users.append(user)
+                    db.session.add(settings)
+                    db.session.delete(invite)
+                    db.session.commit()
+                    # html = render_template('email_templates/action.html', user=user, id=id, password=password)
+                    # send_confirm(user.email, html)
+                return redirect(url_for('security.login'))
+        return render_template('security/register_invite.html', register_user_form=register_user_form)
     if request.method == 'POST' and register_user_form.validate():
         if not (login or password or password_confirm):
             flash('Заполните все поля')

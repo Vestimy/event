@@ -330,3 +330,27 @@ class InviteForm(Form):
         email = Invite.query.filter(Invite.email == feald.data).first()
         if email:
             raise ValidationError('Пришлашение выслано')
+
+
+class RegisterInviteForm(Form):
+    login = StringField(' Логин')
+    password = PasswordField('Пароль', [
+        validators.Required(), validators.Length(min=6, max=35, message="Пароль меньше 6 символов")
+    ])
+    password_confirm = PasswordField('Пароль', [
+        validators.Required(),
+        validators.Length(min=6, max=35, message="Пароль меньше 6 символов")
+    ])
+    last_name = StringField('Фамилия')
+    first_name = StringField('Имя')
+    # patronymic = StringField('Отчество')
+
+    birthday = DateField('День рождения')
+    phone = StringField('Телефон')
+    address = StringField('Адрес')
+
+    def validate_login(self, feald):
+        if User.query.filter(User.login == feald.data).first():
+            raise ValidationError('Логин занят')
+
+    submit_invite = SubmitField('Регистрация')
