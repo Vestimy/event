@@ -176,13 +176,13 @@ def invite():
 
         if request.method == 'POST' and form.validate():
             invite_id = generate_id()
-            company_id = current_user.creator.id
+            company_id = Company.query.filter(Company.creator_id == current_user.id).first().id
             form.populate_obj(inv)
             inv.invite_id = invite_id
             inv.company_id = company_id
             db.session.add(inv)
             db.session.commit()
-            html = render_template('email_templates/action_user.html', email=inv.email, id=invite_id)
+            html = render_template('email_templates/action_invite.html', email=inv.email, id=invite_id)
             send_invite(inv.email, html)
 
             return redirect(url_for('main.index'))
