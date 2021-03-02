@@ -135,7 +135,7 @@ def managers():
 @main.route('/team', methods=['GET'])
 @login_required
 def team():
-    # print(request.args.get('m'))
+    
     if request.args.get('m') == "managers":
         try:
             managers = User.query.filter(User.roles.any(Role.name.in_(['manager']))).order_by(User.last_name).all()
@@ -153,7 +153,7 @@ def team():
             )
         return render_template('team.html', menu="team", managers=managers)
     try:
-        managers = User.query.filter(User.roles.any(Role.name.in_(['users']))).order_by(User.last_name).all()
+        managers = User.query.filter(User.roles.any(Role.name.in_(['user']))).order_by(User.last_name).all()
     except Exception as e:
         logger.warning(
             f'managers - reads action failed with errors: {e}'
