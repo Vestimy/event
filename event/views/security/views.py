@@ -114,7 +114,7 @@ def confirmation():
                 form.populate_obj(company)
                 db.session.add(company)
                 company.creator_id = user.id
-                company.staff.appent(user)
+                company.staff.append(user)
                 db.session.commit()
                 if company:
                     db.session.delete(conf_id)
