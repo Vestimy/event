@@ -294,3 +294,10 @@ class Confirmation(db.Model):
     id = db.Column(Integer, primary_key=True)
     email = db.Column(String(128))
     conf_id = db.Column(String(128))
+
+
+class Invite(db.Model):
+    __tablename__ = 'invite'
+    id = db.Column(Integer, primary_key=True)
+    email = db.Column(String(128))
+    invite_id = db.Column(String(128))

@@ -58,6 +58,11 @@
                     class="nav-label">Сотрудники</span></a>
             </li>
 
+            <li {% if url_for('main.invite') == request.path %} class="active" {% endif %}>
+            <a href="{{ url_for('main.invite') }}"><i class="fa fa-users"></i> <span
+                    class="nav-label">Пригласить</span></a>
+            </li>
+
             <li class="special_link">
                 <a href="{{ url_for('admin.index') }}"><i class="fa fa-database"></i> <span
                         class="nav-label">Админка</span></a>

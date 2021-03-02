@@ -1,19 +1,14 @@
 from flask import Blueprint, request, render_template, redirect, abort
 from event import logger, config, allowed_photo_profile, allowed_document_profile, load_user
-from event import send_confirm, send_forgot
+from event import send_confirm, send_forgot, generate_id
 from flask_login import logout_user, login_user, login_required, current_user
 from flask import flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash, generate_password_hash
 from event import send_msg
 from event.forms import *
-import uuid
 
 security = Blueprint('security', __name__)
-
-
-def conf_id():
-    return str(uuid.uuid4())
 
 
 @security.route('/logout')
@@ -74,7 +69,7 @@ def register():
             user.password = hash_pwd
             db.session.add(user)
 
-            id = conf_id()
+            id = generate_id()
             confirmation = Confirmation(email=user.email, conf_id=id)
             db.session.add(confirmation)
             db.session.commit()

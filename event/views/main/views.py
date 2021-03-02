@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request, json, render_template, redirect
-from event import logger, config
+from event import logger, config, generate_id
 from werkzeug.utils import secure_filename
 from event import logger, config, allowed_photo_profile
 # from blog.schemas import VideoSchema, UserSchema, AuthSchema
@@ -106,15 +106,15 @@ def profile_edit(id):
                 return redirect(url_for('main.profile', id=user.id))
             else:
                 return render_template('profile_edit.html', user=user, events=events, all_events=all_events,
-                                sum_event=sum_event,
-                                admin_event=admin_event, form=form)
+                                       sum_event=sum_event,
+                                       admin_event=admin_event, form=form)
         else:
             form.populate_obj(user)
             db.session.commit()
             return redirect(url_for('main.profile', id=user.id))
-        return render_template('profile_edit.html', user=user, events=events, all_events=all_events,
-                               sum_event=sum_event,
-                               admin_event=admin_event, form=form)
+        # return render_template('profile_edit.html', user=user, events=events, all_events=all_events,
+        #                        sum_event=sum_event,
+        #                        admin_event=admin_event, form=form)
 
     return render_template('profile_edit.html', user=user, events=events, all_events=all_events, sum_event=sum_event,
                            admin_event=admin_event, form=form)
@@ -135,7 +135,7 @@ def managers():
 @main.route('/team', methods=['GET'])
 @login_required
 def team():
-    
+    id = current_user.rentalcompany[0].id
     if request.args.get('m') == "managers":
         try:
             managers = User.query.filter(User.roles.any(Role.name.in_(['manager']))).order_by(User.last_name).all()
@@ -154,11 +154,28 @@ def team():
         return render_template('team.html', menu="team", managers=managers)
     try:
         managers = User.query.filter(User.roles.any(Role.name.in_(['user']))).order_by(User.last_name).all()
+        managers = User.query.filter(User.rentalcompany.any(RentalCompany.id.in_([id]))).order_by(User.last_name).all()
     except Exception as e:
         logger.warning(
             f'managers - reads action failed with errors: {e}'
         )
     return render_template('team.html', menu="team", managers=managers)
+
+
+@main.route('/invite', methods=['GET', 'POST'])
+def invite():
+    invite = Invite.query.all()
+    inv = Invite()
+    form = InviteForm(request.form, obj=inv)
+    if request.method == 'POST' and form.validate():
+        invite_id = generate_id()
+        form.populate_obj(inv)
+        inv.invite_id = invite_id
+        db.session.add(inv)
+        db.session.commit()
+        return redirect(url_for('main.index'))
+
+    return render_template('invite.html', invite=invite, form=form)
 
 
 @main.route('/city', methods=['GET', 'POST'])

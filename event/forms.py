@@ -320,3 +320,13 @@ class RentalCompanyForm(Form):
         company = RentalCompany.query.filter(RentalCompany.name == feald.data).first()
         if company:
             raise ValidationError('Email занят')
+
+
+class InviteForm(Form):
+    email = StringField('Email')
+    submit = SubmitField('Пригласить')
+
+    def validate_email(self, feald):
+        email = Invite.query.filter(Invite.email == feald.data).first()
+        if email:
+            raise ValidationError('Пришлашение выслано')

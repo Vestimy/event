@@ -1,4 +1,5 @@
 import logging
+import uuid
 from flask import Flask, jsonify, flash, request, redirect, url_for, render_template, send_from_directory, json
 from flask_sqlalchemy import SQLAlchemy
 from .config import Config
@@ -148,6 +149,7 @@ admin.add_view(AdminView(RentalCompany, db.session))
 admin.add_view(AdminView(User, db.session))
 admin.add_view(AdminView(Role, db.session))
 admin.add_view(AdminView(Confirmation, db.session))
+admin.add_view(AdminView(Invite, db.session))
 
 user_datastore = SQLAlchemySessionUserDatastore(db.session, User, Role)
 
@@ -225,3 +227,7 @@ def admin_required(func):
         return func(*args, **kwargs)
 
     return decorated_view
+
+
+def generate_id():
+    return str(uuid.uuid4())

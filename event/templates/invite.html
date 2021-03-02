@@ -1,0 +1,48 @@
+{% from "security/_macros.html" import render_field_with_errors, render_field %}
+{% include "security/_messages.html" %}
+{% extends "base/base.html" %}
+{% block title %}
+<title>TM+ | Менеджеры</title>
+
+{% endblock %}
+{% block content %}
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="ibox-content">
+            wkejglkwej
+        </div>
+    </div>
+    <div class="middle-box text-center animated fadeInRightBig" Ю
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="ibox-content">
+
+                <h2 class="font-bold">Пригласить</h2>
+
+                <p>
+                    Введите адрес электронной почты, и приглашение будет отправлено по электронной почте.
+                </p>
+
+                <div class="row">
+
+                    <div class="col-lg-12">
+                        <form class="m-t" role="form" action="" method="post">
+                            <div class="form-group">
+                                {{ render_field_with_errors(form.email, type="email", class="form-control",
+                                placeholder="Email address", required="") }}
+                            </div>
+                            {{ render_field(form.submit, class="btn btn-primary block full-width m-b") }}
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}
+
