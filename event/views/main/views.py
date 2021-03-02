@@ -183,7 +183,7 @@ def invite():
             db.session.add(inv)
             db.session.commit()
             html = render_template('email_templates/action_user.html', email=inv.email, id=invite_id)
-            send_invite()
+            send_invite(inv.email, html)
 
             return redirect(url_for('main.index'))
 
