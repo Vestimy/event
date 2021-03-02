@@ -136,8 +136,6 @@ def managers():
 @login_required
 def team():
     id = current_user.company[0].id
-    if id is None:
-        return render_template('team.html', menu="team", managers=None)
     if request.args.get('m') == "managers":
         try:
             managers = User.query.filter(User.roles.any(Role.name.in_(['manager']))).order_by(User.last_name).all()

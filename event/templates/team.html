@@ -30,7 +30,8 @@
         {% if managers %}
         {% for manager in managers %}
         <div class="col-lg-4">
-            <div class="contact-box" {% if current_user.id == manager.id %} style="background-color: #1ab394; color: #fff;" {% endif %}>
+            <div class="contact-box" {% if current_user.id== manager.id %}
+                 style="background-color: #1ab394; color: #fff;" {% endif %}>
                 <a class="row" href="{{ url_for('main.profile', id=manager.id)}}">
                     <div class="col-4">
                         <div class="text-center">
