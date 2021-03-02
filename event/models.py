@@ -294,15 +294,15 @@ class Company(db.Model):
     creator_id = db.Column(Integer, ForeignKey('users.id'))
     creator = relationship('User', back_populates='creator')
 
-
     settings = relationship('Settings', back_populates='company_default')
-
 
     edit = db.Column(DateTime, onupdate=time_now)
     create = db.Column(DateTime, default=time_now)
 
     def __repr__(self):
         return self.name
+
+
 class Settings(db.Model):
     __tablename__ = 'settings'
     id = db.Column(Integer, primary_key=True)

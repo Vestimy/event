@@ -27,7 +27,7 @@
     </div>
     <div class="row">
 
-
+        {% if managers %}
         {% for manager in managers %}
         <div class="col-lg-4">
             <div class="contact-box" {% if current_user.id == manager.id %} style="background-color: #1ab394; color: #fff;" {% endif %}>
@@ -59,6 +59,7 @@
             </div>
         </div>
         {% endfor %}
+        {% endif %}
     </div>
 </div>
 
