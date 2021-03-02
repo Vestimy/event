@@ -188,22 +188,21 @@ class User(db.Model, UserMixin):
     address = db.Column(db.String(255))
     photo = db.Column(db.String(255))
 
+    settings_id = db.Column(Integer, ForeignKey('settings.id'))
+    settings = relationship('Settings', back_populates='users')
+
     roles = relationship('Role', secondary=association, back_populates='users', lazy=True)
     document = relationship("Document", back_populates='users')
 
     genereal_company = db.Column(Integer)
 
-
     lead_roles_id = db.Column(Integer, ForeignKey('roles.id'))
     lead_roles = relationship("Role", back_populates='users_lead')
-
 
     event = relationship('Event', back_populates='user')
     event_staff = relationship('Event', secondary=event_staff_users, back_populates='users_staff', lazy=True)
     creator = relationship('Company', back_populates='creator')
     company = relationship('Company', secondary=staff_company, back_populates='staff', lazy=True)
-
-
 
     edit_time = db.Column(DateTime, onupdate=time_now)
     create_time = db.Column(DateTime, default=time_now)
@@ -294,8 +293,23 @@ class Company(db.Model):
     companytype = relationship('CompanyType', back_populates='company')
     creator_id = db.Column(Integer, ForeignKey('users.id'))
     creator = relationship('User', back_populates='creator')
+
+
+    settings = relationship('Settings', back_populates='company_default')
+
+
     edit = db.Column(DateTime, onupdate=time_now)
     create = db.Column(DateTime, default=time_now)
+
+
+class Settings(db.Model):
+    __tablename__ = 'settings'
+    id = db.Column(Integer, primary_key=True)
+
+    company_default_ip = db.Column(Integer, ForeignKey('company.id'))
+    company_default = relationship('Company', back_populates='settings')
+
+    users = relationship('User', back_populates='settings')
 
 
 class Confirmation(db.Model):

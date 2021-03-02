@@ -114,6 +114,9 @@ def confirmation():
                 if company:
                     db.session.delete(conf_id)
                     user.active = True
+                    settings = Settings(company_default_ip=company.id)
+                    settings.users.append(user)
+                    db.session.add(settings)
                     db.session.commit()
                 return redirect(url_for('security.login'))
             return render_template('security/confirmation.html', form=form)
