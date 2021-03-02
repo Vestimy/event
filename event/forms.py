@@ -317,7 +317,7 @@ class CompanyForm(Form):
         self.companytype_id.choices = [(i.id, i.name) for i in CompanyType.query.all()]
 
     def validate_name(self, feald):
-        company = RentalCompany.query.filter(RentalCompany.name == feald.data).first()
+        company = Company.query.filter(Company.name == feald.data).first()
         if company:
             raise ValidationError('Email занят')
 
