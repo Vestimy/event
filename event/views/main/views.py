@@ -163,25 +163,32 @@ def team():
 
 
 @main.route('/invite', methods=['GET', 'POST'])
+@login_required
 def invite():
-    if request.args.get('delete'):
-        db.session.delete(Invite.query.get(request.args.get('delete')))
-        db.session.commit()
-        return redirect(url_for('main.invite'))
-    invite = Invite.query.all()
-    inv = Invite()
-    form = InviteForm(request.form, obj=inv)
+    if current_user.creator:
+        if request.args.get('delete'):
+            db.session.delete(Invite.query.get(request.args.get('delete')))
+            db.session.commit()
+            return redirect(url_for('main.invite'))
+        invite = Invite.query.all()
+        inv = Invite()
+        form = InviteForm(request.form, obj=inv)
 
-    if request.method == 'POST' and form.validate():
-        invite_id = generate_id()
-        form.populate_obj(inv)
-        inv.invite_id = invite_id
-        db.session.add(inv)
-        db.session.commit()
+        if request.method == 'POST' and form.validate():
+            invite_id = generate_id()
+            company_id = current_user.creator.id
+            form.populate_obj(inv)
+            inv.invite_id = invite_id
+            inv.company_id = company_id
+            db.session.add(inv)
+            db.session.commit()
+            html = render_template('email_templates/action_user.html', email=inv.email, id=invite_id)
+            send_invite()
 
-        return redirect(url_for('main.index'))
+            return redirect(url_for('main.index'))
 
-    return render_template('invite.html', invite=invite, form=form)
+        return render_template('invite.html', invite=invite, form=form)
+    return redirect(url_for('main.index'))
 
 
 @main.route('/city', methods=['GET', 'POST'])

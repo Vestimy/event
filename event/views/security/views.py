@@ -53,11 +53,15 @@ def login():
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
+
     user = User()
     register_user_form = RegisterUserForm(request.form, obj=user)
     password = request.form.get('password')
     password_confirm = request.form.get('password_confirm')
-
+    id = request.args.get('id')
+    email = request.args.get('email')
+    if id and email:
+        return render_template('security/register_user.html', register_user_form=register_user_form)
     if request.method == 'POST' and register_user_form.validate():
         if not (login or password or password_confirm):
             flash('Заполните все поля')
@@ -88,11 +92,6 @@ def reset():
         html = render_template('email_templates/action.html', user=user)
         send_forgot(request.form.get('email'), html)
     return render_template('security/forgot_password.html', forgot_password_form=form)
-
-
-@security.route('/tests', methods=['GET', 'POST'])
-def tests():
-    return render_template('register_test.html')
 
 
 @security.route('/confirmation', methods=['GET', 'POST'])

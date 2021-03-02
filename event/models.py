@@ -326,3 +326,4 @@ class Invite(db.Model):
     id = db.Column(Integer, primary_key=True)
     email = db.Column(String(128))
     invite_id = db.Column(String(128))
+    company_id = db.Column(Integer)
