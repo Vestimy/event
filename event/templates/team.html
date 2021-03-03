@@ -45,7 +45,7 @@
                         </div>
                     </div>
                     <div class="col-8">
-                        <h3><strong>{{ manager.last_name }} {{ manager.first_name }}</strong></h3>
+                        <h3><strong>{% if current_user.first_name %}{{ current_user.last_name }} {{ current_user.first_name }}{% else %}{{ current_user.login }} {% endif %}</strong></h3>
                         <p><strong>{{ manager.lead_roles.title }}</strong></p>
                         <address>
                             <li class="fa fa-envelope"></li>

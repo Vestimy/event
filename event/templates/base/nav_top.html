@@ -12,7 +12,7 @@
         </div>
         <ul class="nav navbar-top-links navbar-right">
             <li style="padding: 20px">
-                <span class="m-r-sm text-muted welcome-message">Добро пожаловать {{current_user.first_name}}.</span>
+                <span class="m-r-sm text-muted welcome-message">Добро пожаловать {% if current_user.first_name %}{{current_user.first_name}} {% else %} {{ current_user.login }} {% endif %}.</span>
             </li>
             <li class="dropdown">
                 <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
