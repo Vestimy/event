@@ -101,7 +101,7 @@ def detail(id):
 
 
 @events.route('/add_event/', methods=['GET', 'POST'])
-@roles_accepted('admin ', 'manager')
+# @roles_accepted('admin ', 'manager')
 def add():
     event = Event()
     form = EventForm(request.form, obj=event)
