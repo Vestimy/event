@@ -11,7 +11,6 @@ arenas = Blueprint('arenas', __name__)
 
 @arenas.route('/arena/', methods=['GET'])
 @login_required
-@admin_required
 def index():
     id = None
     citys = None
@@ -165,7 +164,7 @@ def edit(id):
 
 
 @arenas.route('/arena/delete/<int:id>', methods=['GET'])
-@roles_required('admin')
+@login_required
 def delete_arena(id):
     arena = Arena.query.get(id)
     db.session.delete(arena)

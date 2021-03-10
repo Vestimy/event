@@ -5,7 +5,6 @@ from flask_login import logout_user, login_user, login_required, current_user
 from flask import flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash, generate_password_hash
-from event import send_msg
 from event.forms import *
 
 security = Blueprint('security', __name__)
@@ -53,7 +52,6 @@ def login():
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
-
     user = User()
     register_user_form = RegisterUserForm(request.form, obj=user)
     password = request.form.get('password')

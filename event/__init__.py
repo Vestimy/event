@@ -263,7 +263,10 @@ def decorated_login(func):
                 flash("You don't have permission to access this resource.", "warning")
                 return redirect(url_for("main.index"))
         return func(*args, **kwargs)
+
     return decorated_view
+
 
 def generate_id():
     return str(uuid.uuid4())
+

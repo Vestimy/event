@@ -95,8 +95,11 @@ def detail(id):
         name = event.city.name
         if '(' in name:
             name = name.split('(')[0].strip()
-            print(name)
-        data = weather.get(q=name)
+        try:
+            data = weather.get(q=name)
+        except Exception:
+            pass
+            data = None
     return render_template('event_detail.html', menu='events', event=event, weathers=data)
 
 
