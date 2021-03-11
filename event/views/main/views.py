@@ -28,6 +28,8 @@ def mains():
 @main.route('/index', methods=['GET'])
 @login_required
 def index():
+
+    # title = Company.query.get(current_user.settings.company_default_id)
     last_event = Event.query[-1]
     return render_template('index.html', menu='index', last_event=last_event)
 
@@ -228,6 +230,17 @@ def get_calendar():
         })
 
     return json.dumps(list_json)
+
+@main.route('/default_company/<int:id>', methods=['GET', 'POST'])
+@login_required
+def default_company(id):
+    user = User.query.get(current_user.id)
+    if user:
+        settings = Settings.query.get(user.settings_id)
+        if settings:
+            settings.company_default_id = id
+            db.session.commit()
+            return redirect(request.referrer)
 
 
 @main.errorhandler(404)

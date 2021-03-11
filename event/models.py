@@ -30,6 +30,18 @@ association = db.Table('association',
                        db.Column('users_id', db.Integer, db.ForeignKey('users.id')),
                        db.Column('roles_id', db.Integer, db.ForeignKey('roles.id')))
 
+user_edit_company = db.Table('user_edit_company',
+                             db.Model.metadata,
+                             db.Column('users_id', db.Integer, db.ForeignKey('users.id')),
+                             db.Column('company_id', db.Integer, db.ForeignKey('company.id'))
+                             )
+
+user_admin_company = db.Table('user_admin_company',
+                              db.Model.metadata,
+                              db.Column('users_id', db.Integer, db.ForeignKey('users.id')),
+                              db.Column('company_id', db.Integer, db.ForeignKey('company.id'))
+                              )
+
 
 class Event(db.Model):
     __tablename__ = 'event'
@@ -188,6 +200,9 @@ class User(db.Model, UserMixin):
     address = db.Column(db.String(255))
     photo = db.Column(db.String(255))
 
+    company_edit = relationship('Company', secondary=user_edit_company, back_populates='user_edit', lazy=True)
+    company_admin = relationship('Company', secondary=user_admin_company, back_populates='user_admin', lazy=True)
+
     settings_id = db.Column(Integer, ForeignKey('settings.id'))
     settings = relationship('Settings', back_populates='users')
 
@@ -294,6 +309,9 @@ class Company(db.Model):
     creator_id = db.Column(Integer, ForeignKey('users.id'))
     creator = relationship('User', back_populates='creator')
 
+    user_edit = relationship('User', secondary=user_edit_company, back_populates='company_edit', lazy=True)
+    user_admin = relationship('User', secondary=user_admin_company, back_populates='company_admin', lazy=True)
+
     settings = relationship('Settings', back_populates='company_default')
 
     edit = db.Column(DateTime, onupdate=time_now)
@@ -307,7 +325,7 @@ class Settings(db.Model):
     __tablename__ = 'settings'
     id = db.Column(Integer, primary_key=True)
 
-    company_default_ip = db.Column(Integer, ForeignKey('company.id'))
+    company_default_id = db.Column(Integer, ForeignKey('company.id'))
     company_default = relationship('Company', back_populates='settings')
 
     users = relationship('User', back_populates='settings')

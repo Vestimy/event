@@ -1,4 +1,4 @@
-<div class="row border-bottom">
+<div class="row border-bottom" xmlns="http://www.w3.org/1999/html">
     <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
             <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i>
@@ -9,6 +9,28 @@
             <!--                           name="top-search" id="top-search">-->
             <!--                </div>-->
             <!--            </form>-->
+            <ul class="nav navbar-top-links">
+                <li class="dropdown" style="padding-left: 20px; ">
+                    <a class="dropdown-toggle " data-toggle="dropdown" href="#">
+                        <span class="label label-warning" style="font-size: 18px;">{{ company_default.name}}</span>
+                    </a>
+                    {% for i in current_user.company %}
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li>
+
+                            <div class="dropdown-messages-box float-right">
+                                <a class="dropdown-item float-left"
+                                   href="{{ url_for('main.default_company', id=i.id)}}">
+                                    {{ i.name }}
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                    {% endfor %}
+
+                </li>
+            </ul>
+
         </div>
         <ul class="nav navbar-top-links navbar-right">
             <li style="padding: 20px">
@@ -22,7 +44,8 @@
                     <li>
                         <div class="dropdown-messages-box">
                             <a class="dropdown-item float-left" href="profile.html">
-                                <img alt="image" class="rounded-circle" src="{{ url_for('inspina', filename='img/a7.jpg')}}">
+                                <img alt="image" class="rounded-circle"
+                                     src="{{ url_for('inspina', filename='img/a7.jpg')}}">
                             </a>
                             <div class="media-body">
                                 <small class="float-right">46h ago</small>
@@ -36,7 +59,8 @@
                     <li>
                         <div class="dropdown-messages-box">
                             <a class="dropdown-item float-left" href="profile.html">
-                                <img alt="image" class="rounded-circle" src="{{ url_for('inspina', filename='img/a4.jpg')}}">
+                                <img alt="image" class="rounded-circle"
+                                     src="{{ url_for('inspina', filename='img/a4.jpg')}}">
                             </a>
                             <div class="media-body ">
                                 <small class="float-right text-navy">5h ago</small>
@@ -50,7 +74,8 @@
                     <li>
                         <div class="dropdown-messages-box">
                             <a class="dropdown-item float-left" href="profile.html">
-                                <img alt="image" class="rounded-circle" src="{{ url_for('inspina', filename='img/profile.jpg')}}">
+                                <img alt="image" class="rounded-circle"
+                                     src="{{ url_for('inspina', filename='img/profile.jpg')}}">
                             </a>
                             <div class="media-body ">
                                 <small class="float-right">23h ago</small>

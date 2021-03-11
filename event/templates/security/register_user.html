@@ -26,6 +26,13 @@
             text-align: center;
 
         }
+
+
+
+
+
+
+
     </style>
 
 </head>
@@ -45,28 +52,32 @@
                 <p>Создайте учетную запись, чтобы увидеть это в действии.</p>
                 <form class="m-t" role="form" action="" method="POST">
                     <div class="form-group">
+                        <label class="font-normal">Логин</label>
                         {{ render_field_with_errors(register_user_form.login,type="text", class="form-control",
-                        placeholder="Логин", required="") }}
+                        placeholder="", required="") }}
                     </div>
                     <div class="form-group">
+                        <label class="font-normal">Email</label>
                         {{ render_field_with_errors(register_user_form.email,class='form-control',type="email",
-                        class="form-control", placeholder="Email", required="") }}
+                        class="form-control", placeholder="", required="") }}
                     </div>
                     <div class="row">
 
                         <div class="col-md-6">
                             <div class="form-group">
+                                <label class="font-normal">Пароль</label>
                                 {{ render_field_with_errors(register_user_form.password,type="password",
                                 class="form-control",
-                                placeholder="Пароль", required="") }}
+                                placeholder="", required="") }}
                             </div>
                         </div>
                         <div class="col-md-6">
                             {% if register_user_form.password_confirm %}
 
                             <div class="form-group">
+                                <label class="font-normal">Подтверждение пароля</label>
                                 {{ render_field_with_errors(register_user_form.password_confirm,type="password",
-                                class="form-control", placeholder="Подтверждение пароля", required="") }}
+                                class="form-control", placeholder="", required="") }}
                             </div>
                             {% endif %}
                         </div>
@@ -75,32 +86,40 @@
 
                         <div class="col-md-6">
                             <div class="form-group">
+
+                                <label class="font-normal">Фамилия</label>
                                 {{ render_field_with_errors(register_user_form.last_name, type="text",
                                 class="form-control",
-                                placeholder="Фамилия") }}
+                                placeholder="") }}
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
+
+                                <label class="font-normal">Имя</label>
                                 {{ render_field_with_errors(register_user_form.first_name, type="text",
                                 class="form-control",
-                                placeholder="Имя") }}
+                                placeholder="") }}
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
-
+                        <label class="font-normal">Дата Рождения</label>
                         {{ render_field_with_errors(register_user_form.birthday,class='form-control', type='date',
                         value="1992-02-18") }}
                     </div>
 
                     <div class="form-group">
-                        {{ render_field_with_errors(register_user_form.phone, type="text", class="form-control",
-                        placeholder="Телефон") }}
+                        <label class="font-normal">+7(999) 999-9999</label>
+                        <input name="phone" type="text" class="form-control" data-mask="+7(999) 999-9999" placeholder=""
+                               , placeholder="+7(999) 999-9999" )>
+
+
                     </div>
                     <div class="form-group">
+                        <label class="font-normal">Адрес</label>
                         {{ render_field_with_errors(register_user_form.address, type="text", class="form-control",
-                        placeholder="Адрес") }}
+                        placeholder="") }}
                     </div>
 
 
@@ -125,6 +144,7 @@
 <script src="{{ url_for('inspina', filename='js/bootstrap.js')}}"></script>
 <!-- iCheck -->
 <script src="{{ url_for('inspina', filename='js/plugins/iCheck/icheck.min.js')}}"></script>
+<script src="{{ url_for('inspina', filename='js/plugins/jasny/jasny-bootstrap.min.js')}}"></script>
 <script>
         $(document).ready(function(){
             $('.i-checks').iCheck({
@@ -132,6 +152,13 @@
                 radioClass: 'iradio_square-green',
             });
         });
+
+
+
+
+
+
+
 
 
 

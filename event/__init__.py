@@ -1,6 +1,7 @@
 import logging
 import uuid
 from flask import Flask, jsonify, flash, request, redirect, url_for, render_template, send_from_directory, json
+
 from flask_sqlalchemy import SQLAlchemy
 from .config import Config
 from flask_admin import Admin, AdminIndexView
@@ -94,6 +95,13 @@ def create_app():
     def inspina(filename):
         return send_from_directory(Config.UPLOAD_ADMIN,
                                    filename)
+
+    @app.context_processor
+    def company_default():
+        company_default = Company.query.get(current_user.settings.company_default_id)
+        if company_default:
+            return dict(company_default=company_default)
+        return dict(company_default=current_user.company[0])
 
     return app
 
@@ -269,4 +277,3 @@ def decorated_login(func):
 
 def generate_id():
     return str(uuid.uuid4())
-

@@ -67,7 +67,6 @@ class EventForm(Form):
         # self.city_id.choices.insert(0, (None, u"Не выбрана"))
         self.city_id.choices = [(0, u"Не выбран")]
 
-        self.users_staffs.choices = [(g.id, g) for g in User.query.all()]
         # self.arena_id.choices = list()
         self.arena_id.choices = [(g.id, g.name) for g in Arena.query.order_by('name')]
         #  выбранное поле по умолчанию

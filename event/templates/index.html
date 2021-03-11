@@ -342,12 +342,15 @@
                                 <h4>{% if last_event.artist.last_name %} {{ last_event.artist.first_name }} {{
                                     last_event.artist.last_name }}{% else %} {{last_event.artist.alias}} {% endif
                                     %}</h4>
+                                {% if last_event.artist.img %}
                                 <img class="img_fluid" style="max-width: 100%" src="{{ url_for('photo_artist', filename=last_event.artist.img )}}">
-
+                                {% endif %}
                                 <div class="team-members">
                                     {% for staff in last_event.users_staff %}
-                                    <a href="{{ url_for('main.profile', id=staff.id) }}"><img alt="{{staff.first_name}}" class="rounded-circle"
-                                                     src="{{ url_for('photo_profile', filename=staff.photo)}}"></a>
+                                    <a href="{{ url_for('main.profile', id=staff.id) }}">{% if staff.photo %}<img alt="{{staff.first_name}}" class="rounded-circle"
+                                                     src="
+                                    {{ url_for('photo_profile', filename=staff.photo)}}" >{% endif %}</a>
+
                                     {% endfor %}
                                 </div>
                                 <div>
@@ -397,8 +400,10 @@
 
                                 <div class="team-members">
                                     {% for staff in last_event.users_staff %}
-                                    <a href="{{ url_for('main.profile', id=staff.id) }}"><img alt="{{staff.first_name}}" class="rounded-circle"
-                                                     src="{{ url_for('photo_profile', filename=staff.photo)}}"></a>
+                                    <a href="{{ url_for('main.profile', id=staff.id) }}">
+                                        {% if staff.photo %}<img alt="{{staff.first_name}}" class="rounded-circle"
+                                                     src="{{ url_for('photo_profile', filename=staff.photo)}}">
+                                    {% endif %}</a>
                                     {% endfor %}
                                 </div>
                                 <div>
