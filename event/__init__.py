@@ -98,10 +98,12 @@ def create_app():
 
     @app.context_processor
     def company_default():
-        company_default = Company.query.get(current_user.settings.company_default_id)
-        if company_default:
-            return dict(company_default=company_default)
-        return dict(company_default=current_user.company[0])
+        if current_user.is_authenticated:
+            company_default = Company.query.get(current_user.settings.company_default_id)
+            if company_default:
+                return dict(company_default=company_default)
+            return dict(company_default=current_user.company[0])
+        return dict(company_default=None)
 
     return app
 

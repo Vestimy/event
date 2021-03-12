@@ -1,13 +1,16 @@
 <nav class="navbar-default navbar-static-side" role="navigation">
     <div class="sidebar-collapse">
         <ul class="nav metismenu" id="side-menu">
+
             <li class="nav-header">
                 <div class="dropdown profile-element">
                     {% if current_user.photo %}
                     <img alt="image" class="rounded-circle my-style"
                          src="{{ url_for('photo_profile', filename=current_user.photo )}}"/>
                     {% else %}
-                    <img alt="image" class="rounded-circle " src="{{ url_for('photo_profile', filename='profile-default.jpeg') }}" style="max-width: 48px;"/>
+                    <img alt="image" class="rounded-circle "
+                         src="{{ url_for('photo_profile', filename='profile-default.jpeg') }}"
+                         style="max-width: 48px;"/>
                     {% endif %}
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <span class="block m-t-xs font-bold">{% if current_user.first_name %}{{ current_user.last_name }} {{ current_user.first_name }}{% else %}{{ current_user.login }} {% endif %}</span>
@@ -26,6 +29,17 @@
                     TM+
                 </div>
             </li>
+            {% if current_user.company|length > 1 %}
+            <li class="special_link">
+                <a href="{{url_for('main.index')}}"><i class="fa fa-building"></i> <span class="nav-label">{{ company_default.name}}</span>
+                </a>
+                <ul class="nav nav-second-level collapse">
+                    {% for i in current_user.company %}
+                    <li><a href="{{ url_for('main.default_company', id=i.id)}}">{{ i.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+            {% endif %}
             <li {% if menu==
             'index' %} class='active' {% endif %}>
             <a href="{{url_for('main.index')}}"><i class="fa fa-home"></i> <span class="nav-label">Главная</span> </a>
