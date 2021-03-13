@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request, json, render_template, redirect
+from flask import abort
 from event import logger, config, generate_id,send_invite
 from werkzeug.utils import secure_filename
 from event import logger, config, allowed_photo_profile
@@ -49,36 +50,38 @@ def profile_all():
 def profile(id, page=1):
     per_page = 10
     user = User.query.get(id)
-    form = ProfileImg(request.form, obj=user)
-    page = request.args.get('page', type=int, default=1)
-    page_event = request.args.get('page_event', type=int, default=1)
-    events = Event.query.filter(Event.user_id == user.id).order_by(Event.date_event.desc()).paginate(page, per_page,
-                                                                                                     error_out=False)
-    all_events = Event.query.join(Event.users_staff).filter(User.id == id).order_by(Event.date_event.desc()).paginate(
-        page_event, per_page,
-        error_out=False)
-    sum_event = len(user.event_staff)
-    admin_event = len(user.event)
-    if request.method == 'POST':
+    if user:
+        form = ProfileImg(request.form, obj=user)
+        page = request.args.get('page', type=int, default=1)
+        page_event = request.args.get('page_event', type=int, default=1)
+        events = Event.query.filter(Event.user_id == user.id).order_by(Event.date_event.desc()).paginate(page, per_page,
+                                                                                                         error_out=False)
+        all_events = Event.query.join(Event.users_staff).filter(User.id == id).order_by(Event.date_event.desc()).paginate(
+            page_event, per_page,
+            error_out=False)
+        sum_event = len(user.event_staff)
+        admin_event = len(user.event)
+        if request.method == 'POST':
 
-        print('Hello Anrey1111111111111111111')
-        if request.files.get('photo'):
-            file = request.files['photo']
-            if file.filename == '':
-                print('Hello Anrey222222222222222222')
-                flash('No selected file')
-                return redirect(request.url)
-            if file and allowed_photo_profile(file.filename):
-                filename = secure_filename(file.filename)
-                file.save(os.path.join(config.Config.UPLOAD_PHOTO_PROFILES, filename))
-                user.photo = filename
-                # form.populate_obj(user)
-                db.session.commit()
-                print('Hello Anrey')
-                return redirect(url_for('main.profile', id=user.id))
-    return render_template('profile.html', menu="team", user=user, events=events, all_events=all_events,
-                           sum_event=sum_event,
-                           admin_event=admin_event, form=form)
+            print('Hello Anrey1111111111111111111')
+            if request.files.get('photo'):
+                file = request.files['photo']
+                if file.filename == '':
+                    print('Hello Anrey222222222222222222')
+                    flash('No selected file')
+                    return redirect(request.url)
+                if file and allowed_photo_profile(file.filename):
+                    filename = secure_filename(file.filename)
+                    file.save(os.path.join(config.Config.UPLOAD_PHOTO_PROFILES, filename))
+                    user.photo = filename
+                    # form.populate_obj(user)
+                    db.session.commit()
+                    print('Hello Anrey')
+                    return redirect(url_for('main.profile', id=user.id))
+        return render_template('profile.html', menu="team", user=user, events=events, all_events=all_events,
+                               sum_event=sum_event,
+                               admin_event=admin_event, form=form)
+    return abort(404)
 
 
 @main.route('/profile/edit/<int:id>', methods=['GET', 'POST'])
