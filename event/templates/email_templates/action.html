@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Actionable emails e.g. reset password</title>
-    <link href="{{ url_for('inspina', filename='styles.css')}}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{{ 'https://' + request.host + url_for('inspina', filename='styles.css')}}" media="all" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
