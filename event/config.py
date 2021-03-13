@@ -37,6 +37,7 @@ class Config:
     #MAIL_USE_TLS = False
     #MAIL_USERNAME = 'vestimyandrey@gmail.com'
     #MAIL_PASSWORD = 'yzumcatxtiwatzvp'
+    MAIL_ASCII_ATTACHMENTS = False
     
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024
     #############WEATHER#####################
