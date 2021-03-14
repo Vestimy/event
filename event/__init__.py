@@ -199,7 +199,7 @@ def load_user(user_id):
 
 def send_msg(email, login):
     msg = Message(f"Hello, {login}",
-                  sender="support@touremanager.ru",
+                  sender=('Администрация TM+', 'support@touremanager.ru'),
                   recipients=[email])
     msg.body = "aaaaaaatesting"
     msg.html = "<b>sssssssssssstesting</b>"
@@ -208,7 +208,7 @@ def send_msg(email, login):
 
 def send_confirm(email, html):
     msg = Message("Подтверждение email",
-                  sender="support@touremanager.ru",
+                  sender=('Администрация TM+', 'support@touremanager.ru'),
                   recipients=[email])
     # msg.body = html
     msg.html = html
@@ -217,7 +217,7 @@ def send_confirm(email, html):
 
 def send_invite(email, html):
     msg = Message("Приглашение",
-                  sender="support@touremanager.ru",
+                  sender=('Администрация TM+', 'support@touremanager.ru'),
                   recipients=[email])
     # msg.body = html
     msg.html = html
