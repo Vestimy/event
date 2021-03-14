@@ -171,12 +171,12 @@ def team():
 @main.route('/invite', methods=['GET', 'POST'])
 @login_required
 def invite():
-    if current_user.creator:
+    if current_user.creator or current_user.company_admin:
         if request.args.get('delete'):
             db.session.delete(Invite.query.get(request.args.get('delete')))
             db.session.commit()
             return redirect(url_for('main.invite'))
-        invite = Invite.query.all()
+        invite = Invite.query.filter(Invite.company_id == current_user.company_admin[0].id)
         inv = Invite()
         form = InviteForm(request.form, obj=inv)
 
@@ -267,26 +267,3 @@ def error_handler(err):
 # docs.register(delete_list, blueprint='videos')
 # # docs.register(get_video, blueprint=videos)
 # ListView.register(videos, docs, '/main', 'listview')
-@main.route('/new', methods=['GET'])
-def new():
-    msg = Message(subject='Hello',
-                  sender=('Техническая поддержка TM+', 'support@touremanager.ru'),
-                  recipients=['sigipe6414@grokleft.com', 'dron_92@mail.ru', 'vestimyandrey@gmail.com'])
-    msg.body = '<b>Тестовое сообщение</b>'
-    msg.html = render_template('email_templates/action2.html')
-    mail.send(msg)
-
-    return redirect(url_for('main.index'))
-
-@main.route('/new2', methods=['GET'])
-def new2():
-    password = '123456790'
-    user = current_user
-    id = 4
-    msg = Message("Тестовое сообщение",
-                  sender=('Техническая поддержка TM+', 'support@touremanager.ru'),
-                  recipients=['sigipe6414@grokleft.com', 'dron_92@mail.ru', 'vestimyandrey@gmail.com'])
-    msg.html = render_template('email_templates/action.html',  user=user, id=id, password=password)
-    mail.send(msg)
-
-    return redirect(url_for('main.index'))
