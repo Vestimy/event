@@ -269,9 +269,9 @@ def error_handler(err):
 # ListView.register(videos, docs, '/main', 'listview')
 @main.route('/new', methods=['GET'])
 def new():
-    msg = Message("Тестовое сообщение",
+    msg = Message(subject='Hello',
                   sender=('Техническая поддержка TM+', 'support@touremanager.ru'),
-                  recipients=['sigipe6414@grokleft.com', 'dron_92@mail.ru'])
+                  recipients=['sigipe6414@grokleft.com', 'dron_92@mail.ru', 'vestimyandrey@gmail.com'])
     msg.body = '<b>Тестовое сообщение</b>'
     msg.html = '<b>Тестовое сообщение</b>'
     mail.send(msg)
@@ -285,7 +285,7 @@ def new2():
     id = 4
     msg = Message("Тестовое сообщение",
                   sender=('Техническая поддержка TM+', 'support@touremanager.ru'),
-                  recipients=['sigipe6414@grokleft.com', 'dron_92@mail.ru'])
+                  recipients=['sigipe6414@grokleft.com', 'dron_92@mail.ru', 'vestimyandrey@gmail.com'])
     msg.html = render_template('email_templates/action.html',  user=user, id=id, password=password)
     mail.send(msg)
 
