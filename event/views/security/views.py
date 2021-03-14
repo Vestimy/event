@@ -146,7 +146,7 @@ def confirmation():
                     settings.users.append(user)
                     db.session.add(settings)
                     db.session.commit()
-                html = render_template('email_templates/action.html', user=user, id=id)
+                html = render_template('email_templates/confirm_successful.html', user=user)
                 send_confirm_succes(user.email, html)
                 return redirect(url_for('security.login'))
             return render_template('security/confirmation.html', form=form)
