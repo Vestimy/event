@@ -276,4 +276,14 @@ def new():
     msg.html = '<b>Тестовое сообщение</b>'
     mail.send(msg)
 
+    return redirect(url_for('main.index'))\
+
+@main.route('/new2', methods=['GET'])
+def new2():
+    msg = Message("Тестовое сообщение",
+                  sender=('Техническая поддержка TM+', 'support@touremanager.ru'),
+                  recipients=['sigipe6414@grokleft.com', 'dron_92@mail.ru'])
+    msg.html = render_template('email_templates/action.html')
+    mail.send(msg)
+
     return redirect(url_for('main.index'))

@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Подтверждение email</title>
-    <link href="{{ 'https://' + request.host + url_for('inspina', filename='email_templates/styles.css')}}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{{ url_for('inspina', filename='email_templates/styles.css', _external = True)}}" media="all" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -19,7 +19,7 @@
                             <table  cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td>
-                                        <img class="img-fluid" src="{{ 'https://' + request.host + url_for('inspina', filename='email_templates/img/header.jpg')}}"/>
+                                        <img class="img-fluid" src="{{ url_for('inspina', filename='email_templates/img/header.jpg', _external = True)}}"/>
                                     </td>
                                 </tr>
                                 <tr>
@@ -41,7 +41,7 @@
                                 </tr>
                                 <tr>
                                     <td class="content-block aligncenter">
-                                        <a href="{{ 'https://' + request.host + url_for('security.confirmation', email=user.email, id=id) }}" class="btn-primary">Подтвердить</a>
+                                        <a href="{{ url_for('security.confirmation', email=user.email, id=id, _external = True) }}" class="btn-primary">Подтвердить</a>
                                     </td>
                                 </tr>
                               </table>
