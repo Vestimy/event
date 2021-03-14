@@ -137,7 +137,7 @@ def confirmation():
                 if company:
                     db.session.delete(conf_id)
                     user.active = True
-                    settings = Settings(company_default_ip=company.id)
+                    settings = Settings(company_default_id=company.id)
                     settings.users.append(user)
                     db.session.add(settings)
                     db.session.commit()
