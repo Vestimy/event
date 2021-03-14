@@ -273,7 +273,7 @@ def new():
                   sender=('Техническая поддержка TM+', 'support@touremanager.ru'),
                   recipients=['sigipe6414@grokleft.com', 'dron_92@mail.ru', 'vestimyandrey@gmail.com'])
     msg.body = '<b>Тестовое сообщение</b>'
-    msg.html = '<b>Тестовое сообщение</b>'
+    msg.html = render_template('email_templates/action2.html')
     mail.send(msg)
 
     return redirect(url_for('main.index'))
