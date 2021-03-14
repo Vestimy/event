@@ -272,7 +272,7 @@ def new():
     msg = Message("Тестовое сообщение",
                   sender="support@touremanager.ru",
                   recipients=['sigipe6414@grokleft.com'])
-    # msg.body = html
+    msg.body = '<b>Тестовое сообщение</b>'
     msg.html = '<b>Тестовое сообщение</b>'
     mail.send(msg)
 
