@@ -171,6 +171,7 @@ def team():
 @main.route('/invite', methods=['GET', 'POST'])
 @login_required
 def invite():
+    """"""
     if current_user.creator or current_user.company_admin:
         if request.args.get('delete'):
             db.session.delete(Invite.query.get(request.args.get('delete')))

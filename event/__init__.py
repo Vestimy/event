@@ -100,9 +100,13 @@ def create_app():
     def company_default():
         if current_user.is_authenticated:
             company_default = Company.query.get(current_user.settings.company_default_id)
-            if company_default:
-                return dict(company_default=company_default)
-            return dict(company_default=current_user.company[0])
+            if not company_default:
+                settings = Settings.query.get(current_user.settings_id)
+                settings.company_default_id = current_user.company[0].id
+                db.session.commit()
+                company_default = Company.query.get(current_user.settings.company_default_id)
+            # return dict(company_default=current_user.company[0])
+            return dict(company_default=company_default)
         return dict(company_default=None)
 
     return app
