@@ -276,7 +276,7 @@ def new():
     msg.html = '<b>Тестовое сообщение</b>'
     mail.send(msg)
 
-    return redirect(url_for('main.index'))\
+    return redirect(url_for('main.index'))
 
 @main.route('/new2', methods=['GET'])
 def new2():
@@ -285,5 +285,7 @@ def new2():
                   recipients=['sigipe6414@grokleft.com', 'dron_92@mail.ru'])
     msg.html = render_template('email_templates/action.html')
     mail.send(msg)
-
-    return redirect(url_for('main.index'))
+    password = '123456790'
+    user = current_user
+    id = 4
+    return redirect(url_for('main.index', user=user, id=id, password=password))
