@@ -214,6 +214,14 @@ def send_confirm(email, html):
     msg.html = html
     mail.send(msg)
 
+def send_confirm_succes(email, html):
+    msg = Message("Успешное подтверждение",
+                  sender=('Администрация TM+', 'support@touremanager.ru'),
+                  recipients=[email])
+    # msg.body = html
+    msg.html = html
+    mail.send(msg)
+
 
 def send_invite(email, html):
     msg = Message("Приглашение",

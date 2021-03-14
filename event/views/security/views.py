@@ -1,6 +1,6 @@
 from flask import Blueprint, request, render_template, redirect, abort
 from event import logger, config, allowed_photo_profile, allowed_document_profile, load_user
-from event import send_confirm, send_forgot, generate_id
+from event import send_confirm, send_forgot, generate_id, send_confirm_succes
 from flask_login import logout_user, login_user, login_required, current_user
 from flask import flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
@@ -132,8 +132,13 @@ def confirmation():
                 form.populate_obj(company)
                 db.session.add(company)
                 company.creator_id = user.id
-                company.staff.append(user)
-                db.session.commit()
+                try:
+                    company.staff.append(user)
+                    db.session.commit()
+                except Exception as e:
+                    logger.warning(
+                        f'Подвержение почты: {e}'
+                    )
                 if company:
                     db.session.delete(conf_id)
                     user.active = True
@@ -141,6 +146,8 @@ def confirmation():
                     settings.users.append(user)
                     db.session.add(settings)
                     db.session.commit()
+                html = render_template('email_templates/action.html', user=user, id=id)
+                send_confirm_succes(user.email, html)
                 return redirect(url_for('security.login'))
             return render_template('security/confirmation.html', form=form)
     return abort(404)
