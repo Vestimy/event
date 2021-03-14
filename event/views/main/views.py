@@ -271,7 +271,7 @@ def error_handler(err):
 def new():
     msg = Message("Тестовое сообщение",
                   sender=('Техническая поддержка TM+', 'support@touremanager.ru'),
-                  recipients=['sigipe6414@grokleft.com'])
+                  recipients=['sigipe6414@grokleft.com', 'dron_92@mail.ru'])
     msg.body = '<b>Тестовое сообщение</b>'
     msg.html = '<b>Тестовое сообщение</b>'
     mail.send(msg)
