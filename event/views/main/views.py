@@ -275,3 +275,5 @@ def new():
     # msg.body = html
     msg.html = '<b>Тестовое сообщение</b>'
     mail.send(msg)
+
+    return redirect(url_for('main.index'))
