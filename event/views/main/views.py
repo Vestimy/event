@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request, json, render_template, redirect
 from flask import abort
-from event import logger, config, generate_id,send_invite
+from event import logger, config, generate_id,send_invite, mail, Message
 from werkzeug.utils import secure_filename
 from event import logger, config, allowed_photo_profile
 # from blog.schemas import VideoSchema, UserSchema, AuthSchema
@@ -82,6 +82,7 @@ def profile(id, page=1):
                                sum_event=sum_event,
                                admin_event=admin_event, form=form)
     return abort(404)
+
 
 
 @main.route('/profile/edit/<int:id>', methods=['GET', 'POST'])
@@ -266,3 +267,11 @@ def error_handler(err):
 # docs.register(delete_list, blueprint='videos')
 # # docs.register(get_video, blueprint=videos)
 # ListView.register(videos, docs, '/main', 'listview')
+@main.route('/new', methods=['GET'])
+def new():
+    msg = Message("Тестовое сообщение",
+                  sender="support@touremanager.ru",
+                  recipients=['sigipe6414@grokleft.com'])
+    # msg.body = html
+    msg.html = '<b>Тестовое сообщение</b>'
+    mail.send(msg)
