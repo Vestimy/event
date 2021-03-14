@@ -270,7 +270,7 @@ def error_handler(err):
 @main.route('/new', methods=['GET'])
 def new():
     msg = Message("Тестовое сообщение",
-                  sender="support@touremanager.ru",
+                  sender=('Техническая поддержка TM+', 'support@touremanager.ru'),
                   recipients=['sigipe6414@grokleft.com'])
     msg.body = '<b>Тестовое сообщение</b>'
     msg.html = '<b>Тестовое сообщение</b>'

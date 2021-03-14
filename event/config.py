@@ -38,6 +38,7 @@ class Config:
     #MAIL_USERNAME = 'vestimyandrey@gmail.com'
     #MAIL_PASSWORD = 'yzumcatxtiwatzvp'
     MAIL_ASCII_ATTACHMENTS = False
+    MAIL_DEFAULT_SENDER = ('Техническая поддержка TM+', 'support@touremanager.ru')
     
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024
     #############WEATHER#####################
