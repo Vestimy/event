@@ -280,12 +280,13 @@ def new():
 
 @main.route('/new2', methods=['GET'])
 def new2():
-    msg = Message("Тестовое сообщение",
-                  sender=('Техническая поддержка TM+', 'support@touremanager.ru'),
-                  recipients=['sigipe6414@grokleft.com', 'dron_92@mail.ru'])
-    msg.html = render_template('email_templates/action.html')
-    mail.send(msg)
     password = '123456790'
     user = current_user
     id = 4
-    return redirect(url_for('main.index', user=user, id=id, password=password))
+    msg = Message("Тестовое сообщение",
+                  sender=('Техническая поддержка TM+', 'support@touremanager.ru'),
+                  recipients=['sigipe6414@grokleft.com', 'dron_92@mail.ru'])
+    msg.html = render_template('email_templates/action.html',  user=user, id=id, password=password)
+    mail.send(msg)
+
+    return redirect(url_for('main.index'))
