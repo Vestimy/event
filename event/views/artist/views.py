@@ -11,7 +11,6 @@ artists = Blueprint('artists', __name__)
 
 @artists.route('/artists/', methods=['get', 'post'])
 @login_required
-@decorated_admin
 def index():
     artist = Artist.query.order_by(Artist.last_name).all()
     return render_template('artists.html', menu='artists', artists=artist)
