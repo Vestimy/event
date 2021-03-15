@@ -135,6 +135,7 @@ def confirmation():
                 company.creator_id = user.id
                 try:
                     company.staff.append(user)
+                    company.user_admin.append(user)
                     db.session.commit()
                 except Exception as e:
                     logger.warning(

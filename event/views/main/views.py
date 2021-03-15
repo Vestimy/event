@@ -98,7 +98,8 @@ def profile_edit(id):
         page_event = request.args.get('page_event', type=int, default=1)
         events = Event.query.filter(Event.user_id == user.id).order_by(Event.date_event.desc()).paginate(page, per_page,
                                                                                                          error_out=False)
-        all_events = Event.query.join(Event.users_staff).filter(User.id == id).order_by(Event.date_event.desc()).paginate(
+        all_events = Event.query.join(Event.users_staff).filter(User.id == id).order_by(
+            Event.date_event.desc()).paginate(
             page_event, per_page,
             error_out=False)
         sum_event = len(user.event_staff)
@@ -121,7 +122,8 @@ def profile_edit(id):
             #                        sum_event=sum_event,
             #                        admin_event=admin_event, form=form)
 
-        return render_template('profile_edit.html', user=user, events=events, all_events=all_events, sum_event=sum_event,
+        return render_template('profile_edit.html', user=user, events=events, all_events=all_events,
+                               sum_event=sum_event,
                                admin_event=admin_event, form=form)
     return abort(404)
 
