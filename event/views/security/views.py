@@ -1,6 +1,7 @@
 from flask import Blueprint, request, render_template, redirect, abort
 from event import logger, config, allowed_photo_profile, allowed_document_profile, load_user
-from event import send_confirm, send_forgot, generate_id, send_confirm_succes
+from event.emails import send_confirm, send_forgot, send_confirm_succes
+from event import generate_id
 from flask_login import logout_user, login_user, login_required, current_user
 from flask import flash, request, redirect, url_for
 from werkzeug.utils import secure_filename

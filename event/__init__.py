@@ -7,9 +7,8 @@ from .config import Config
 from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from flask_login import LoginManager
-from functools import wraps
 from flask_security import SQLAlchemySessionUserDatastore, Security
-from flask_security import current_user, user_registered, login_required, user_confirmed
+from flask_login import current_user, login_required
 from flask_mail import Mail, Message
 from flask_bootstrap import Bootstrap
 
@@ -19,7 +18,7 @@ ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 db = SQLAlchemy()
 login_manager = LoginManager()
 admin = Admin(name='admins')
-security = Security()
+# security = Security()
 mail = Mail()
 bootstrap = Bootstrap()
 
@@ -166,7 +165,8 @@ admin.add_view(AdminView(Confirmation, db.session))
 admin.add_view(AdminView(Invite, db.session))
 admin.add_view(AdminView(Settings, db.session))
 
-user_datastore = SQLAlchemySessionUserDatastore(db.session, User, Role)
+
+# user_datastore = SQLAlchemySessionUserDatastore(db.session, User, Role)
 
 
 def setup_logger():
@@ -199,94 +199,6 @@ def allowed_document_profile(filename):
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
-
-
-def send_msg(email, login):
-    msg = Message(f"Hello, {login}",
-                  sender=('Администрация TM+', 'support@touremanager.ru'),
-                  recipients=[email])
-    msg.body = "aaaaaaatesting"
-    msg.html = "<b>sssssssssssstesting</b>"
-    mail.send(msg)
-
-
-def send_confirm(email, html):
-    msg = Message("Подтверждение email",
-                  sender=('Администрация TM+', 'support@touremanager.ru'),
-                  recipients=[email])
-    # msg.body = html
-    msg.html = html
-    mail.send(msg)
-
-def send_confirm_succes(email, html):
-    msg = Message("Успешное подтверждение",
-                  sender=('Администрация TM+', 'support@touremanager.ru'),
-                  recipients=[email])
-    # msg.body = html
-    msg.html = html
-    mail.send(msg)
-
-
-def send_invite(email, html):
-    msg = Message("Приглашение",
-                  sender=('Администрация TM+', 'support@touremanager.ru'),
-                  recipients=[email])
-    # msg.body = html
-    msg.html = html
-    mail.send(msg)
-
-
-def send_forgot(email, html):
-    msg = Message("Востановить пароль",
-                  sender="support@touremanager.ru",
-                  recipients=[email])
-    # msg.body = html
-    msg.html = html
-    mail.send(msg)
-
-
-def admin_required(func):
-    """
-    Modified login_required decorator to restrict access to admin group.
-    """
-
-    @wraps(func)
-    def decorated_view(*args, **kwargs):
-        if not current_user.is_anonymous:
-            if not 'admin' in current_user.roles:  # zero means admin, one and up are other groups
-                flash("You don't have permission to access this resource.", "warning")
-                return redirect(url_for("main.index"))
-        return func(*args, **kwargs)
-
-    return decorated_view
-
-
-def admin_company(func):
-    """
-    Modified login_required decorator to restrict access to admin group.
-    """
-
-    @wraps(func)
-    def decorated_view(*args, **kwargs):
-        if not current_user.is_anonymous:
-            if not 'admin' in current_user.roles:  # zero means admin, one and up are other groups
-                flash("You don't have permission to access this resource.", "warning")
-                return redirect(url_for("main.index"))
-        return func(*args, **kwargs)
-
-    return decorated_view
-
-
-def decorated_login(func):
-    @wraps(func)
-    def decorated_view(*args, **kwargs):
-        if not current_user.is_anonymous:
-            if not 'admin' in current_user.roles:  # zero means admin, one and up are other groups
-                flash("You don't have permission to access this resource.", "warning")
-                return redirect(url_for("main.index"))
-        return func(*args, **kwargs)
-
-    return decorated_view
 
 
 def generate_id():

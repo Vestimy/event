@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request, json, render_template, redirect
 from flask import abort
-from event import logger, config, generate_id,send_invite, mail, Message
+from event import logger, config, generate_id
+from event.emails import send_invite
 from werkzeug.utils import secure_filename
 from event import logger, config, allowed_photo_profile
 # from blog.schemas import VideoSchema, UserSchema, AuthSchema
@@ -29,7 +30,6 @@ def mains():
 @main.route('/index', methods=['GET'])
 @login_required
 def index():
-
     # title = Company.query.get(current_user.settings.company_default_id)
     last_event = Event.query[-1]
     return render_template('index.html', menu='index', last_event=last_event)
@@ -56,7 +56,8 @@ def profile(id, page=1):
         page_event = request.args.get('page_event', type=int, default=1)
         events = Event.query.filter(Event.user_id == user.id).order_by(Event.date_event.desc()).paginate(page, per_page,
                                                                                                          error_out=False)
-        all_events = Event.query.join(Event.users_staff).filter(User.id == id).order_by(Event.date_event.desc()).paginate(
+        all_events = Event.query.join(Event.users_staff).filter(User.id == id).order_by(
+            Event.date_event.desc()).paginate(
             page_event, per_page,
             error_out=False)
         sum_event = len(user.event_staff)
@@ -82,7 +83,6 @@ def profile(id, page=1):
                                sum_event=sum_event,
                                admin_event=admin_event, form=form)
     return abort(404)
-
 
 
 @main.route('/profile/edit/<int:id>', methods=['GET', 'POST'])
@@ -235,6 +235,7 @@ def get_calendar():
         })
 
     return json.dumps(list_json)
+
 
 @main.route('/default_company/<int:id>', methods=['GET', 'POST'])
 @login_required

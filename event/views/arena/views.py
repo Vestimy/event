@@ -5,7 +5,7 @@ from flask_security import login_required, roles_required, current_user, login_u
 from flask import flash, request, redirect, url_for
 from event.forms import *
 from werkzeug.utils import secure_filename
-from event import admin_required
+from event.decorators import admin_required
 arenas = Blueprint('arenas', __name__)
 
 
