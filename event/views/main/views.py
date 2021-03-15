@@ -171,19 +171,21 @@ def team():
 @main.route('/invite', methods=['GET', 'POST'])
 @login_required
 def invite():
+    default_id = current_user.settings.company_default_id
+    company = Company.query.get(default_id)
     """"""
-    if current_user.creator or current_user.company_admin:
+    if current_user.creator or current_user in company.user_admin:
         if request.args.get('delete'):
             db.session.delete(Invite.query.get(request.args.get('delete')))
             db.session.commit()
             return redirect(url_for('main.invite'))
-        invite = Invite.query.filter(Invite.company_id == current_user.company_admin[0].id)
+        invite = Invite.query.filter(Invite.company_id == default_id)
         inv = Invite()
         form = InviteForm(request.form, obj=inv)
 
         if request.method == 'POST' and form.validate():
             invite_id = generate_id()
-            company_id = Company.query.filter(Company.creator_id == current_user.id).first().id
+            company_id = company.id
             form.populate_obj(inv)
             inv.invite_id = invite_id
             inv.company_id = company_id
