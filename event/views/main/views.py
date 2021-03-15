@@ -88,42 +88,42 @@ def profile(id, page=1):
 @main.route('/profile/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def profile_edit(id):
-    per_page = 10
+    if id == current_user.id:
+        per_page = 10
+        user = User.query.get(id)
+        userss = {'user': user.id}
+        form = UserForm(request.form, obj=user, data=userss)
 
-    user = User.query.get(id)
-    userss = {'user': user.id}
-    print(userss)
-    form = UserForm(request.form, obj=user, data=userss)
-
-    page = request.args.get('page', type=int, default=1)
-    page_event = request.args.get('page_event', type=int, default=1)
-    events = Event.query.filter(Event.user_id == user.id).order_by(Event.date_event.desc()).paginate(page, per_page,
-                                                                                                     error_out=False)
-    all_events = Event.query.join(Event.users_staff).filter(User.id == id).order_by(Event.date_event.desc()).paginate(
-        page_event, per_page,
-        error_out=False)
-    sum_event = len(user.event_staff)
-    admin_event = len(user.event)
-    if request.method == 'POST':
-        if user.login != request.form['login']:
-            if form.validate():
+        page = request.args.get('page', type=int, default=1)
+        page_event = request.args.get('page_event', type=int, default=1)
+        events = Event.query.filter(Event.user_id == user.id).order_by(Event.date_event.desc()).paginate(page, per_page,
+                                                                                                         error_out=False)
+        all_events = Event.query.join(Event.users_staff).filter(User.id == id).order_by(Event.date_event.desc()).paginate(
+            page_event, per_page,
+            error_out=False)
+        sum_event = len(user.event_staff)
+        admin_event = len(user.event)
+        if request.method == 'POST':
+            if user.login != request.form['login']:
+                if form.validate():
+                    form.populate_obj(user)
+                    db.session.commit()
+                    return redirect(url_for('main.profile', id=user.id))
+                else:
+                    return render_template('profile_edit.html', user=user, events=events, all_events=all_events,
+                                           sum_event=sum_event,
+                                           admin_event=admin_event, form=form)
+            else:
                 form.populate_obj(user)
                 db.session.commit()
                 return redirect(url_for('main.profile', id=user.id))
-            else:
-                return render_template('profile_edit.html', user=user, events=events, all_events=all_events,
-                                       sum_event=sum_event,
-                                       admin_event=admin_event, form=form)
-        else:
-            form.populate_obj(user)
-            db.session.commit()
-            return redirect(url_for('main.profile', id=user.id))
-        # return render_template('profile_edit.html', user=user, events=events, all_events=all_events,
-        #                        sum_event=sum_event,
-        #                        admin_event=admin_event, form=form)
+            # return render_template('profile_edit.html', user=user, events=events, all_events=all_events,
+            #                        sum_event=sum_event,
+            #                        admin_event=admin_event, form=form)
 
-    return render_template('profile_edit.html', user=user, events=events, all_events=all_events, sum_event=sum_event,
-                           admin_event=admin_event, form=form)
+        return render_template('profile_edit.html', user=user, events=events, all_events=all_events, sum_event=sum_event,
+                               admin_event=admin_event, form=form)
+    return abort(404)
 
 
 @main.route('/managers', methods=['GET'])
@@ -194,7 +194,7 @@ def invite():
             html = render_template('email_templates/action_invite.html', email=inv.email, id=invite_id)
             send_invite(inv.email, html)
 
-            return redirect(url_for('main.index'))
+            return redirect(url_for('main.invite'))
 
         return render_template('invite.html', invite=invite, form=form)
     return redirect(url_for('main.index'))
