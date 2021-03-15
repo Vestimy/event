@@ -11,6 +11,8 @@ from flask_security import SQLAlchemySessionUserDatastore, Security
 from flask_login import current_user, login_required
 from flask_mail import Mail, Message
 from flask_bootstrap import Bootstrap
+from flask import session
+from flask.sessions import SecureCookieSessionInterface
 
 UPLOAD_FOLDER = '/home/vestimy/uploads'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
@@ -108,6 +110,13 @@ def create_app():
             return dict(company_default=company_default)
         return dict(company_default=None)
 
+    session_cookie = SecureCookieSessionInterface().get_signing_serializer(app)
+
+    @app.after_request
+    def cookies(response):
+        same_cookie = session_cookie.dumps(dict(session))
+        response.headers.add("Set-Cookie", f"my_cookie={same_cookie}; Secure; HttpOnly; SameSite=None; Path=/;")
+        return response
     return app
 
 
