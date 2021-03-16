@@ -14,19 +14,7 @@
                     <a class="dropdown-toggle " data-toggle="dropdown" href="#">
                         <span class="label label-warning" style="font-size: 18px;">{{ company_default.name}}</span>
                     </a>
-                    {% for i in current_user.company %}
-                    <ul class="dropdown-menu dropdown-menu-right">
-                        <li>
 
-                            <div class="dropdown-messages-box float-right">
-                                <a class="dropdown-item float-left"
-                                   href="{{ url_for('main.default_company', id=i.id)}}">
-                                    {{ i.name }}
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                    {% endfor %}
 
                 </li>
             </ul>

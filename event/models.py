@@ -61,6 +61,10 @@ class Event(db.Model):
     user_id = db.Column(Integer, ForeignKey('users.id'))
     user = relationship('User', back_populates='event')
 
+    company_id = db.Column(Integer, ForeignKey('company.id'))
+    company = relationship('Company', back_populates='events')
+
+
     users_staff = relationship('User', secondary=event_staff_users, back_populates='event_staff', lazy=True)
 
     tour_id = db.Column(Integer, ForeignKey('tour.id'))
@@ -143,6 +147,7 @@ class Arena(db.Model):
     event = relationship('Event', back_populates='arena')
     edit_arena = db.Column(db.DateTime, onupdate=time_now)
     created_arena = db.Column(db.DateTime, default=time_now)
+    creator_id = db.Column(Integer, ForeignKey('users.id'))
 
     def __repr__(self):
         return self.name
@@ -308,6 +313,8 @@ class Company(db.Model):
     companytype = relationship('CompanyType', back_populates='company')
     creator_id = db.Column(Integer, ForeignKey('users.id'))
     creator = relationship('User', back_populates='creator')
+
+    events = relationship('Event', back_populates='company')
 
     user_edit = relationship('User', secondary=user_edit_company, back_populates='company_edit', lazy=True)
     user_admin = relationship('User', secondary=user_admin_company, back_populates='company_admin', lazy=True)

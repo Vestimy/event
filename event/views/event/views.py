@@ -25,10 +25,11 @@ def allowed_file(filename):
 @events.route('/event', methods=['GET'])
 @login_required
 def index():
+    company_id = current_user.settings.company_default_id
     type_event = TypeEvent.query.order_by('name').all()
     id = None
     if request.args.get('q'):
-        event = Event.query.join(Arena).join(Artist).filter(
+        event = Event.query.join(Arena).join(Artist).filter(Event.company_id == company_id).filter(
             Arena.name.contains(
                 request.args.get('q')) | Event.date_event.contains(
                 request.args.get('q')) | Event.time_event.contains(
@@ -43,7 +44,7 @@ def index():
             event = Event.query.get_or_404(request.args.get('id'))
             return render_template('event.html', id=id, menu='events', events=event, type_event=type_event)
         try:
-            event = Event.query.order_by(Event.date_event.desc())
+            event = Event.query.filter(Event.company_id == company_id).order_by(Event.date_event.desc())
             if request.args.get('type'):
                 try:
                     id = int(request.args.get('type'))
@@ -52,7 +53,7 @@ def index():
                         f'arenas -  action failed with errors: {e}'
                     )
                 if isinstance(id, int):
-                    event = Event.query.filter(Event.typeevent_id == id).order_by(
+                    event = Event.query.filter(Event.company_id == company_id).filter(Event.typeevent_id == id).order_by(
                         Event.date_event.desc()).all()
 
         except Exception as e:

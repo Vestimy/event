@@ -7,9 +7,8 @@ from .config import Config
 from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 from flask_login import LoginManager
-from flask_security import SQLAlchemySessionUserDatastore, Security
 from flask_login import current_user, login_required
-from flask_mail import Mail, Message
+from flask_mail import Mail
 from flask_bootstrap import Bootstrap
 from flask import session
 from flask.sessions import SecureCookieSessionInterface

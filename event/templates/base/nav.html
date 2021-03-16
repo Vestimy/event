@@ -69,7 +69,7 @@
             <a href="{{ url_for('main.team') }}"><i class="fa fa-users"></i> <span
                     class="nav-label">Сотрудники</span></a>
             </li>
-            {% if current_user.creator %}
+            {% if current_user.creator or current_user in company_default.user_admin %}
             <li {% if url_for(
             'main.invite') == request.path %} class="active" {% endif %}>
             <a href="{{ url_for('main.invite') }}"><i class="fa fa-users"></i> <span

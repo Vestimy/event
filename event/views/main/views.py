@@ -144,11 +144,10 @@ def managers():
 @login_required
 def team():
     id = current_user.settings.company_default_id
-    company = Company.query.get(id)
-
     if request.args.get('m') == "managers":
         try:
-            managers = User.query.filter(User.company_admin.any(Company.id.in_([id]))).filter(User.roles.any(Role.name.in_(['manager']))).order_by(User.last_name).all()
+            managers = User.query.filter(User.company_admin.any(Company.id.in_([id]))).filter(
+                User.roles.any(Role.name.in_(['manager']))).order_by(User.last_name).all()
         except Exception as e:
             logger.warning(
                 f'{current_user.last_name} - reads action failed with errors: {e}'
@@ -156,7 +155,8 @@ def team():
         return render_template('team.html', menu="team", managers=managers)
     if request.args.get('m') == "admin":
         try:
-            managers = User.query.filter(User.company_admin.any(Company.id.in_([id]))).filter(User.roles.any(Role.name.in_(['admin']))).order_by(User.last_name).all()
+            managers = User.query.filter(User.company_admin.any(Company.id.in_([id]))).filter(
+                User.roles.any(Role.name.in_(['admin']))).order_by(User.last_name).all()
         except Exception as e:
             logger.warning(
                 f'{current_user.last_name} - reads action failed with errors: {e}'

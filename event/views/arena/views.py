@@ -6,17 +6,19 @@ from flask import flash, request, redirect, url_for
 from event.forms import *
 from werkzeug.utils import secure_filename
 from event.decorators import admin_required
+
 arenas = Blueprint('arenas', __name__)
 
 
-@arenas.route('/arena/', methods=['GET'])
+@arenas.route('/arena', methods=['GET'])
 @login_required
 def index():
     id = None
     citys = None
     if request.args.get('q'):
         arena = Arena.query.join(City).filter(
-            City.name.contains(request.args.get('q')) | Arena.name.contains(request.args.get('q')) | Arena.alias.contains(request.args.get('q'))).all()
+            City.name.contains(request.args.get('q')) | Arena.name.contains(
+                request.args.get('q')) | Arena.alias.contains(request.args.get('q'))).all()
     else:
         arena = Arena.query.order_by('name').all()
         if request.args.get('type'):
