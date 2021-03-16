@@ -78,7 +78,7 @@ def register():
                     db.session.add(user)
 
                     user.company.append(Company.query.get(invite.company_id))
-                    settings = Settings(company_default_ip=invite.company_id)
+                    settings = Settings(company_default_id=invite.company_id)
                     settings.users.append(user)
                     db.session.add(settings)
                     db.session.delete(invite)
