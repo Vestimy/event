@@ -157,7 +157,9 @@ admin.add_view(AdminView(TypeEvent, db.session))
 admin.add_view(AdminView(Menu, db.session))
 
 admin.add_view(AdminView(EquipmentCategory, db.session))
+admin.add_view(AdminView(EquipmentSubcategory, db.session))
 admin.add_view(AdminView(Equipment, db.session))
+
 admin.add_view(AdminView(Country, db.session))
 admin.add_view(AdminView(Region, db.session))
 admin.add_view(AdminView(City, db.session))

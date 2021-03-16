@@ -62,7 +62,7 @@
                         <th data-toggle="true">Название</th>
                         <th data-hide="phone">Город</th>
                         <th data-hide="all">Описание</th>
-                        <th data-hide="phone">Количество мест</th>
+                        <!--                        <th data-hide="phone">Количество мест</th>-->
                         <!--                        <th data-hide="phone,tablet">Quantity</th>-->
                         <!--                        <th data-hide="phone">Status</th>-->
                         <th class="text-right" data-sort-ignore="true">Action</th>
@@ -83,14 +83,16 @@
                             {% endif %}
                         </td>
                         <td class="project-completion">
+                            {% if i.city %}
                             <a href="{{ url_for('arenas.index',  q=i.city) }}"> <small>{{i.city}}</small></a>
+                            {% endif %}
                         </td>
                         <td>
                             {{ i.description }}
                         </td>
-                        <td>
-                            {{ i.number_of_seats }}
-                        </td>
+                        <!--                        <td>-->
+                        <!--                            {{ i.number_of_seats }}-->
+                        <!--                        </td>-->
                         <!--                        <td>-->
                         <!--                            1000-->
                         <!--                        </td>-->
@@ -140,6 +142,8 @@
             $('.footable').footable();
 
         });
+
+
 
 </script>
 {% endblock %}
