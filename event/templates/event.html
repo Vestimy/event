@@ -39,6 +39,10 @@
                     <div class="row m-b-sm m-t-sm">
                         <div class="col-md-12">
                             <div class="">
+                                <span class="input-group-btn">
+                                    <a href="{{ url_for('events.index', all='all')}}"><button type="submit"
+                                                                                                 class="btn btn-sm btn-primary">Все</button></a>
+                                </span>
                                 {% for type in type_event %}
                                 <span class="input-group-btn">
                                     <a href="{{ url_for('events.index', type=type.id)}}"><button type="submit"
@@ -120,6 +124,8 @@
             });
 
         });
+
+
 
 
 

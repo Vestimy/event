@@ -45,6 +45,15 @@ def index():
             return render_template('event.html', id=id, menu='events', events=event, type_event=type_event)
         try:
             event = Event.query.filter(Event.company_id == company_id).filter(Event.date_event >= datetime.now().date()).order_by(Event.date_event.desc())
+            if request.args.get('all'):
+                try:
+                    id = str(request.args.get('all'))
+                except Exception as e:
+                    logger.warning(
+                        f'arenas -  action failed with errors: {e}'
+                    )
+                if isinstance(id, str):
+                    event = Event.query.filter(Event.company_id == company_id).order_by(Event.date_event.desc())
             if request.args.get('type'):
                 try:
                     id = int(request.args.get('type'))
