@@ -9,7 +9,7 @@ from werkzeug.utils import secure_filename
 from flask_mail import Message
 from flask_security import login_required, current_user, roles_required, roles_accepted
 from event.forms import *
-
+from datetime import datetime
 events = Blueprint('events', __name__)
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
@@ -44,7 +44,7 @@ def index():
             event = Event.query.get_or_404(request.args.get('id'))
             return render_template('event.html', id=id, menu='events', events=event, type_event=type_event)
         try:
-            event = Event.query.filter(Event.company_id == company_id).order_by(Event.date_event.desc())
+            event = Event.query.filter(Event.company_id == company_id).filter(Event.date_event >= datetime.now().date()).order_by(Event.date_event.desc())
             if request.args.get('type'):
                 try:
                     id = int(request.args.get('type'))
@@ -96,12 +96,14 @@ def detail(id):
 @login_required
 # @roles_accepted('admin ', 'manager')
 def add():
+    default_id = current_user.settings.company_default_id
     event = Event()
     form = EventForm(request.form, obj=event)
     if request.method == "POST":
         try:
             form.populate_obj(event)
             db.session.add(event)
+            event.company_id = default_id
             db.session.commit()
             if request.form.getlist('users_staffs'):
                 for i in request.form.getlist('users_staffs'):

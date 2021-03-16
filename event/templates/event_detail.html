@@ -5,10 +5,119 @@
 {% endblock %}
 {% block head_style %}
 <link href="{{ url_for('inspina', filename='css/plugins/dataTables/datatables.min.css')}}" rel="stylesheet">
+
+<link href="{{ url_for('inspina', filename='css/plugins/slick/slick.css')}}" rel="stylesheet">
+<link href="{{ url_for('inspina', filename='css/plugins/slick/slick-theme.css')}}" rel="stylesheet">
 {% endblock %}
 {% block content %}
 
+<div class="row">
+    <div class="col-lg-12">
 
+        <div class="ibox product-detail">
+            <div class="ibox-content">
+
+                <div class="row">
+                    <div class="col-md-5">
+
+
+                        <div class="product-images">
+
+                            <div>
+                                    {% if event.artist.img %}
+                                    <img alt="image" class="img-fluid" style="max-width: 100%; max-height: 100%;"
+                                         src="{{ url_for('photo_artist', filename=event.artist.img) }}">
+                                    {% else %}
+                                    <img alt="image"  style="max-width: 100%; max-height: 100%;"
+                                         src="{{url_for('photo_profile', filename='profile-default.jpeg')}}">
+                                    {% endif %}
+                            </div>
+
+
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-7">
+
+                        <h2 class="font-bold m-b-xs">
+                            {{ event.artsit }}
+
+                            {% if event.artist.last_name %}
+                            {{ event.artist.first_name }} {{
+                            event.artist.last_name }}
+                            {% else %}
+                            {{ event.artist.alias }}
+                            {% endif %}
+                        </h2>
+                        <!--                        <small>Many desktop publishing packages and web page editors now.</small>-->
+                        <div class="m-t-md">
+                            <!--                            <h2 class="product-main-price">$406,602 <small class="text-muted">Exclude Tax</small></h2>-->
+                        </div>
+                        <hr>
+
+                        <h4>{{ event.date_event.strftime('%d.%m.%Y') }} в {{
+                            event.time_event.strftime('%H:%M') }}</h4>
+
+                        <!--                        <div class="text-muted">-->
+                        <!--                            It is a long established fact that a reader will be distracted by the readable-->
+                        <!--                            content of a page when looking at its layout. The point of using Lorem Ipsum is-->
+
+                        <!--                            <br/>-->
+                        <!--                            <br/>-->
+                        <!--                            There are many variations of passages of Lorem Ipsum available, but the majority-->
+                        <!--                            have suffered alteration in some form, by injected humour, or randomised words-->
+                        <!--                            which don't look even slightly believable.-->
+                        <!--                        </div>-->
+                        <dl class=" m-t-md">
+                            <dt>Город</dt>
+                            <dd>{{ event.city.name }}</dd>
+                            <dt>Погода</dt>
+                            <dd><span class="text-navy">{% if weathers %}{{ weathers.main.temp}}{% endif %}</span></dd>
+                            <dt>Менеджер</dt>
+                            <dd>
+                                <a href="{{ url_for('main.profile', id=event.user.id) }}">
+                                    {{ event.user.first_name }} {{ event.user.last_name }}
+                                </a>
+                            </dd>
+                            <!--                            <dd>Donec id elit non mi porta gravida at eget metus.</dd>-->
+                            <dt>Сотрудники</dt>
+                            <dd class="project-people mb-1">
+                                {% for i in event.users_staff %}
+                                <a href="{{ url_for('main.profile', id=i.id) }} "><img alt="image"
+                                                                                       class="rounded-circle"
+                                                                                       src="{{ url_for('photo_profile', filename=i.photo) }}"></a>
+                                {% endfor %}
+
+                            </dd>
+                        </dl>
+                        <hr>
+
+                        <div>
+                            <div class="btn-group">
+                                <button class="btn btn-primary btn-sm"><i class="fa fa-cart-plus"></i> Add to cart
+                                </button>
+                                <button class="btn btn-white btn-sm"><i class="fa fa-star"></i> Add to wishlist</button>
+                                <button class="btn btn-white btn-sm"><i class="fa fa-envelope"></i> Contact with author
+                                </button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="ibox-footer">
+                            <span class="float-right">
+                                Добавлено - <i class="fa fa-clock-o"></i> {{ event.created_event }}
+                            </span>
+                The generated Lorem Ipsum is therefore always free
+            </div>
+        </div>
+
+    </div>
+</div>
 <div class="row">
     <div class="col">
         <div class="wrapper wrapper-content animated fadeInUp">
@@ -65,7 +174,8 @@
                                     <dt>Погода</dt>
                                 </div>
                                 <div class="col-sm-8 text-sm-left">
-                                    <dd class="mb-1"><span class="text-navy">{% if weathers %}{{ weathers.main.temp}}{% endif %}</span></dd>
+                                    <dd class="mb-1"><span class="text-navy">{% if weathers %}{{ weathers.main.temp}}{% endif %}</span>
+                                    </dd>
                                 </div>
                             </dl>
                             <dl class="row mb-0">
@@ -559,10 +669,14 @@
 {% endblock %}
 
 {% block script %}
+<!-- slick carousel-->
+<script src="{{ url_for('inspina', filename='js/plugins/slick/slick.min.js')}}"></script>
 
 <script>
         $(document).ready(function(){
-
+            $('.product-images').slick({
+            dots: true
+            });
             $('#loading-example-btn').click(function () {
                 btn = $(this);
                 simpleLoad(btn, true)
@@ -587,12 +701,6 @@
                 }, 2000);
             }
         }
-
-
-
-
-
-
 
 
 
