@@ -8,6 +8,8 @@ from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash, generate_password_hash
 from event.forms import *
 
+from event.model.security import *
+
 security = Blueprint('security', __name__)
 
 

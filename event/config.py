@@ -12,8 +12,8 @@ class Config:
     PROJECT_STATIC = PROJECT_DIR.joinpath('static')
     ###########DATABASE##################
     # SQLALCHEMY_DATABASE_URI = 'sqlite:///../db.sqlite'
-    # SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://vestimy:User1816!@localhost/mydb'
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://vestimy:User1816!@touremanager.ru/mydb'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://vestimy:User1816!@localhost/mydb'
+    # SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://vestimy:User1816!@touremanager.ru/mydb'
     # SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:user1816@touremanager.ru/mydb'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     #####################################

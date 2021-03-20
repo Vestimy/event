@@ -7,6 +7,7 @@ from event import logger, config, allowed_photo_profile
 # from blog.schemas import VideoSchema, UserSchema, AuthSchema
 # from flask_apispec import use_kwargs, marshal_with
 from event.models import *
+from event.model.security import *
 # from flask_jwt_extended import jwt_required, get_jwt_identity
 # from blog.base_view import BaseView
 # from blog.utils import upload_file
@@ -14,7 +15,7 @@ import os
 from flask import flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from flask_security import login_required, current_user
-
+from event.decorators import decorated_admin
 from event.forms import *
 
 main = Blueprint('main', __name__)
@@ -63,12 +64,9 @@ def profile(id, page=1):
         sum_event = len(user.event_staff)
         admin_event = len(user.event)
         if request.method == 'POST':
-
-            print('Hello Anrey1111111111111111111')
             if request.files.get('photo'):
                 file = request.files['photo']
                 if file.filename == '':
-                    print('Hello Anrey222222222222222222')
                     flash('No selected file')
                     return redirect(request.url)
                 if file and allowed_photo_profile(file.filename):
@@ -269,6 +267,34 @@ def error_handler(err):
     else:
         return jsonify({'message': messages}), 400
 
+
+@main.route('/admincompanyadd/<int:id>', methods=['GET'])
+@login_required
+@decorated_admin
+def admincompanyadd(id):
+    company_id = current_user.settings.company_default_id
+    company = Company.query.get(company_id)
+    if isinstance(id, int):
+        user = User.query.get(id)
+        company.admin.append(user)
+        db.session.commit()
+
+    return redirect(request.referrer)
+
+@main.route('/admincompanyremove/<int:id>', methods=['GET'])
+@login_required
+@decorated_admin
+def admincompanyremove(id):
+    company_id = current_user.settings.company_default_id
+    company = Company.query.get(company_id)
+    # id = request.args.get('id')
+    if isinstance(id, int):
+        user = User.query.get(id)
+        company.admin.remove(user)
+        print(company.admin)
+        db.session.commit()
+
+    return redirect(request.referrer)
 # docs.register(get_list, blueprint='videos')
 # docs.register(update_list, blueprint='videos')
 # docs.register(update_tutorial, blueprint='videos')

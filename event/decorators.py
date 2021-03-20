@@ -61,7 +61,7 @@ def decorated_admin(func):
     def decorated_view(*args, **kwargs):
         if not current_user.is_anonymous:
             company = Company.query.get(current_user.settings.company_default_id)
-            if not current_user in company.user_admin:
+            if not current_user in company.admin:
                 return redirect(url_for("main.index"))
         return func(*args, **kwargs)
 

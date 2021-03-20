@@ -72,7 +72,17 @@
                             </td>
                             <td class="project-completion">
 
+                                 <a href="{{ url_for('events.index', q=event.city) }}">{{ event.city
+                                    }}</a>
+                            </td>
+                            <td class="project-completion">
+
                                 <a href="{{ url_for('arenas.arena_detail', id=event.arena.id) }}">{{ event.arena
+                                    }}</a>
+                            </td>
+                            <td class="project-completion">
+
+                                <a href="{{ url_for('arenas.arena_detail', id=event.arena.id) }}">{{ event.user.last_name }} {{ event.user.first_name
                                     }}</a>
                             </td>
 

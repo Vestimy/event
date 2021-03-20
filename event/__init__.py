@@ -123,6 +123,7 @@ from .models import *
 from .model.equipment import *
 from .model.menu import *
 from .model.city import *
+from .model.security import *
 
 from .openweather import OpenWeather
 

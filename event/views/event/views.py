@@ -3,6 +3,7 @@ from event import logger, config, weather
 from werkzeug.utils import secure_filename
 from event import logger, config
 from event.models import *
+from event.model.city import *
 import os
 from flask import flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
@@ -29,7 +30,7 @@ def index():
     type_event = TypeEvent.query.order_by('name').all()
     id = None
     if request.args.get('q'):
-        event = Event.query.join(Arena).join(Artist).filter(Event.company_id == company_id).filter(
+        event = Event.query.join(Arena).join(City).join(Artist).filter(Event.company_id == company_id).filter(
             Arena.name.contains(
                 request.args.get('q')) | Event.date_event.contains(
                 request.args.get('q')) | Event.time_event.contains(
@@ -37,6 +38,7 @@ def index():
                 request.args.get('q')) | Artist.last_name.contains(
                 request.args.get('q')) | Artist.alias.contains(
                 request.args.get('q')) | Artist.first_name.contains(
+                request.args.get('q')) | City.name.contains(
                 request.args.get('q'))).all()
     else:
 
@@ -89,6 +91,7 @@ def index():
 def detail(id):
     data = None
     event = Event.query.get_or_404(id)
+    arena = Arena.query.get(event.arena_id)
     if event.city:
         name = event.city.name
         if '(' in name:
@@ -98,7 +101,7 @@ def detail(id):
         except Exception:
             pass
             data = None
-    return render_template('event_detail.html', menu='events', event=event, weathers=data)
+    return render_template('event_detail.html', menu='events', event=event, weathers=data, arena=arena)
 
 
 @events.route('/add_event/', methods=['GET', 'POST'])
@@ -129,7 +132,7 @@ def add():
                                  User.query.filter(
                                      User.company.any(
                                          Company.id.in_(
-                                             [current_user.company[0].id]
+                                             [current_user.settings.company_default_id]
                                          )
                                      )
                                  )
@@ -202,36 +205,3 @@ def upload_file():
     else:
         return render_template('upload.html', menu='events')
 
-# @events.route('/contact/', methods=['get', 'post'])
-# def contact():
-#     form = ContactForm()
-#     if form.validate_on_submit():
-#         name = form.name.data
-#         email = form.email.data
-#         message = form.message.data
-#         print(name)
-#         print(email)
-#         print(message)
-#         # здесь логика базы данных
-#         print("\nData received. Now redirecting ...")
-#         return redirect(url_for('contact'))
-
-#     return render_template('contact.html', menu='events', form=form)
-
-
-# @events.route('/test')
-# def test():
-#     data = weather.get(q='Москва')
-#     return data
-
-# @events.route('/events/mail', methods=['GET'])
-# def send_mail():
-#     msg = Message("Hello",
-#                   sender="vestimyandrey@gmail.com",
-#                   recipients=["dyadya_ko@mail.ru", "vestimyandrey@yandex.ru"])
-#     msg.body = "testing"
-#     msg.html = "<b>testing</b>"
-#     mail.send(msg)
-#     return redirect(url_for('events.get_event'))
-
-# ListView.register(videos, docs, '/main', 'listview')

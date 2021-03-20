@@ -61,9 +61,11 @@ class Event(db.Model):
     user_id = db.Column(Integer, ForeignKey('users.id'))
     user = relationship('User', back_populates='event')
 
+    # manager_id = db.Column(Integer, ForeignKey('users.id'))
+    # manager = relationship('User', back_populates='event_manager', lazy=True)
+
     company_id = db.Column(Integer, ForeignKey('company.id'))
     company = relationship('Company', back_populates='events')
-
 
     users_staff = relationship('User', secondary=event_staff_users, back_populates='event_staff', lazy=True)
 
@@ -206,7 +208,7 @@ class User(db.Model, UserMixin):
     photo = db.Column(db.String(255))
 
     company_edit = relationship('Company', secondary=user_edit_company, back_populates='user_edit', lazy=True)
-    company_admin = relationship('Company', secondary=user_admin_company, back_populates='user_admin', lazy=True)
+    company_admin = relationship('Company', secondary=user_admin_company, back_populates='admin', lazy=True)
 
     settings_id = db.Column(Integer, ForeignKey('settings.id'))
     settings = relationship('Settings', back_populates='users')
@@ -223,6 +225,8 @@ class User(db.Model, UserMixin):
     event_staff = relationship('Event', secondary=event_staff_users, back_populates='users_staff', lazy=True)
     creator = relationship('Company', back_populates='creator')
     company = relationship('Company', secondary=staff_company, back_populates='staff', lazy=True)
+
+    # event_manager = relationship('Event', back_populates='manager')
 
     edit_time = db.Column(DateTime, onupdate=time_now)
     create_time = db.Column(DateTime, default=time_now)
@@ -317,7 +321,7 @@ class Company(db.Model):
     events = relationship('Event', back_populates='company')
 
     user_edit = relationship('User', secondary=user_edit_company, back_populates='company_edit', lazy=True)
-    user_admin = relationship('User', secondary=user_admin_company, back_populates='company_admin', lazy=True)
+    admin = relationship('User', secondary=user_admin_company, back_populates='company_admin', lazy=True)
 
     settings = relationship('Settings', back_populates='company_default')
 
@@ -336,19 +340,3 @@ class Settings(db.Model):
     company_default = relationship('Company', back_populates='settings')
 
     users = relationship('User', back_populates='settings')
-
-
-class Confirmation(db.Model):
-    __tablename__ = 'confirmation'
-
-    id = db.Column(Integer, primary_key=True)
-    email = db.Column(String(128))
-    conf_id = db.Column(String(128))
-
-
-class Invite(db.Model):
-    __tablename__ = 'invite'
-    id = db.Column(Integer, primary_key=True)
-    email = db.Column(String(128))
-    invite_id = db.Column(String(128))
-    company_id = db.Column(Integer)

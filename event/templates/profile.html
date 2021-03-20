@@ -117,6 +117,23 @@
                                 </a>
                             </div>
                             {% endif %}
+                            {% if current_user in company_default.admin%}
+                            <div class="col-md-6">
+                                {% if not user in company_default.admin %}
+                                <a href="{{ url_for('main.admincompanyadd', id=user.id) }}">
+                                    <button type="button" class="btn btn-default btn-sm btn-block"><i
+                                            class="fa fa-coffee"></i> Сделать Администратором
+                                    </button>
+                                </a>
+                                {% else %}
+                                <a href="{{ url_for('main.admincompanyremove', id=user.id) }}">
+                                    <button type="button" class="btn btn-default btn-sm btn-block"><i
+                                            class="fa fa-coffee"></i> Удалить из Администратора
+                                    </button>
+                                </a>
+                                {% endif %}
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
