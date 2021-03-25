@@ -46,7 +46,13 @@
                     </div>
                     <div class="col-8">
                         <h3><strong>{% if manager.first_name %}{{ manager.last_name }} {{ manager.first_name }}{% else %}{{ manager.login }} {% endif %}</strong></h3>
-                        <p><strong>{{ manager.lead_roles.title }}</strong></p>
+                        <p><strong>
+                            {% if manager.role_in_company %}
+                            {{ manager.role_in_company.name }}
+                            {% else %}
+                            {{ manager.roles[0].title }}
+                            {% endif %}
+                        </strong></p>
                         <address>
                             <li class="fa fa-envelope"></li>
                             <strong>{{ manager.email }}</strong><br>

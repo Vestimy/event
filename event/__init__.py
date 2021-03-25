@@ -169,6 +169,7 @@ admin.add_view(AdminView(Weather, db.session))
 admin.add_view(AdminView(Document, db.session))
 admin.add_view(AdminView(CompanyType, db.session))
 admin.add_view(AdminView(Company, db.session))
+admin.add_view(AdminView(RolesCompany, db.session))
 
 admin.add_view(AdminView(User, db.session))
 admin.add_view(AdminView(Role, db.session))

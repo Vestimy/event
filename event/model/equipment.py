@@ -8,7 +8,7 @@ class EquipmentCategory(db.Model):
     __tablename__ = 'equipmentcategory'
     id = db.Column(Integer, primary_key=True)
     name = db.Column(String(128), nullable=False)
-    title = db.Column(String(128), nullable=False)
+    title = db.Column(String(128))
     # equipment = relationship('Equipment', back_populates='equipmentcategory')
     description = db.Column(String(256))
     equipmentsubcategory = relationship('EquipmentSubcategory', back_populates='equipmentcategory')
@@ -40,7 +40,7 @@ class EquipmentSubcategory(db.Model):
 class Equipment(db.Model):
     __tablename__ = 'equipment'
     id = db.Column(Integer, primary_key=True)
-    name = db.Column(String(128), nullable=False)
+    name = db.Column(String(128))
     title = db.Column(String(128))
     description = db.Column(String(256))
     number = db.Column(Integer)

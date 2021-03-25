@@ -30,17 +30,23 @@ association = db.Table('association',
                        db.Column('users_id', db.Integer, db.ForeignKey('users.id')),
                        db.Column('roles_id', db.Integer, db.ForeignKey('roles.id')))
 
-user_edit_company = db.Table('user_edit_company',
-                             db.Model.metadata,
-                             db.Column('users_id', db.Integer, db.ForeignKey('users.id')),
-                             db.Column('company_id', db.Integer, db.ForeignKey('company.id'))
-                             )
+manager_company = db.Table('manager_company',
+                           db.Model.metadata,
+                           db.Column('users_id', db.Integer, db.ForeignKey('users.id')),
+                           db.Column('company_id', db.Integer, db.ForeignKey('company.id'))
+                           )
 
-user_admin_company = db.Table('user_admin_company',
-                              db.Model.metadata,
-                              db.Column('users_id', db.Integer, db.ForeignKey('users.id')),
-                              db.Column('company_id', db.Integer, db.ForeignKey('company.id'))
-                              )
+admin_company = db.Table('admin_company',
+                         db.Model.metadata,
+                         db.Column('users_id', db.Integer, db.ForeignKey('users.id')),
+                         db.Column('company_id', db.Integer, db.ForeignKey('company.id'))
+                         )
+
+association_roles_company = db.Table('association_roles_company',
+                                     db.Model.metadata,
+                                     db.Column('rolescompany_id', db.Integer, db.ForeignKey('rolescompany.id')),
+                                     db.Column('company_id', db.Integer, db.ForeignKey('company.id'))
+                                     )
 
 
 class Event(db.Model):
@@ -207,8 +213,8 @@ class User(db.Model, UserMixin):
     address = db.Column(db.String(255))
     photo = db.Column(db.String(255))
 
-    company_edit = relationship('Company', secondary=user_edit_company, back_populates='user_edit', lazy=True)
-    company_admin = relationship('Company', secondary=user_admin_company, back_populates='admin', lazy=True)
+    manager = relationship('Company', secondary=manager_company, back_populates='managers', lazy=True)
+    admin = relationship('Company', secondary=admin_company, back_populates='admins', lazy=True)
 
     settings_id = db.Column(Integer, ForeignKey('settings.id'))
     settings = relationship('Settings', back_populates='users')
@@ -218,8 +224,6 @@ class User(db.Model, UserMixin):
 
     genereal_company = db.Column(Integer)
 
-    lead_roles_id = db.Column(Integer, ForeignKey('roles.id'))
-    lead_roles = relationship("Role", back_populates='users_lead')
 
     event = relationship('Event', back_populates='user')
     event_staff = relationship('Event', secondary=event_staff_users, back_populates='users_staff', lazy=True)
@@ -227,7 +231,8 @@ class User(db.Model, UserMixin):
     company = relationship('Company', secondary=staff_company, back_populates='staff', lazy=True)
 
     # event_manager = relationship('Event', back_populates='manager')
-
+    role_in_company_id = db.Column(Integer, ForeignKey('rolescompany.id'))
+    role_in_company = relationship('RolesCompany', back_populates='users_role')
     edit_time = db.Column(DateTime, onupdate=time_now)
     create_time = db.Column(DateTime, default=time_now)
 
@@ -262,7 +267,6 @@ class Role(db.Model, RoleMixin):
     title = db.Column(db.String(250))
     description = db.Column(db.String(255), nullable=False)
     users = relationship('User', secondary=association, back_populates='roles', lazy=True)
-    users_lead = relationship("User", back_populates='lead_roles')
     edit_time = db.Column(DateTime, onupdate=time_now)
     create_time = db.Column(DateTime, default=time_now)
 
@@ -320,10 +324,13 @@ class Company(db.Model):
 
     events = relationship('Event', back_populates='company')
 
-    user_edit = relationship('User', secondary=user_edit_company, back_populates='company_edit', lazy=True)
-    admin = relationship('User', secondary=user_admin_company, back_populates='company_admin', lazy=True)
+    managers = relationship('User', secondary=manager_company, back_populates='manager', lazy=True)
+    admins = relationship('User', secondary=admin_company, back_populates='admin', lazy=True)
 
     settings = relationship('Settings', back_populates='company_default')
+
+    rolescompany = relationship('RolesCompany', secondary=association_roles_company, back_populates='company', lazy=True)
+
 
     edit = db.Column(DateTime, onupdate=time_now)
     create = db.Column(DateTime, default=time_now)
@@ -331,6 +338,23 @@ class Company(db.Model):
     def __repr__(self):
         return self.name
 
+
+class RolesCompany(db.Model):
+    __tablename__ = 'rolescompany'
+    id = db.Column(Integer, primary_key=True)
+    name = db.Column(db.String(250), nullable=False)
+    title = db.Column(db.String(250))
+    description = db.Column(db.String(255))
+    company = relationship('Company', secondary=association_roles_company, back_populates='rolescompany', lazy=True)
+
+    users_role = relationship('User', back_populates='role_in_company')
+
+    edit_time = db.Column(DateTime, onupdate=time_now)
+    create_time = db.Column(DateTime, default=time_now)
+
+
+    def __repr__(self):
+        return self.name
 
 class Settings(db.Model):
     __tablename__ = 'settings'

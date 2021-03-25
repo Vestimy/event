@@ -14,7 +14,7 @@
                     {% endif %}
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <span class="block m-t-xs font-bold">{% if current_user.first_name %}{{ current_user.last_name }} {{ current_user.first_name }}{% else %}{{ current_user.login }} {% endif %}</span>
-                        <span class="text-muted text-xs block">{{ current_user.lead_roles.title }} <b class="caret"></b></span>
+                        <span class="text-muted text-xs block">{{ current_user.roles[0].title }} <b class="caret"></b></span>
                     </a>
                     <ul class="dropdown-menu animated fadeInRight m-t-xs">
                         <li><a class="dropdown-item"
