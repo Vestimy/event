@@ -224,7 +224,6 @@ class User(db.Model, UserMixin):
 
     genereal_company = db.Column(Integer)
 
-
     event = relationship('Event', back_populates='user')
     event_staff = relationship('Event', secondary=event_staff_users, back_populates='users_staff', lazy=True)
     creator = relationship('Company', back_populates='creator')
@@ -329,8 +328,8 @@ class Company(db.Model):
 
     settings = relationship('Settings', back_populates='company_default')
 
-    rolescompany = relationship('RolesCompany', secondary=association_roles_company, back_populates='company', lazy=True)
-
+    rolescompany = relationship('RolesCompany', secondary=association_roles_company, back_populates='company',
+                                lazy=True)
 
     edit = db.Column(DateTime, onupdate=time_now)
     create = db.Column(DateTime, default=time_now)
@@ -352,9 +351,9 @@ class RolesCompany(db.Model):
     edit_time = db.Column(DateTime, onupdate=time_now)
     create_time = db.Column(DateTime, default=time_now)
 
-
     def __repr__(self):
         return self.name
+
 
 class Settings(db.Model):
     __tablename__ = 'settings'
