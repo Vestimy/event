@@ -12,13 +12,13 @@
                 <div class="ibox">
                     <div class="ibox-title">
 
-                        <a href="{{ url_for('main.team') }}" class="btn btn-primary btn-xs">Все</a>
+                        <a href="{{ url_for('profiles.team') }}" class="btn btn-primary btn-xs">Все</a>
 
 
-                        <a href="{{ url_for('main.team', m='managers') }}" class="btn btn-primary btn-xs">Менеджеры</a>
+                        <a href="{{ url_for('profiles.team', m='managers') }}" class="btn btn-primary btn-xs">Менеджеры</a>
 
 
-                        <a href="{{ url_for('main.team', m='admin') }}" class="btn btn-primary btn-xs">Администратор</a>
+                        <a href="{{ url_for('profiles.team', m='admin') }}" class="btn btn-primary btn-xs">Администратор</a>
 
                     </div>
                 </div>
@@ -32,7 +32,7 @@
         <div class="col-lg-4">
             <div class="contact-box" {% if current_user.id== manager.id %}
                  style="background-color: #1ab394; color: #fff;" {% endif %}>
-                <a class="row" href="{{ url_for('main.profile', id=manager.id)}}">
+                <a class="row" href="{{ url_for('profiles.profile', id=manager.id)}}">
                     <div class="col-4">
                         <div class="text-center">
                             {% if manager.photo %}

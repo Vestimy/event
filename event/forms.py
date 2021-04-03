@@ -348,8 +348,14 @@ class RegisterInviteForm(Form):
     phone = StringField('Телефон')
     address = StringField('Адрес')
 
+    submit_invite = SubmitField('Регистрация')
     def validate_login(self, feald):
         if User.query.filter(User.login == feald.data).first():
             raise ValidationError('Логин занят')
 
-    submit_invite = SubmitField('Регистрация')
+
+class SendMessageForm(Form):
+    subject = StringField('Тема')
+    message = TextAreaField('Сообщения')
+
+    submit_send = SubmitField('Отправить')

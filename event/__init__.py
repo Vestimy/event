@@ -47,6 +47,7 @@ def create_app():
     from .views.tour.views import tours
     from .views.api.views import api
     from .views.security.views import security
+    from .views.profile.views import profiles
 
     app.register_blueprint(main)
     app.register_blueprint(events)
@@ -56,6 +57,7 @@ def create_app():
     app.register_blueprint(tours)
     app.register_blueprint(api)
     app.register_blueprint(security)
+    app.register_blueprint(profiles)
 
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -176,6 +178,7 @@ admin.add_view(AdminView(Role, db.session))
 admin.add_view(AdminView(Confirmation, db.session))
 admin.add_view(AdminView(Invite, db.session))
 admin.add_view(AdminView(Settings, db.session))
+admin.add_view(AdminView(PrivateMessages, db.session))
 
 
 # user_datastore = SQLAlchemySessionUserDatastore(db.session, User, Role)

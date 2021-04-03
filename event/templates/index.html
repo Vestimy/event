@@ -348,7 +348,7 @@
                                 {% endif %}
                                 <div class="team-members">
                                     {% for staff in last_event.users_staff %}
-                                    <a href="{{ url_for('main.profile', id=staff.id) }}">{% if staff.photo %}<img
+                                    <a href="{{ url_for('profiles.profile', id=staff.id) }}">{% if staff.photo %}<img
                                             alt="{{staff.first_name}}" class="rounded-circle"
                                             src="
                                     {{ url_for('photo_profile', filename=staff.photo)}}">{% endif %}</a>
@@ -403,7 +403,7 @@
 
                                 <div class="team-members">
                                     {% for staff in last_event.users_staff %}
-                                    <a href="{{ url_for('main.profile', id=staff.id) }}">
+                                    <a href="{{ url_for('profiles.profile', id=staff.id) }}">
                                         {% if staff.photo %}<img alt="{{staff.first_name}}" class="rounded-circle"
                                                                  src="{{ url_for('photo_profile', filename=staff.photo)}}">
                                         {% endif %}</a>

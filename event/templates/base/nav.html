@@ -18,7 +18,7 @@
                     </a>
                     <ul class="dropdown-menu animated fadeInRight m-t-xs">
                         <li><a class="dropdown-item"
-                               href="{{ url_for('main.profile', id=current_user.id) }}">Профиль</a></li>
+                               href="{{ url_for('profiles.profile', id=current_user.id) }}">Профиль</a></li>
                         <li><a class="dropdown-item" href="contacts.html">Contacts</a></li>
                         <li><a class="dropdown-item" href="mailbox.html">Mailbox</a></li>
                         <li class="dropdown-divider"></li>
@@ -65,14 +65,14 @@
             </li>
 
             <li {% if url_for(
-            'main.team') == request.path %} class="active" {% endif %}>
-            <a href="{{ url_for('main.team') }}"><i class="fa fa-users"></i> <span
+            'profiles.team') == request.path %} class="active" {% endif %}>
+            <a href="{{ url_for('profiles.team') }}"><i class="fa fa-users"></i> <span
                     class="nav-label">Сотрудники</span></a>
             </li>
-            {% if current_user.creator or current_user in company_default.user_admin %}
+            {% if current_user.creator or current_user in company_default.admins %}
             <li {% if url_for(
             'main.invite') == request.path %} class="active" {% endif %}>
-            <a href="{{ url_for('main.invite') }}"><i class="fa fa-users"></i> <span
+            <a href="{{ url_for('main.invite') }}"><i class="fa fa-share"></i> <span
                     class="nav-label">Пригласить</span></a>
             </li>
             {% endif %}

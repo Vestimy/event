@@ -144,20 +144,20 @@
                                     </button>
                                 </a>
                                 {% else %}
-                                <a href="{{ url_for('main.profile', id=user.id, page=all_events.prev_num) }}">
+                                <a href="{{ url_for('profiles.profile', id=user.id, page=all_events.prev_num) }}">
                                     <button type="button" class="btn btn-white disabled"><i
                                             class="fa fa-chevron-left"></i></button>
                                 </a>
                                 {% endif %}
                                 {% for page in all_events.iter_pages() %}
-                                <a href="{{ url_for('main.profile', id=user.id, page=page)}}">
+                                <a href="{{ url_for('profiles.profile', id=user.id, page=page)}}">
                                     <button class="btn btn-white {% if page==all_events.page%} active {% endif %}">
                                         {{page}}
                                     </button>
                                 </a>
                                 {% endfor %}
                                 {% if all_events.has_next %}
-                                <a href="{{ url_for('main.profile', id=user.id, page=all_events.next_num) }}">
+                                <a href="{{ url_for('profiles.profile', id=user.id, page=all_events.next_num) }}">
                                     <button type="button" class="btn btn-white"><i class="fa fa-chevron-right"></i>
                                     </button>
                                 </a>
@@ -204,13 +204,13 @@
                                     </button>
                                 </a>
                                 {% else %}
-                                <a href="{{ url_for('main.profile', id=user.id, page=events.prev_num) }}">
+                                <a href="{{ url_for('profiles.profile', id=user.id, page=events.prev_num) }}">
                                     <button type="button" class="btn btn-white disabled"><i
                                             class="fa fa-chevron-left"></i></button>
                                 </a>
                                 {% endif %}
                                 {% for page in events.iter_pages() %}
-                                <a href="{{ url_for('main.profile', id=user.id, page=page)}}">
+                                <a href="{{ url_for('profiles.profile', id=user.id, page=page)}}">
                                     <button class="btn btn-white {% if page==events.page%} active {% endif %}">
                                         {{page}}
                                     </button>
@@ -221,7 +221,7 @@
                                 <!--                                <button class="btn btn-white">3</button>-->
                                 <!--                                <button class="btn btn-white">4</button>-->
                                 {% if events.has_next %}
-                                <a href="{{ url_for('main.profile', id=user.id, page=events.next_num) }}">
+                                <a href="{{ url_for('profiles.profile', id=user.id, page=events.next_num) }}">
                                     <button type="button" class="btn btn-white"><i class="fa fa-chevron-right"></i>
                                     </button>
                                 </a>

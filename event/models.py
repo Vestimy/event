@@ -1,5 +1,5 @@
 from event import db
-from sqlalchemy import Column, String, Integer, ForeignKey, DateTime, Date, Time, JSON
+from sqlalchemy import Column, String, Integer, TEXT, ForeignKey, DateTime, Date, Time, JSON
 from sqlalchemy.orm import relationship
 from flask_jwt_extended import create_access_token
 from datetime import timedelta
@@ -47,6 +47,12 @@ association_roles_company = db.Table('association_roles_company',
                                      db.Column('rolescompany_id', db.Integer, db.ForeignKey('rolescompany.id')),
                                      db.Column('company_id', db.Integer, db.ForeignKey('company.id'))
                                      )
+
+private_messages = db.Table('private_messages',
+                            db.Model.metadata,
+                            db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+                            db.Column('privatemessages_id', db.Integer, db.ForeignKey('privatemessages.id'))
+                            )
 
 
 class Event(db.Model):
@@ -127,6 +133,9 @@ class Artist(db.Model):
     event = relationship("Event", back_populates="artist")
     edit_artist = db.Column(db.DateTime, onupdate=time_now)
     created_artist = db.Column(db.DateTime, default=time_now)
+
+    def __repr__(self):
+        return f'{self.first_name} {self.last_name}'
 
 
 class Arena(db.Model):
@@ -212,6 +221,7 @@ class User(db.Model, UserMixin):
     phone = db.Column(db.String(20))
     address = db.Column(db.String(255))
     photo = db.Column(db.String(255))
+    about = db.Column(TEXT(350))
 
     manager = relationship('Company', secondary=manager_company, back_populates='managers', lazy=True)
     admin = relationship('Company', secondary=admin_company, back_populates='admins', lazy=True)
@@ -228,7 +238,7 @@ class User(db.Model, UserMixin):
     event_staff = relationship('Event', secondary=event_staff_users, back_populates='users_staff', lazy=True)
     creator = relationship('Company', back_populates='creator')
     company = relationship('Company', secondary=staff_company, back_populates='staff', lazy=True)
-
+    privatemessages = relationship('PrivateMessages', secondary=private_messages, back_populates='users', lazy=True)
     # event_manager = relationship('Event', back_populates='manager')
     role_in_company_id = db.Column(Integer, ForeignKey('rolescompany.id'))
     role_in_company = relationship('RolesCompany', back_populates='users_role')
@@ -331,6 +341,7 @@ class Company(db.Model):
     rolescompany = relationship('RolesCompany', secondary=association_roles_company, back_populates='company',
                                 lazy=True)
 
+
     edit = db.Column(DateTime, onupdate=time_now)
     create = db.Column(DateTime, default=time_now)
 
@@ -363,3 +374,16 @@ class Settings(db.Model):
     company_default = relationship('Company', back_populates='settings')
 
     users = relationship('User', back_populates='settings')
+
+
+class PrivateMessages(db.Model):
+    __tablename__ = 'privatemessages'
+    id = db.Column(Integer, primary_key=True)
+    subject = db.Column(String(100))
+    message = db.Column(TEXT(300))
+    users = relationship('User', secondary=private_messages, back_populates='privatemessages', lazy=True)
+
+    # sender
+    # recipient
+    edit = db.Column(DateTime, onupdate=time_now)
+    create = db.Column(DateTime, default=time_now)
