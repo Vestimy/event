@@ -7,6 +7,7 @@ from wtforms import Form, StringField, SelectMultipleField, MultipleFileField, S
 from wtforms.validators import DataRequired, Email, InputRequired, ValidationError
 from event.models import *
 from event.model.city import *
+from event.model.security import *
 from wtforms.widgets import HiddenInput
 
 
