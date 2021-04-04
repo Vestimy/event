@@ -49,6 +49,7 @@ def create_app():
     from .views.security.views import security
     from .views.profile.views import profiles
     from .views.message.views import messages
+    from .views.friends.views import friends
 
     app.register_blueprint(main)
     app.register_blueprint(events)
@@ -60,6 +61,7 @@ def create_app():
     app.register_blueprint(security)
     app.register_blueprint(profiles)
     app.register_blueprint(messages)
+    app.register_blueprint(friends)
 
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
@@ -113,6 +115,13 @@ def create_app():
             return dict(company_default=company_default)
         return dict(company_default=None)
 
+    @app.context_processor
+    def messages_notifications():
+        if current_user.is_authenticated:
+            messages_notifications = PrivateMessages.query.filter(PrivateMessages.recipient_id == current_user.id).filter(PrivateMessages.read == False).order_by(PrivateMessages.create.desc()).all()
+            return dict(messages_notifications=messages_notifications)
+        return dict(messages_notifications=None)
+
     session_cookie = SecureCookieSessionInterface().get_signing_serializer(app)
 
     @app.after_request
@@ -120,6 +129,7 @@ def create_app():
         same_cookie = session_cookie.dumps(dict(session))
         response.headers.add("Set-Cookie", f"my_cookie={same_cookie}; Secure; HttpOnly; SameSite=None; Path=/;")
         return response
+
     return app
 
 

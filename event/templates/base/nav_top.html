@@ -26,60 +26,35 @@
             </li>
             <li class="dropdown">
                 <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                    <i class="fa fa-envelope"></i> <span class="label label-warning">16</span>
+                    <i class="fa fa-envelope"></i> <span class="label label-warning">{{ messages_notifications | length }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-messages dropdown-menu-right">
+                    {% for i in messages_notifications %}
                     <li>
                         <div class="dropdown-messages-box">
                             <a class="dropdown-item float-left" href="profile.html">
+                                {% if i.sender.photo %}
+
+                                <img alt="image" class="rounded-circle"
+                                     src="{{ url_for('photo_profile', filename=i.sender.photo)}}">
+                                {% else %}
                                 <img alt="image" class="rounded-circle"
                                      src="{{ url_for('inspina', filename='img/a7.jpg')}}">
+                                {% endif %}
                             </a>
                             <div class="media-body">
-                                <small class="float-right">46h ago</small>
-                                <strong>Mike Loreipsum</strong> started following <strong>Monica Smith</strong>.
+                                <!--                                <small class="float-right">46h ago</small>-->
+                                <strong>{{ i.sender.last_name }} {{ i.sender.first_name }}</strong> <br>Тема: <strong>{{
+                                i.subject }}</strong>.
                                 <br>
-                                <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
+                                <small class="text-muted">{{ i.create }}</small>
                             </div>
                         </div>
                     </li>
                     <li class="dropdown-divider"></li>
-                    <li>
-                        <div class="dropdown-messages-box">
-                            <a class="dropdown-item float-left" href="profile.html">
-                                <img alt="image" class="rounded-circle"
-                                     src="{{ url_for('inspina', filename='img/a4.jpg')}}">
-                            </a>
-                            <div class="media-body ">
-                                <small class="float-right text-navy">5h ago</small>
-                                <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica
-                                Smith</strong>. <br>
-                                <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="dropdown-divider"></li>
-                    <li>
-                        <div class="dropdown-messages-box">
-                            <a class="dropdown-item float-left" href="profile.html">
-                                <img alt="image" class="rounded-circle"
-                                     src="{{ url_for('inspina', filename='img/profile.jpg')}}">
-                            </a>
-                            <div class="media-body ">
-                                <small class="float-right">23h ago</small>
-                                <strong>Monica Smith</strong> love <strong>Kim Smith</strong>. <br>
-                                <small class="text-muted">2 days ago at 2:30 am - 11.06.2014</small>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="dropdown-divider"></li>
-                    <li>
-                        <div class="text-center link-block">
-                            <a href="mailbox.html" class="dropdown-item">
-                                <i class="fa fa-envelope"></i> <strong>Read All Messages</strong>
-                            </a>
-                        </div>
-                    </li>
+                    {% endfor %}
+
+
                 </ul>
             </li>
             <li class="dropdown">

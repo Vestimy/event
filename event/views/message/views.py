@@ -14,9 +14,9 @@ messages = Blueprint('messages', __name__)
 @messages.route('/messages/', methods=['GET'])
 @login_required
 def index():
-    messages = PrivateMessages.query.filter(PrivateMessages.recipient_id == current_user.id).order_by(PrivateMessages.create.desc()).all()
+    messages = PrivateMessages.query.filter(PrivateMessages.recipient_id == current_user.id).order_by(
+        PrivateMessages.create.desc()).all()
     return render_template('mailbox.html', messages=messages)
-
 
 
 @messages.route('/api/send_message/<int:id>', methods=['GET', 'POST'])
@@ -29,9 +29,12 @@ def send_message(id):
     if request.method == 'POST':
         try:
             form.populate_obj(message)
-            message.sender.append(sender)
-            message.recipient.append(recipient)
+            message.sender_id = sender.id
+            message.recipient_id = recipient.id
+            message.read = False
+            db.session.add(message)
             db.session.commit()
-        except Exception:
+        except Exception as e:
+            print(f'error {e}')
             db.session.rollback()
     return redirect(request.referrer)
