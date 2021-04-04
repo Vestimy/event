@@ -52,10 +52,11 @@ def login():
     return render_template('security/login_user.html', login_user_form=login_user_form)
 
 
-@security.route('/register', methods=['GET', 'POST'])
+@security.route('/registration', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
+    role = Role.query.get(2)
     user = User()
     register_user_form = RegisterUserForm(request.form, obj=user)
     password = request.form.get('password')
@@ -78,6 +79,7 @@ def register():
                     user.password = hash_pwd
                     user.email = invite.email
                     user.active = True
+                    user.roles.append(role)
                     db.session.add(user)
 
                     user.company.append(Company.query.get(invite.company_id))
@@ -99,6 +101,7 @@ def register():
             register_user_form.populate_obj(user)
             hash_pwd = generate_password_hash(password)
             user.password = hash_pwd
+            user.roles.append(role)
             db.session.add(user)
 
             id = generate_id()
