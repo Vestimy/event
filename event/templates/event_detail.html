@@ -99,10 +99,13 @@
                                     <dt>Менеджер:</dt>
                                 </div>
                                 <div class="col-sm-8 text-sm-left">
-                                    <dd class="mb-1"><span class="text-navy"> <a
-                                            href="{{ url_for('main.profile', id=event.user.id) }}">
+                                    <dd class="mb-1"><span class="text-navy">
+                                        {% if event.user.id %}
+                                        <a
+                                            href="{{ url_for('profiles.profile', id=event.user.id) }}">
                                     {{ event.user.first_name }} {{ event.user.last_name }}
                                 </a></span></dd>
+                                    {% endif %}
                                 </div>
                             </dl>
                             <dl class="row mb-0">
@@ -112,7 +115,7 @@
                                 <div class="col-sm-8 text-sm-left">
                                     <dd class="project-people mb-1">
                                         {% for i in event.users_staff %}
-                                        <a href="{{ url_for('main.profile', id=i.id) }} "><img alt="image"
+                                        <a href="{{ url_for('profiles.profile', id=i.id) }} "><img alt="image"
                                                                                                class="rounded-circle"
                                                                                                src="{{ url_for('photo_profile', filename=i.photo) }}"></a>
                                         {% endfor %}

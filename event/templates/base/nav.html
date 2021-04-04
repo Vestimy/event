@@ -1,7 +1,6 @@
 <nav class="navbar-default navbar-static-side" role="navigation">
     <div class="sidebar-collapse">
         <ul class="nav metismenu" id="side-menu">
-
             <li class="nav-header">
                 <div class="dropdown profile-element">
                     {% if current_user.photo %}
@@ -52,6 +51,12 @@
 
             </li>
             <li {% if menu==
+            'events' %} class='active' {% endif %}>
+            <a href="{{url_for('messages.index')}}"><i class="fa fa-commenting"></i> <span
+                    class="nav-label">Сообщения</span> </a>
+
+            </li>
+            <li {% if menu==
             "artists" %} class="active" {% endif %}>
             <a href="{{ url_for('artists.index') }}"><i class="fa fa-star"></i> <span class="nav-label">Артисты</span>
             </a>
@@ -83,6 +88,5 @@
             </li>
             {% endif %}
         </ul>
-
     </div>
 </nav>

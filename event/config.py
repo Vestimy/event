@@ -2,7 +2,7 @@ import os
 import inspect
 import sys
 from pathlib import Path
-
+import datetime
 
 class Config:
     BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,6 +30,8 @@ class Config:
     SECRET_KEY = '26edec8e275e43cab5777cb9050906f9'
     ADMIN_PASSWD_HASH = '7ULJ61PMMGBJ1KWQB64P7D'
     STATIC_URL_PATH = '/static'
+
+    PERMANENT_SESSION_LIFETIME = datetime.timedelta(minutes=1140)
     #############MAIL#######################
     #MAIL_SERVER = 'smtp.gmail.com'
     #MAIL_PORT = 25

@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, redirect, abort
+from flask import Blueprint, request, render_template, redirect, abort, session
 from event import logger, config, allowed_photo_profile, allowed_document_profile, load_user
 from event.emails import send_confirm, send_forgot, send_confirm_succes
 from event import generate_id
@@ -38,6 +38,7 @@ def login():
             if user:
                 if check_password_hash(user.password, password):
                     login_user(user)
+                    session.permanent = True
                     next_page = request.args.get('next')
                     if next_page is None:
                         return redirect(url_for('main.index'))

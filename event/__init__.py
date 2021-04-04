@@ -48,6 +48,7 @@ def create_app():
     from .views.api.views import api
     from .views.security.views import security
     from .views.profile.views import profiles
+    from .views.message.views import messages
 
     app.register_blueprint(main)
     app.register_blueprint(events)
@@ -58,6 +59,7 @@ def create_app():
     app.register_blueprint(api)
     app.register_blueprint(security)
     app.register_blueprint(profiles)
+    app.register_blueprint(messages)
 
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 

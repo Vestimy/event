@@ -178,8 +178,16 @@ def admincompanyremove(id):
 @profiles.route('/api/send_message/<int:id>', methods=['GET', 'POST'])
 @login_required
 def send_message(id):
+    sender = User.query.get(current_user.id)
+    recipient = User.query.get(id)
     message = PrivateMessages()
     form = SendMessageForm(request.form, message)
     if request.method == 'POST':
-        form.populate_obj(message)
+        try:
+            form.populate_obj(message)
+            message.sender_id = sender
+            message.recipient_id = recipient
+            db.session.commit()
+        except Exception:
+            db.session.rollback()
     return redirect(request.referrer)
