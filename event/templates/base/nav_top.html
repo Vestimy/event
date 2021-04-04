@@ -32,7 +32,7 @@
                     {% for i in messages_notifications %}
                     <li>
                         <div class="dropdown-messages-box">
-                            <a class="dropdown-item float-left" href="profile.html">
+                            <a class="dropdown-item float-left" href="{{ url_for('profiles.profile', id=i.sender.id)}}">
                                 {% if i.sender.photo %}
 
                                 <img alt="image" class="rounded-circle"
@@ -43,11 +43,14 @@
                                 {% endif %}
                             </a>
                             <div class="media-body">
-                                <!--                                <small class="float-right">46h ago</small>-->
-                                <strong>{{ i.sender.last_name }} {{ i.sender.first_name }}</strong> <br>Тема: <strong>{{
-                                i.subject }}</strong>.
-                                <br>
-                                <small class="text-muted">{{ i.create }}</small>
+                                <a href="#" class="dropdown-item float-left">
+                                    <!--                                <small class="float-right">46h ago</small>-->
+                                    <strong>{{ i.sender.last_name }} {{ i.sender.first_name }}</strong> <br>Тема:
+                                    <strong>{{
+                                        i.subject }}</strong>.
+                                    <br>
+                                    <small class="text-muted">{{ i.create }}</small>
+                                </a>
                             </div>
                         </div>
                     </li>
